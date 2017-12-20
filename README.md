@@ -63,7 +63,7 @@ QQ交流群： 创建中 ...
 
 #### 文档目录
 
-- [启动Demo](./DOC.md#启动Demo)
+- [启动Demo](https://github.com/blogshun/ants-demos/README.md#启动Demo)
 - [MVC](./DOC.md#mvc)
 - [安全控制](./DOC.md#安全控制)
 - [ORM](./DOC.md#orm)
