@@ -73,7 +73,7 @@ public class Log {
         }
         Cacheable cache = m.getAnnotation(Cacheable.class);
         if (cache != null) {
-            sb.append("Cache       : ").append("true -> true").append("\n");
+            sb.append("Cache       : ").append("true").append("\n");
         }
         Aop classAop = c.getAnnotation(Aop.class);
         Aop methodAop = m.getAnnotation(Aop.class);
