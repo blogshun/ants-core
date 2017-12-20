@@ -11,7 +11,7 @@
 
 内置包含轻量级Db操作 ORM Criteria, SqlMap 插件;
 
-封装常用Ehcache缓存、Redis缓存、ActiveMq消息队列、scheduler任务调度、第三方模板[Beetl、FreeMarker、Veloctiy]。
+封装常用Ehcache缓存、Redis缓存、ActiveMq消息队列、scheduler任务调度、第三Eh方模板[Beetl、FreeMarker、Veloctiy]。
 
 有人可能会问为啥不集成更多插件, 我觉得没有必要, 集成插件本来就不是很复杂的工作量, 集成太多只会导致项目更加臃肿
 , 后期demos项目里面会集成其他一些插件
@@ -64,25 +64,19 @@ QQ交流群： 创建中 ...
 #### 文档目录
 
 - [启动Demo](https://github.com/blogshun/ants-demos/README.md#启动Demo)
-- [MVC](./DOC.md#mvc)
-- [安全控制](./DOC.md#安全控制)
-- [ORM](./DOC.md#orm)
-- [AOP](./DOC.md#aop)
-- [RPC](./DOC.md#rpc远程调用)
-- [MQ](./DOC.md#mq消息队列)
-- [Cache](./DOC.md#cache缓存)
-- [http客户端](./DOC.md#http客户端)
-- [metrics数据监控](./DOC.md#metrics数据监控)
-- [容错与隔离](./DOC.md#容错与隔离)
-- [Opentracing数据追踪](./DOC.md#opentracing数据追踪)
-- [统一配置中心](./DOC.md#统一配置中心)
-- [Swagger api](./DOC.md#swagger-api自动生成)
-- 其他
-	- [SPI扩展](./DOC.md#spi扩展)
-	- [JbootEvnet事件机制](./DOC.md#jbootEvnet事件机制)
-	- [配置文件](./DOC.md#配置文件)
-	- [代码生成器](./DOC.md#代码生成器)
-- [项目构建](./DOC.md#项目构建)
+- [注解介绍](./DOC.md#mvc)
+- [Restful](./DOC.md#安全控制)
+- [参数绑定以及校验](./DOC.md#安全控制)
+- 插件
+	- [Template 模板引擎插件](./DOC.md#spi扩展)
+	- [ORM Criteria](./DOC.md#jbootEvnet事件机制)
+	- [SqlMap](./DOC.md#配置文件)
+	- [Scheduler 任务调度](./DOC.md#代码生成器)
+	- [Db 操作](./DOC.md#代码生成器)
+	- [AcitveMq Jms](./DOC.md#代码生成器)
+	- [Redis 缓存](./DOC.md#代码生成器)
+	- [Ehcache 缓存](./DOC.md#代码生成器)
+- [代码生成器](./DOC.md#项目构建)
 - [联系作者](./DOC.md#联系作者)
 
 

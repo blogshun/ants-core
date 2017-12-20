@@ -114,6 +114,9 @@ public class AntsContext {
 
         //获取需要扫描的包路径
         Application application = loadClass.getDeclaredAnnotation(Application.class);
+        if(application == null){
+            throw new RuntimeException("启动类缺少@Application注解");
+        }
         String[] packages = application.scanPackages();
         String defaultPath = loadClass.getName();
         int lastNum = defaultPath.lastIndexOf(".");
