@@ -70,6 +70,11 @@ public class JTomcat extends CommonProperty {
             tomcat.addServlet(contextPath, "logoServlet", new LogoServlet());
             ctx.addServletMapping("/ants-logo", "logoServlet");
 
+            //设置字体ContentType
+            ctx.addMimeMapping("woff", "application/x-font-woff");
+            ctx.addMimeMapping("woff2", "application/x-font-woff");
+            ctx.addMimeMapping("ttf", "application/octet-stream");
+            ctx.addMimeMapping("otf", "application/octet-stream");
             if (StrUtil.notNull(servlets)) {
                 for (ServletAssembly servlet : servlets) {
                     tomcat.addServlet(contextPath, servlet.getServletName(), servlet.getServlet());

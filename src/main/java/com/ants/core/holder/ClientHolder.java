@@ -3,6 +3,7 @@ package com.ants.core.holder;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * @author MrShun
@@ -31,6 +32,10 @@ public class ClientHolder {
 
     public static ServletContext getContext() {
         return ContextRequestManager.get().getRequest().getServletContext();
+    }
+
+    public static HttpSession getSession() {
+        return ContextRequestManager.get().getRequest().getSession();
     }
 
     /**

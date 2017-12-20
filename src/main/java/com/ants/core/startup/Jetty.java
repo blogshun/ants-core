@@ -65,7 +65,6 @@ public class Jetty extends CommonProperty {
             }
         }
 
-
         //设置加入Ants过滤器
         FilterHolder filterHolder = new FilterHolder(new AntsFilter());
         filterHolder.setInitParameter("loadClass", loadClass.getName());

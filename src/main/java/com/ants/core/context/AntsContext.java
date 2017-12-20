@@ -89,7 +89,10 @@ public class AntsContext {
             constant.setEncoding(propertyConfiguration.encoding());
 
             //设置全局后缀
-            AppConstant.URL_REGEX_SUFFIX = constant.getRegexSuffix();
+            String regexSuffix = constant.getRegexSuffix();
+            if(!"{:()}".equals(regexSuffix)) {
+                AppConstant.URL_REGEX_SUFFIX = regexSuffix;
+            }
         }
 
         //通过注解获取模板配置

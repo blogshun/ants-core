@@ -1,5 +1,7 @@
 package com.ants.restful.render;
 
+import com.ants.common.exception.TipException;
+import com.ants.common.utils.StrUtil;
 import com.ants.core.context.AppConstant;
 import com.ants.core.utils.FileUtil;
 
@@ -30,23 +32,29 @@ public class Resource {
     private Object data;
 
     public Resource(String resName) {
-        this.resName = resName;
+        this.resName = StrUtil.delFirstInitial(resName, '/');
     }
 
     public Resource(String resName, Object data) {
-        this.resName = resName;
+        this.resName = StrUtil.delFirstInitial(resName, '/');
         this.data = data;
     }
 
 
     public void render(HttpServletRequest request, HttpServletResponse response) {
         InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(resName);
+        if (in == null) {
+            throw new TipException(resName + " 资源文件未找到 NotFound !");
+        }
         write(request, response, in);
     }
 
     public void write(HttpServletRequest request, HttpServletResponse response, InputStream in) {
         try {
             String contentType = request.getServletContext().getMimeType(resName);
+            if (contentType == null) {
+                contentType = "text/html";
+            }
             //设置文件MIME类型
             response.setContentType(contentType);
             if (contentType.startsWith("image/")) {
@@ -63,7 +71,7 @@ public class Resource {
                 return;
             } else {
                 String content = FileUtil.read(in, AppConstant.DEFAULT_ENCODING);
-                if(contentType.startsWith("text/html")) {
+                if (contentType.startsWith("text/html")) {
                     Map<String, Object> dataMap = new HashMap<>(10);
                     dataMap.put("ctx", request.getContextPath());
                     dataMap.put("JS_PATH", "/static/js");

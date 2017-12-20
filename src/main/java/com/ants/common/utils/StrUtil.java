@@ -206,6 +206,22 @@ public class StrUtil {
     }
 
     /**
+     * 字符串首字母是否删除字符
+     *
+     * @param str
+     * @param separator
+     * @return
+     */
+    public static String delFirstInitial(String str, Character separator) {
+        char initial = str.toCharArray()[0];
+        if (initial != separator) {
+            return str;
+        } else {
+            return str.substring(1);
+        }
+    }
+
+    /**
      * 字符串尾部字母是否添加字符
      *
      * @param str       字符串
@@ -233,7 +249,7 @@ public class StrUtil {
         while (content.indexOf(str) != -1) {
             int i = content.indexOf(str);
             content = content.substring(i + 1, content.length() - 1);
-            count ++;
+            count++;
         }
         return count;
     }
