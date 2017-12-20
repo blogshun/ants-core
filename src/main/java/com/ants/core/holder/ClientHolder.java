@@ -1,5 +1,6 @@
 package com.ants.core.holder;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -26,6 +27,10 @@ public class ClientHolder {
      */
     public static HttpServletRequest getRequest() {
         return ContextRequestManager.get().getRequest();
+    }
+
+    public static ServletContext getContext() {
+        return ContextRequestManager.get().getRequest().getServletContext();
     }
 
     /**
@@ -67,7 +72,7 @@ public class ClientHolder {
         String ip = request.getHeader("x-forwarded-for");
         if (ip != null && ip.length() != 0 && !"unknown".equalsIgnoreCase(ip)) {
             // 多次反向代理后会有多个ip值，第一个ip才是真实ip
-            if( ip.indexOf(",")!=-1 ){
+            if (ip.indexOf(",") != -1) {
                 ip = ip.split(",")[0];
             }
         }

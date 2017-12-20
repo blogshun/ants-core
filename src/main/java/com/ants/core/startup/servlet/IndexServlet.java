@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 /**
  * Ants框架默认首页
@@ -25,7 +26,9 @@ public class IndexServlet extends HttpServlet {
                 "</div>" +
                 "<div style=\"font:normal 12px/24px Helvetica, Tahoma, Arial, sans-serif;position:fixed;left:0;bottom:10px;text-align:center;width:100%;\">&copy; 2017 Ants By 优旅家 MrShun</div>" +
                 "</body>";
-        resp.getWriter().print(html);
+        PrintWriter writer = resp.getWriter();
+        writer.print(html);
+        writer.close();
     }
 
 }

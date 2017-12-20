@@ -4,6 +4,7 @@ import com.ants.common.enums.ResponseCode;
 import com.ants.common.exception.SQLParamsException;
 import com.ants.common.exception.TipException;
 import com.ants.common.utils.RequestUtil;
+import com.ants.common.utils.StrUtil;
 import com.ants.core.ext.Handler;
 import com.ants.restful.render.Json;
 import com.mysql.jdbc.MysqlDataTruncation;
@@ -106,9 +107,15 @@ final public class HandlerManager {
         } else {
             try {
                 if (cls == FileNotFoundException.class) {
-                    request.getRequestDispatcher(constant.getError404Page()).forward(request, response);
+                    String error404Page = constant.getError404Page();
+                    if(StrUtil.notBlank(error404Page)) {
+                        request.getRequestDispatcher(error404Page).forward(request, response);
+                    }
                 } else {
-                    request.getRequestDispatcher(constant.getError500Page()).forward(request, response);
+                    String error500Page = constant.getError500Page();
+                    if(StrUtil.notBlank(error500Page)) {
+                        request.getRequestDispatcher(error500Page).forward(request, response);
+                    }
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -116,7 +123,7 @@ final public class HandlerManager {
         }
     }
 
-    public void setConstants(Constant constants) {
+    public void setConstants(Constant constant) {
         this.constant = constant;
     }
 }
