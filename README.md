@@ -60,7 +60,7 @@ QQ交流群： 创建中 ...
 
 ## 文档
 
-文档URL地址 ： [点击这里](./DOC.md)
+文档URL地址 ： [点击这里](http://shunblog.cn/)
 
 #### 文档目录
 
@@ -88,12 +88,6 @@ QQ交流群： 创建中 ...
 - [常见问题](./DOC.md#常见问题)
 
 
-## Contributors
-* Michael Yang（EMAIL:fuhai999@gmail.com，GITHUB:[@yangfuhai](https://github.com/yangfuhai)，QQ:1506615067，WECHAT：wx198819880)
-* Rlax（EMAIL:popkids@qq.com，GITHUB:[@pkanyue](https://github.com/pkanyue)，QQ:441420519，WECHAT:RlaxUC)
-* 徐海峰（EMAIL:xhf6731202@126.com，GITHUB:[@xhf6731202](https://github.com/xhf6731202)，QQ:27533892，WECHAT:atm27533892）
-* 周洛熙 (EMAIL:78793093@qq.com，GITHUB:[@zhoufengjob](https://github.com/zhoufengjob)，QQ:78793093)
-
 ## QQ群
 
-Ants交流QQ群：601440615, 欢迎加入讨论, 一起进行优化。
+Ants交流QQ群：创建中 ... , 欢迎加入讨论, 一起进行优化。
