@@ -16,6 +16,9 @@ public @interface FixedDelay {
 
     int initialDelay() default 1000;
 
+    /**
+     * 单位是毫秒
+     */
     int delay() default 1000;
 
     TimeUnit timeUnit() default TimeUnit.MILLISECONDS;

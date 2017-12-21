@@ -2,6 +2,7 @@ package com.ants.plugin.cache;
 
 import com.alibaba.fastjson.JSON;
 import com.ants.common.bean.Log;
+import com.ants.common.utils.StrUtil;
 import com.ants.core.ext.Plugin;
 import com.ants.core.module.ServiceManager;
 import redis.clients.jedis.Jedis;
@@ -52,7 +53,9 @@ public class RedisPlugin implements Plugin {
             config.setMaxWaitMillis(maxWaitMillis);
             config.setTestOnBorrow(true);
             jedis.setDataSource(new JedisPool(config, host, port));
-            jedis.auth(password);
+            if(StrUtil.notBlank(password)) {
+                jedis.auth(password);
+            }
             jedis.select(database);
             Log.debug("db > db{} , Redis连接成功... ", database);
 

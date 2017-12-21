@@ -1,5 +1,6 @@
 package com.ants.plugin.orm;
 
+import com.ants.common.bean.JsonMap;
 import com.ants.plugin.db.Db;
 import com.ants.plugin.orm.enums.Condition;
 
@@ -49,7 +50,10 @@ public class Criteria<T> extends Conditions {
     public Integer delete() {
         TableBean tableBean = TableMapper.findTableBean(cls);
         SqlParams sqlParams = TableMapper.createDeleteSql(tableBean, this);
-        return db.update(sqlParams.getSql(), sqlParams.getParams());
+        int result = db.update(sqlParams.getSql(), sqlParams.getParams());
+        //清除条件
+        clear();
+        return result;
     }
 
     /**
@@ -65,7 +69,10 @@ public class Criteria<T> extends Conditions {
         TableBean tableBean = TableMapper.findTableBean(cls);
         and(tableBean.getPrimaryKey(), Condition.EQ, id);
         SqlParams sqlParams = TableMapper.createDeleteSql(tableBean, this);
-        return db.update(sqlParams.getSql(), sqlParams.getParams());
+        int result = db.update(sqlParams.getSql(), sqlParams.getParams());
+        //清除条件
+        clear();
+        return result;
     }
 
     /**
@@ -76,7 +83,10 @@ public class Criteria<T> extends Conditions {
      */
     public Integer update(Object obj) {
         SqlParams sqlParams = TableMapper.createUpdateSql(obj, this);
-        return db.update(sqlParams.getSql(), obj, sqlParams.getParams());
+        int result = db.update(sqlParams.getSql(), sqlParams.getParams());
+        //清除条件
+        clear();
+        return result;
     }
 
     /**
@@ -92,7 +102,10 @@ public class Criteria<T> extends Conditions {
         TableBean tableBean = TableMapper.findTableBean(cls);
         and(tableBean.getPrimaryKey(), Condition.EQ, id);
         SqlParams sqlParams = TableMapper.createQuerySql(tableBean, this);
-        return (T) db.query(sqlParams.getSql(), cls, sqlParams.getParams());
+        T result = (T) db.query(sqlParams.getSql(), cls, sqlParams.getParams());
+        //清除条件
+        clear();
+        return result;
     }
 
     /**
@@ -103,7 +116,25 @@ public class Criteria<T> extends Conditions {
     public T find() {
         TableBean tableBean = TableMapper.findTableBean(cls);
         SqlParams sqlParams = TableMapper.createQuerySql(tableBean, this);
-        return (T) db.query(sqlParams.getSql(), cls, sqlParams.getParams());
+        T result = (T) db.query(sqlParams.getSql(), cls, sqlParams.getParams());
+        //清除条件
+        clear();
+        return result;
+    }
+
+    /**
+     * 统计数据
+     *
+     * @return
+     */
+    public Integer count() {
+        label("count(0)");
+        TableBean tableBean = TableMapper.findTableBean(cls);
+        SqlParams sqlParams = TableMapper.createQuerySql(tableBean, this);
+        JsonMap result = db.query(sqlParams.getSql(), sqlParams.getParams());
+        //清除条件
+        clear();
+        return result.getInt("count", 0);
     }
 
     /**
@@ -114,7 +145,10 @@ public class Criteria<T> extends Conditions {
     public List<T> findList() {
         TableBean tableBean = TableMapper.findTableBean(cls);
         SqlParams sqlParams = TableMapper.createQuerySql(tableBean, this);
-        return db.list(sqlParams.getSql(), cls, sqlParams.getParams());
+        List result = db.list(sqlParams.getSql(), cls, sqlParams.getParams());
+        //清除条件
+        clear();
+        return result;
     }
 
     /**
@@ -129,7 +163,9 @@ public class Criteria<T> extends Conditions {
         Integer startNum = index <= 1 ? 1 : index;
         limit((startNum - 1) * size, size);
         SqlParams sqlParams = TableMapper.createQuerySql(tableBean, this);
-        return db.list(sqlParams.getSql(), cls, sqlParams.getParams());
+        List result = db.list(sqlParams.getSql(), cls, sqlParams.getParams());
+        //清除条件
+        clear();
+        return result;
     }
-
 }

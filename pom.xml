@@ -29,6 +29,7 @@
         <ognl.version>2.6.11</ognl.version>
         <jetty.version>8.1.7.v20120910</jetty.version>
         <tomcat.version>8.5.20</tomcat.version>
+        <redis.version>2.9.0</redis.version>
         <activemq.version>5.7.0</activemq.version>
     </properties>
 
@@ -125,7 +126,7 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>2.9.0</version>
+            <version>${redis.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- ===== ActiveMq消息队列 ==== -->
@@ -165,13 +166,13 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>${tomcat.versin}</version>
+            <version>${tomcat.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
-            <version>${tomcat.versin}</version>
+            <version>${tomcat.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

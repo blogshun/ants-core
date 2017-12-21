@@ -7,6 +7,7 @@ import com.ants.core.startup.assembly.FilterAssembly;
 import com.ants.core.startup.assembly.ServletAssembly;
 import com.ants.core.startup.servlet.IndexServlet;
 import com.ants.core.startup.servlet.LogoServlet;
+import org.eclipse.jetty.http.MimeTypes;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.nio.SelectChannelConnector;
@@ -68,6 +69,13 @@ public class Jetty extends CommonProperty {
         filterHolder.setInitParameter("loadClass", loadClass.getName());
         webAppContext.addFilter(filterHolder, "/*", EnumSet.allOf(DispatcherType.class));
 
+        //设置字体ContentType
+        MimeTypes mimeTypes = new MimeTypes();
+        mimeTypes.addMimeMapping("woff", "application/x-font-woff");
+        mimeTypes.addMimeMapping("woff2", "application/x-font-woff");
+        mimeTypes.addMimeMapping("ttf", "application/octet-stream");
+        mimeTypes.addMimeMapping("otf", "application/octet-stream");
+        webAppContext.setMimeTypes(mimeTypes);
 
         if (StrUtil.notNull(filters)) {
             for (FilterAssembly filter : filters) {

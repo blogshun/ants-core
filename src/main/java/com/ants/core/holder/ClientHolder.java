@@ -1,6 +1,7 @@
 package com.ants.core.holder;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -86,19 +87,15 @@ public class ClientHolder {
         }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("WL-Proxy-Client-IP");
-            System.out.println("WL-Proxy-Client-IP ip: " + ip);
         }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_CLIENT_IP");
-            System.out.println("HTTP_CLIENT_IP ip: " + ip);
         }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-            System.out.println("HTTP_X_FORWARDED_FOR ip: " + ip);
         }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Real-IP");
-            System.out.println("X-Real-IP ip: " + ip);
         }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getRemoteAddr();
@@ -124,5 +121,23 @@ public class ClientHolder {
     public static String getSessionId() {
         HttpServletRequest request = ContextRequestManager.get().getRequest();
         return request.getSession().getId();
+    }
+
+    /**
+     * 写入Cookie值 一般是4k大小
+     *
+     * @param key     键
+     * @param value   值
+     * @param seconds 时间
+     */
+    public static void setCookie(String key, String value, int seconds, String path) {
+        Cookie userCookie = new Cookie(key, value);
+        userCookie.setMaxAge(seconds);
+        userCookie.setPath(path == null ? "/" : path);
+        getResponse().addCookie(userCookie);
+    }
+
+    public static void setCookie(String key, String value, int seconds){
+        setCookie(key, value, seconds, null);
     }
 }

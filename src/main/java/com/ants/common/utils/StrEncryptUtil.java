@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
@@ -63,8 +64,9 @@ public class StrEncryptUtil {
             //初始化秘钥
             keyGenerator.init(len, new SecureRandom(password.getBytes(UTF_8)));
             //获取密钥
-            SecretKey secretKey = keyGenerator.generateKey();
+            SecretKey secretKey = new SecretKeySpec(password.getBytes(), encType);
             //Cipher完成加密或解密工作类
+            //AES默认是AES/ECB/PKCS5Padding模式
             Cipher cipher = Cipher.getInstance(encType);
             //对Cipher初始化，加密模式
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
@@ -95,7 +97,7 @@ public class StrEncryptUtil {
             //初始化秘钥
             keyGenerator.init(len, new SecureRandom(password.getBytes(UTF_8)));
             //获取密钥
-            SecretKey secretKey = keyGenerator.generateKey();
+            SecretKey secretKey = new SecretKeySpec(password.getBytes(), encType);
             //Cipher完成加密或解密工作类
             Cipher cipher = Cipher.getInstance(encType);
             //对Cipher初始化，解密模式
@@ -103,7 +105,6 @@ public class StrEncryptUtil {
             byte[] bytes = cipher.doFinal(data);
             return new String(bytes, UTF_8);
         } catch (Exception e) {
-            e.printStackTrace();
             LOG.info("{} 解密失败, 解密字符 > {}", type, str);
             return null;
         }

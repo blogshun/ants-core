@@ -49,7 +49,7 @@ public class PropertyUtil {
         InputStream inputStream = null;
         try {
             inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName);
-            if (inputStream == null && fileName != AppConstant.DEFAULT_CONFIG) {
+            if (inputStream == null) {
                 throw new IllegalArgumentException("Properties file not found in classpath: " + fileName);
             }
             Properties properties = new Properties();
@@ -98,7 +98,11 @@ public class PropertyUtil {
     }
 
     public static Integer getInt(String key) {
-        return Integer.parseInt(String.valueOf(PROP.get(key)));
+        Object value = PROP.get(key);
+        if(value == null){
+            throw new IllegalArgumentException("not found key: " + key);
+        }
+        return Integer.parseInt(String.valueOf(value));
     }
 
     public static Integer getInt(String key, Integer defaultValue) {

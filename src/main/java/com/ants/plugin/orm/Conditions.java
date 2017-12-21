@@ -59,7 +59,7 @@ public class Conditions {
     }
 
     public Conditions label(String label) {
-        this.label = label;
+        this.label = " ".concat(label);
         return this;
     }
 
@@ -91,6 +91,15 @@ public class Conditions {
 
     public Conditions or(String field, Condition condition, Object... value) {
         conditions.add(new Cond(Symbol.OR, field, condition, value));
+        return this;
+    }
+
+    public Conditions clear(){
+        conditions.clear();
+        relations.clear();
+        this.label = " _.*";
+        this.orderBy = null;
+        this.limit = null;
         return this;
     }
 }
