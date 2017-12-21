@@ -88,12 +88,12 @@ public class BindingParams {
                 }
                 args[i] = jsonMap;
             } else {
+
                 //获取方法参数注解并进行校验
                 Annotation[][] annotations = method.getParameterAnnotations();
                 if (annotations.length > 0) {
                     for (int j = 0; j < annotations[i].length; j++) {
                         Annotation annotation = annotations[i][j];
-
                         //处理PathVariable注解, 将URL变量参数绑定到方法参数上面
                         if (annotation instanceof PathVariable) {
                             Map<String, String> uriValues = MappingMatch.getURIValues(bean.getCurrentUrl(), target);

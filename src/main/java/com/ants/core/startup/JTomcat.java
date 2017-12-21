@@ -128,12 +128,14 @@ public class JTomcat extends CommonProperty {
         return new JTomcat(null, 8080, "", loadClass, false).start();
     }
 
-    public static Jetty run(Class loadClass, int port){
-        return new Jetty(null, port, "", loadClass, false).start();
+    public static JTomcat run(Class loadClass, int port) {
+        return new JTomcat(null, port, "", loadClass, false).start();
     }
+
     public static JTomcat run(Class loadClass, int port, boolean isOpen) {
         return new JTomcat(null, port, "", loadClass, isOpen).start();
     }
+
     public static JTomcat run(Class loadClass, String[] args) {
         int port = 8080;
         String contextPath = "/";

@@ -3,6 +3,7 @@ package com.ants.core.utils;
 
 import com.ants.common.utils.StrUtil;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
@@ -49,7 +50,14 @@ public class ParamTypeUtil {
                 BigDecimal decimal = new BigDecimal(value);
                 result = (T) decimal;
             }
-        } catch (Exception e) {
+        }
+
+//        catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//            throw new IllegalArgumentException("字符编码转换出现异常!");
+//        }
+
+        catch (Exception e) {
             throw new IllegalArgumentException("参数异常, 类型不匹配!");
         }
         return result;

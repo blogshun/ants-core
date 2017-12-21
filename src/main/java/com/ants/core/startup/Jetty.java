@@ -42,12 +42,10 @@ public class Jetty extends CommonProperty {
 
         Connector connector = new SelectChannelConnector();
         connector.setPort(port);
-
         server.addConnector(connector);
         WebAppContext webAppContext = new WebAppContext();
         webAppContext.setContextPath(contextPath);
         webAppContext.setBaseResource(Resource.newClassPathResource(""));
-
         webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());
         // 在启动过程中允许抛出异常终止启动并退出 JVM
         webAppContext.setThrowUnavailableOnStartupException(true);

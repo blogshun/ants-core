@@ -28,6 +28,7 @@
         <ehcache-core.version>2.6.6</ehcache-core.version>
         <ognl.version>2.6.11</ognl.version>
         <jetty.version>8.1.7.v20120910</jetty.version>
+        <tomcat.version>8.5.20</tomcat.version>
         <activemq.version>5.7.0</activemq.version>
     </properties>
 
@@ -164,19 +165,13 @@
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>8.0.28</version>
+            <version>${tomcat.versin}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
-            <version>8.0.28</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-logging-juli</artifactId>
-            <version>8.0.28</version>
+            <version>${tomcat.versin}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
