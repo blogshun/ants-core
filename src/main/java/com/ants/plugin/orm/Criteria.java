@@ -1,6 +1,7 @@
 package com.ants.plugin.orm;
 
 import com.ants.common.bean.JsonMap;
+import com.ants.common.bean.Page;
 import com.ants.plugin.db.Db;
 import com.ants.plugin.orm.enums.Condition;
 
@@ -158,12 +159,10 @@ public class Criteria<T> extends Conditions {
      * @param size  每页大小
      * @return
      */
-    public List<T> findPage(Integer index, Integer size) {
+    public Page findPage(Integer index, Integer size) {
         TableBean tableBean = TableMapper.findTableBean(cls);
-        Integer startNum = index <= 1 ? 1 : index;
-        limit((startNum - 1) * size, size);
         SqlParams sqlParams = TableMapper.createQuerySql(tableBean, this);
-        List result = db.list(sqlParams.getSql(), cls, sqlParams.getParams());
+        Page result = db.page(sqlParams.getSql(), cls, index, size, sqlParams.getParams());
         //清除条件
         clear();
         return result;

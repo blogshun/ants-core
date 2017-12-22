@@ -1,5 +1,8 @@
 package com.ants.plugin.orm;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.ants.common.utils.StrUtil;
 import com.ants.plugin.orm.enums.Condition;
 import com.ants.plugin.orm.enums.OrderBy;
 import com.ants.plugin.orm.enums.Relation;
@@ -7,6 +10,8 @@ import com.ants.plugin.orm.enums.Symbol;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author MrShun
@@ -100,6 +105,18 @@ public class Conditions {
         this.label = " _.*";
         this.orderBy = null;
         this.limit = null;
+        return this;
+    }
+
+    public Conditions filters(String filters){
+        JSONObject jsonObject = JSON.parseObject(filters);
+        Set<Map.Entry<String, Object>> entries = jsonObject.entrySet();
+        for (Map.Entry<String, Object> entry : entries) {
+            Object value = entry.getValue();
+            if (StrUtil.notBlank(String.valueOf(value))) {
+                and(entry.getKey(), Condition.EQ, value);
+            }
+        }
         return this;
     }
 }
