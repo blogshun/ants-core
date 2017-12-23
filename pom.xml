@@ -141,7 +141,7 @@
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
             <version>3.3.0</version>
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
         <!-- ===== 内嵌jetty 容器 ==== -->
         <dependency>

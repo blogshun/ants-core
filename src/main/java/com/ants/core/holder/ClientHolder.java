@@ -137,7 +137,28 @@ public class ClientHolder {
         getResponse().addCookie(userCookie);
     }
 
-    public static void setCookie(String key, String value, int seconds){
+    public static void setCookie(String key, String value, int seconds) {
         setCookie(key, value, seconds, null);
+    }
+
+    public static Cookie getCookie(String key) {
+        Cookie[] cookies = getRequest().getCookies();
+        if (cookies == null && cookies.length == 0) {
+            return null;
+        }
+        for (Cookie cookie : cookies) {
+            if (cookie.getName().equals(key) && cookie.getMaxAge() > 0) {
+                return cookie;
+            }
+        }
+        return null;
+    }
+
+    public static void delCookie(String key) {
+        Cookie cookie = getCookie(key);
+        if (cookie != null) {
+            cookie.setPath(cookie.getPath());
+            cookie.setMaxAge(0);
+        }
     }
 }

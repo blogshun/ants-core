@@ -67,12 +67,10 @@ public class VerifyCodeUtil {
         // 设定字体
         g.setFont(new Font(fontStyle, Font.PLAIN + Font.ITALIC, fontHeight));
 
-        // 画边框
-        //  g.setColor(new Color(55, 55, 12));
+        // 画边框 g.setColor(new Color(55, 55, 12));
         g.drawRect(0, 0, imgWidth - 1, imgHeight - 1);
 
-        // 随机产生155条干扰线，使图象中的认证码不易被其它程序探测到
-        //    g.setColor(getRandColor(160, 200));
+        // 随机产生155条干扰线，使图象中的认证码不易被其它程序探测到 g.setColor(getRandColor(160, 200));
         for (int i = 0; i < 360; i++) {
             int x = random.nextInt(imgWidth);
             int y = random.nextInt(imgHeight);
@@ -121,10 +119,12 @@ public class VerifyCodeUtil {
 
     Color getRandColor(int fc, int bc) {// 给定范围获得随机颜色
         Random random = new Random();
-        if (fc > 255)
+        if (fc > 255) {
             fc = 255;
-        if (bc > 255)
+        }
+        if (bc > 255) {
             bc = 255;
+        }
         int r = fc + random.nextInt(bc - fc);
         int g = fc + random.nextInt(bc - fc);
         int b = fc + random.nextInt(bc - fc);
@@ -143,9 +143,12 @@ public class VerifyCodeUtil {
         Random random = new Random();
         int numberResult = random.nextInt(26);
         int ret = 0;
-        if (upper == 0) {// 小写
+        // 小写
+        if (upper == 0) {
             ret = numberResult + 97;
-        } else if (upper == 1) {// 大写
+        }
+        // 大写
+        else if (upper == 1) {
             ret = numberResult + 65;
         }
         return (char) ret;
