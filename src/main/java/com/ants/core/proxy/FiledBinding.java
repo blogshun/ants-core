@@ -51,7 +51,7 @@ public class FiledBinding {
                             service = Class.forName(cName).newInstance();
                             FiledBinding.initFiledValues(service);
                             //采用CGLIB代理
-                            Object proxy = CGLibProxy.createProxy(service);
+                            Object proxy = CglibProxy.createProxy(service);
                             //初始化完成后调用init()实例化
                             if (proxy instanceof InitializingBean) {
                                 InitializingBean ib = (InitializingBean) service;

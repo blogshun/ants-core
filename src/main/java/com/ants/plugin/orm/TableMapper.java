@@ -108,9 +108,9 @@ public class TableMapper {
         if (tableBean == null) {
             throw new RuntimeException("没有找到ORM映射!");
         }
-        if (tableBean.getPrimaryKey() == null) {
-            throw new RuntimeException("没有找到@Id主键注解!");
-        }
+//        if (tableBean.getPrimaryKey() == null) {
+//            throw new RuntimeException("没有找到@Id主键注解!");
+//        }
         StringBuffer sql = new StringBuffer("delete from ");
         sql.append(tableBean.getTable());
         List params = new ArrayList();
@@ -132,9 +132,9 @@ public class TableMapper {
         if (tableBean == null) {
             throw new RuntimeException(cls + " 没有找到ORM映射!");
         }
-        if (tableBean.getPrimaryKey() == null) {
-            throw new RuntimeException(cls + " 没有找到@Id主键注解!");
-        }
+//        if (tableBean.getPrimaryKey() == null) {
+//            throw new RuntimeException(cls + " 没有找到@Id主键注解!");
+//        }
         if (cls.getDeclaredAnnotation(Table.class) == null) {
             throw new RuntimeException(obj + " 当前实体没有@Table注解, 不是实体映射类!");
         }
@@ -171,9 +171,9 @@ public class TableMapper {
         if (tableBean == null) {
             throw new RuntimeException(cls + " 没有找到ORM映射!");
         }
-        if (tableBean.getPrimaryKey() == null) {
-            throw new RuntimeException(cls + " 没有找到@Id主键注解!");
-        }
+//        if (tableBean.getPrimaryKey() == null) {
+//            throw new RuntimeException(cls + " 没有找到@Id主键注解!");
+//        }
         StringBuffer sql = new StringBuffer("insert into ");
         sql.append(tableBean.getTable()).append("(");
         List<String> fields = tableBean.getFields();

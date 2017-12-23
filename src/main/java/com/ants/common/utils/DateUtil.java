@@ -1,7 +1,6 @@
 package com.ants.common.utils;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -135,6 +134,11 @@ public class DateUtil {
     public static String getDataTime(String formatStr) {
         DateFormat df = new SimpleDateFormat(formatStr);
         return df.format(new Date());
+    }
+
+    public static String toStrDate(Date date, String formatStr) {
+        DateFormat df = new SimpleDateFormat(formatStr);
+        return df.format(date);
     }
 
 }

@@ -99,7 +99,7 @@ public class Conditions {
         return this;
     }
 
-    public Conditions clear(){
+    public Conditions clear() {
         conditions.clear();
         relations.clear();
         this.label = " _.*";
@@ -108,7 +108,7 @@ public class Conditions {
         return this;
     }
 
-    public Conditions filters(String filters){
+    public Conditions filters(String filters) {
         JSONObject jsonObject = JSON.parseObject(filters);
         Set<Map.Entry<String, Object>> entries = jsonObject.entrySet();
         for (Map.Entry<String, Object> entry : entries) {

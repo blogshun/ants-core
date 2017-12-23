@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -692,6 +694,7 @@ public class Db<T> {
      * @throws SQLException
      */
     private void setColumns(ResultSet rs, ResultSetMetaData rsm, Field[] fields, Object obj) throws SQLException {
+        DateFormat df = new SimpleDateFormat();
         for (int j = 1; j <= rsm.getColumnCount(); j++) {
             String columnName = rsm.getColumnLabel(j);
             Object val = rs.getObject(columnName);

@@ -29,8 +29,9 @@ public enum Condition {
 
     LIKE_CENTER(" %s like '%%?%%'"),
 
-    LIKE_RIGHT(" %s like '%%?'");
+    LIKE_RIGHT(" %s like '%%?'"),
 
+    EMBED(" %s");
 
     private String value;
 

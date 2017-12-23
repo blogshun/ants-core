@@ -7,7 +7,7 @@ import com.ants.common.enums.ResponseCode;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -205,12 +205,12 @@ public class Json {
     public static void writeJson(Object data, HttpServletResponse response, boolean serializers) {
         response.setContentType("application/json;charset=" + response.getCharacterEncoding());
         try {
-            Writer w = response.getWriter();
+            PrintWriter w = response.getWriter();
             //返回Response响应数据
             if (serializers) {
-                JSON.writeJSONStringTo(JSON.toJSON(data), w, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullListAsEmpty);
+                w.print(JSON.toJSONString(data, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullListAsEmpty));
             } else {
-                JSON.writeJSONStringTo(JSON.toJSON(data), w);
+                w.print(JSON.toJSONString(data));
             }
             w.close();
         } catch (IOException e) {

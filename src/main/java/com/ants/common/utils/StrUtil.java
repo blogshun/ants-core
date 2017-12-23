@@ -150,7 +150,6 @@ public class StrUtil {
         return UUID.randomUUID().toString().replace("-", "");
     }
 
-
     /**
      * 根据倒数第几个字符截取字符串取最后一部分
      *

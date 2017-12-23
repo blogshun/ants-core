@@ -2,8 +2,6 @@ package com.ants.core.proxy;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.InvocationHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 
@@ -14,11 +12,14 @@ import java.lang.reflect.Method;
  * @version 1.0
  * @Date 2017-05-02
  */
-public class CGLibProxy implements InvocationHandler {
+public class CglibProxy implements InvocationHandler {
 
     private Object target;
 
-    public CGLibProxy(Object target) {
+    /**
+     * 创建一个织入器
+     */
+    private CglibProxy(Object target){
         this.target = target;
     }
 
@@ -33,17 +34,18 @@ public class CGLibProxy implements InvocationHandler {
         // 2.设置被代理类字节码，CGLIB根据字节码生成被代理类的子类
         enhancer.setSuperclass(target.getClass());
         // 3.//设置回调函数，即一个方法拦截
-        enhancer.setCallback(new CGLibProxy(target));
+        enhancer.setCallback(new CglibProxy(target));
         // 4.创建代理:
         return (T) enhancer.create();
     }
+
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         //取消方法类型检查提高性能
         method.setAccessible(true);
         CacheManager cacheManager = new CacheManager(target, method, args);
-        if(cacheManager.isOpened() && cacheManager.existCache()) {
+        if (cacheManager.isOpened() && cacheManager.existCache()) {
             return cacheManager.getResult();
         }
         TransactionManager tx = new TransactionManager(target, method);
@@ -51,7 +53,7 @@ public class CGLibProxy implements InvocationHandler {
         try {
             result = AopManager.handler(target, method, args);
             tx.commit();
-            if(cacheManager.isOpened()) {
+            if (cacheManager.isOpened()) {
                 cacheManager.setCache(result);
             }
         } catch (Exception e) {

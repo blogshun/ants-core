@@ -4,7 +4,7 @@ import com.ants.common.annotation.action.*;
 import com.ants.common.enums.RequestMethod;
 import com.ants.core.context.AppConstant;
 import com.ants.core.ext.InitializingBean;
-import com.ants.core.proxy.CGLibProxy;
+import com.ants.core.proxy.CglibProxy;
 import com.ants.core.proxy.FiledBinding;
 
 import java.lang.reflect.Method;
@@ -36,7 +36,7 @@ public class ActionInitialization {
                 // 处理实例化类里面的属性注解信息
                 FiledBinding.initFiledValues(ctlObj);
                 //采用CGLIB代理实例化service
-                Object proxy = CGLibProxy.createProxy(ctlObj);
+                Object proxy = CglibProxy.createProxy(ctlObj);
                 //初始化完成后调用init()实例化, 在注解方法之后
                 if(proxy instanceof InitializingBean){
                     InitializingBean ib = (InitializingBean) proxy;

@@ -2,6 +2,7 @@ package com.ants.common.bean;
 
 import com.ants.core.ext.Interceptor;
 import com.ants.core.module.InterceptorManager;
+import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

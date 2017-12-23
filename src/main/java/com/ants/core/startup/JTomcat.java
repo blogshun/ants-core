@@ -75,6 +75,8 @@ public class JTomcat extends CommonProperty {
             ctx.addMimeMapping("woff2", "application/x-font-woff");
             ctx.addMimeMapping("ttf", "application/octet-stream");
             ctx.addMimeMapping("otf", "application/octet-stream");
+            //允许上传随意大小的文件
+            ctx.setAllowCasualMultipartParsing(true);
             if (StrUtil.notNull(servlets)) {
                 for (ServletAssembly servlet : servlets) {
                     tomcat.addServlet(contextPath, servlet.getServletName(), servlet.getServlet());

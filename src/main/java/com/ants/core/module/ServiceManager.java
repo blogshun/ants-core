@@ -2,10 +2,9 @@ package com.ants.core.module;
 
 import com.ants.common.annotation.service.Service;
 import com.ants.common.bean.Log;
-import com.ants.common.utils.StrUtil;
 import com.ants.core.context.AppConstant;
 import com.ants.core.ext.InitializingBean;
-import com.ants.core.proxy.CGLibProxy;
+import com.ants.core.proxy.CglibProxy;
 import com.ants.core.proxy.FiledBinding;
 import com.ants.core.utils.GenerateUtil;
 import com.ants.core.utils.ScanUtil;
@@ -39,15 +38,15 @@ final public class ServiceManager {
             if (AppConstant.DEBUG) {
                 Log.debug(">>> {} :: Generator Success !", key);
             }
-            if(!SERVICES.containsKey(key)) {
+            if (!SERVICES.containsKey(key)) {
                 try {
                     Object serObj = ser.newInstance();
                     // 处理实例化类里面的属性注解信息
                     FiledBinding.initFiledValues(serObj);
                     //采用CGLIB代理实例化service
-                    Object proxy = CGLibProxy.createProxy(serObj);
+                    Object proxy = CglibProxy.createProxy(serObj);
                     //初始化完成后调用init()实例化, 在注解方法之后
-                    if(proxy instanceof InitializingBean){
+                    if (proxy instanceof InitializingBean) {
                         InitializingBean ib = (InitializingBean) proxy;
                         ib.afterPropertiesSet();
                     }
@@ -68,12 +67,16 @@ final public class ServiceManager {
     public static Object getService(String key) {
         return SERVICES.get(key);
     }
-    public static Object setService(String key, Object object){ return SERVICES.put(key, object);}
-    public static <T> T getService(Class<T> cls){
+
+    public static Object setService(String key, Object object) {
+        return SERVICES.put(key, object);
+    }
+
+    public static <T> T getService(Class<T> cls) {
         T object = null;
-        for(Map.Entry<String, Object> entry: SERVICES.entrySet()){
+        for (Map.Entry<String, Object> entry : SERVICES.entrySet()) {
             object = (T) entry.getValue();
-            if(cls.isInstance(object)) {
+            if (cls.isInstance(object)) {
                 break;
             }
         }

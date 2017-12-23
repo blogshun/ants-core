@@ -40,7 +40,6 @@ public class Jetty extends CommonProperty {
     public Jetty start() {
 
         Server server = new Server();
-
         Connector connector = new SelectChannelConnector();
         connector.setPort(port);
         server.addConnector(connector);

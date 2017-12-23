@@ -15,7 +15,8 @@ import java.lang.reflect.Method;
  */
 public class AopManager {
 
-    private AopManager(){}
+    private AopManager() {
+    }
 
     public static Object handler(Object target, Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
         //=================== 处理AOP ======================
