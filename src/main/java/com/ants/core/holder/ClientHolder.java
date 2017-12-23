@@ -130,15 +130,11 @@ public class ClientHolder {
      * @param value   值
      * @param seconds 时间
      */
-    public static void setCookie(String key, String value, int seconds, String path) {
+    public static void setCookie(String key, String value, int seconds) {
         Cookie userCookie = new Cookie(key, value);
         userCookie.setMaxAge(seconds);
-        userCookie.setPath(path == null ? "/" : path);
+        userCookie.setPath("/");
         getResponse().addCookie(userCookie);
-    }
-
-    public static void setCookie(String key, String value, int seconds) {
-        setCookie(key, value, seconds, null);
     }
 
     public static Cookie getCookie(String key) {
@@ -147,7 +143,7 @@ public class ClientHolder {
             return null;
         }
         for (Cookie cookie : cookies) {
-            if (cookie.getName().equals(key) && cookie.getMaxAge() > 0) {
+            if (cookie.getName().equals(key)) {
                 return cookie;
             }
         }
@@ -157,8 +153,9 @@ public class ClientHolder {
     public static void delCookie(String key) {
         Cookie cookie = getCookie(key);
         if (cookie != null) {
-            cookie.setPath(cookie.getPath());
+            cookie.setPath("/");
             cookie.setMaxAge(0);
+            getResponse().addCookie(cookie);
         }
     }
 }
