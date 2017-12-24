@@ -41,12 +41,13 @@ public class PathUtil {
      *
      * @return
      */
-    public static String getJarPath() {
-        URL url = PathUtil.class.getProtectionDomain().getCodeSource().getLocation();
+    public static String getJarPath(Class cls) {
+        URL url = cls.getProtectionDomain().getCodeSource().getLocation();
         String filePath = null;
         try {
             // 转化为utf-8编码
             filePath = URLDecoder.decode(url.getPath(), "utf-8");
+            System.out.println("@@@@@@@Jar PATH:"+filePath);
         } catch (Exception e) {
             e.printStackTrace();
         }

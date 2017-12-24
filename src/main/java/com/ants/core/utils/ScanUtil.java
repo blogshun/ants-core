@@ -1,6 +1,7 @@
 package com.ants.core.utils;
 
 
+import com.ants.common.bean.Log;
 import com.ants.common.enums.StartMode;
 import com.ants.common.utils.PathUtil;
 import com.ants.core.context.AppConstant;
@@ -32,13 +33,13 @@ public class ScanUtil {
     public static List<Class<?>> findScanClass(String[] packages, Class<? extends Annotation> annotationCls) {
         List<Class<?>> result = new ArrayList<>();
         if (CLASSES == null) {
-            CLASSES = new ArrayList<>();
+            CLASSES = new ArrayList<>(100);
         }
         //jar模式
         if (PathUtil.isJarMode()) {
             AppConstant.START_MODE = StartMode.JAR;
             try {
-                JarFile jarFile = new JarFile(PathUtil.getJarPath());
+                JarFile jarFile = new JarFile(PathUtil.getJarPath(AppConstant.LOAD_CLASS));
                 Enumeration<JarEntry> entries = jarFile.entries();
                 while (entries.hasMoreElements()) {
                     JarEntry entry = entries.nextElement();
@@ -47,6 +48,7 @@ public class ScanUtil {
                         String clsName = strCls.substring(0, strCls.lastIndexOf(".")).replace("/", ".");
                         if (check(clsName, packages)) {
                             Class<?> cls = Class.forName(clsName);
+                            System.out.println("@@@@@:"+clsName);
                             CLASSES.add(cls);
                             Annotation anno = cls.getDeclaredAnnotation(annotationCls);
                             if (anno != null) {
@@ -75,6 +77,8 @@ public class ScanUtil {
                 }
             }
         }
+
+        Log.info("mode: {}", AppConstant.START_MODE);
         return result;
     }
 

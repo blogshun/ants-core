@@ -73,6 +73,7 @@ public class AntsContext {
      * @param servletContext
      */
     public AntsContext(Class<?> loadClass, ServletContext servletContext) {
+        AppConstant.LOAD_CLASS = loadClass;
         //通过注解加载配置
         PropertyConfiguration propertyConfiguration = loadClass.getDeclaredAnnotation(PropertyConfiguration.class);
         if (propertyConfiguration != null) {
@@ -137,7 +138,9 @@ public class AntsContext {
         //初始化任务调度
         SchedulerManager schedulers = initSchedulerPlugin(pgs);
 
-
+        if (AppConstant.DEBUG) {
+            Log.debug("初始化注解插件 .....");
+        }
         //初始化注解插件
         initAnnotationPlugin(loadClass);
 

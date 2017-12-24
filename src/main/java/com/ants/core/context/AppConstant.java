@@ -17,6 +17,11 @@ public class AppConstant {
      */
     public static StartMode START_MODE = StartMode.JAR;
 
+    /**
+     * 加载类
+     */
+    public static Class LOAD_CLASS = null;
+
 
     /**
      * 全局调式配置,默认false
