@@ -25,11 +25,7 @@ public enum Condition {
 
     BETAND(" %s between ? and ?"),
 
-    LIKE_LEFT(" %s like '?%%'"),
-
-    LIKE_CENTER(" %s like '%%?%%'"),
-
-    LIKE_RIGHT(" %s like '%%?'"),
+    LIKE(" %s like ?"),
 
     EMBED(" %s");
 
