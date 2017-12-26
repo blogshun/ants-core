@@ -658,7 +658,13 @@ public class Db<T> {
         StringBuffer sb = new StringBuffer(sql);
         sb.append(" limit " + (page * size) + "," + size);
         List data = (cls == null) ? list(sb.toString(), params) : list(sb.toString(), cls, params);
-        String countSql = "select count(1) as count " + sql.substring(sql.toUpperCase().indexOf("FROM"), sql.length());
+        //sql语句转大写
+        String countSql = sb.toString().toUpperCase();
+        if(countSql.indexOf("GROUP") != -1 || sb.indexOf("DISTINCT") != -1){
+            countSql = "select count(1) as count from (select count(1) " + sql.substring(sql.toUpperCase().indexOf("FROM"), sql.length()) + ") as temp";
+        }else {
+            countSql = "select count(1) as count " + sql.substring(sql.toUpperCase().indexOf("FROM"), sql.length());
+        }
         long rows = query(countSql, params).getLong("count");
         int total = (int) (rows / size + (rows % size == 0 ? 0 : 1));
         return new Page(page, size, data, rows, total);

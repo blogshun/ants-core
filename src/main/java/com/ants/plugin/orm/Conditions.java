@@ -31,6 +31,11 @@ public class Conditions {
     private String orderBy;
 
     /**
+     * 存放分组字符串
+     */
+    private String groupBy;
+
+    /**
      * 存放分页字符串
      */
     private String limit;
@@ -87,6 +92,15 @@ public class Conditions {
 
     public String getOrderBy() {
         return orderBy;
+    }
+
+    public Conditions groupBy(String field) {
+        this.groupBy = field;
+        return this;
+    }
+
+    public String getGroupBy() {
+        return groupBy;
     }
 
     public Conditions and(String field, Condition condition, Object... value) {

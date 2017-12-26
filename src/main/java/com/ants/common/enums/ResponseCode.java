@@ -24,9 +24,9 @@ public enum ResponseCode {
 
     REQUEST_ERROR(107, "500 program internal error"),
 
-    REQUEST_TYPE_ERROR(108, "415 request type error"),
-
     DATA_NULL_ERROR(109, "response data is null"),
+
+    REQUEST_TYPE_ERROR(405, "405 request type error"),
 
     NULL_POINT_ERROR(1000, "object null pointer error"),
 

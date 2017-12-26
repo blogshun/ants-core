@@ -83,6 +83,10 @@ public class TableMapper {
         List params = new ArrayList();
         SqlParams condParams = makeConditionsSql(conditions, new StringBuffer(), sqlParams, params);
         sql.append(condParams.getSql());
+        String groupByStr = conditions.getGroupBy();
+        if (groupByStr != null) {
+            sql.append(" group by ".concat(groupByStr));
+        }
         String orderByStr = conditions.getOrderBy();
         if (orderByStr != null) {
             sql.append(orderByStr);
@@ -232,7 +236,7 @@ public class TableMapper {
                     sql.append(cond.getSymbol().getValue());
                 }
                 String field = cond.getField();
-                String qzStr = (isSelect ? (field.indexOf("_.") != -1 ? "" : "_.") : "");
+                String qzStr = (isSelect ? (field.indexOf(".") != -1 ? "" : "_.") : "");
                 if (cond.getCond() == Condition.IN) {
                     sql.append(" ").append(String.format(cond.getCond().getValue(), qzStr + StrCaseUtil.toUnderlineName(field)));
                     sql.append("(");
