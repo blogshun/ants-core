@@ -83,15 +83,10 @@ public class AliOssTpl {
             metadata.setContentType(getContentType(fileName));
             metadata.setContentDisposition("filename/filesize=" + fileName + "/" + fileSize + "Byte.");
             //上传文件
-            if (StrUtil.notBlank(bucketName)) {
-                url = url.replace("{BUCKETNAME}", bucketName).concat(diskName).concat(rename);
-            } else {
-                url = url.concat(diskName).concat(rename);
-            }
-
+            String urlStr = url.concat("/").concat(diskName).concat(rename);
             PutObjectResult putResult = client.putObject(this.bucketName == null ? bucketName : this.bucketName, diskName + (rename == null ? fileName : rename), is, metadata);
             //解析结果
-            return new OssResult(true, "上传成功 > ".concat(file.getName().concat(" !")), url, putResult.getETag());
+            return new OssResult(true, "上传成功 > ".concat(file.getName().concat(" !")), urlStr, putResult.getETag());
         } catch (Exception e) {
             Log.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
         }
@@ -129,12 +124,7 @@ public class AliOssTpl {
             //上传文件
             PutObjectResult putResult = client.putObject(this.bucketName == null ? bucketName : this.bucketName, diskName + fileName, is, metadata);
             //解析结果
-            String urlStr = url;
-            if (StrUtil.notBlank(bucketName)) {
-                urlStr = urlStr.replace("{BUCKETNAME}", bucketName).concat(diskName).concat(fileName);
-            } else {
-                urlStr = urlStr.concat(diskName).concat(fileName);
-            }
+            String urlStr = url.concat("/").concat(diskName).concat(fileName);
             return new OssResult(true, "上传成功 > ".concat(fileName.concat(" !")), urlStr, putResult.getETag());
         } catch (Exception e) {
             Log.error("上传阿里云OSS服务器异常." + e.getMessage(), e);

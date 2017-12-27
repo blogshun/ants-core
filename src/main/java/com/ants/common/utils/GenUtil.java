@@ -1,5 +1,7 @@
 package com.ants.common.utils;
 
+import com.ants.common.enums.EncType;
+
 import java.util.UUID;
 
 /**
@@ -40,7 +42,7 @@ public class GenUtil {
      * @param params
      * @return
      */
-    public static String md5Str(Object... params) {
+    public static String makeMd5Str(Object... params) {
         StringBuffer sb = new StringBuffer();
         for (Object param : params) {
             if(StrUtil.notNull(param)) {
@@ -48,5 +50,15 @@ public class GenUtil {
             }
         }
         return StrEncryptUtil.md5(sb.toString());
+    }
+
+    public static String makeTokenStr(Object... params){
+        StringBuffer sb = new StringBuffer();
+        for (Object param : params) {
+            if(StrUtil.notNull(param)) {
+                sb.append(param);
+            }
+        }
+        return StrEncryptUtil.encrypt("_user_token_key_", EncType.AES, sb.toString());
     }
 }

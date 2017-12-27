@@ -3,6 +3,7 @@ package com.ants.plugin.weixin;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ants.common.bean.Log;
+import com.ants.common.bean.Prop;
 import com.ants.common.utils.HttpUtil;
 import com.ants.core.holder.ClientHolder;
 
@@ -17,7 +18,7 @@ import java.util.concurrent.ConcurrentMap;
  * @version 1.0
  * @Date 2017/12/23
  */
-public class WxOauth2Util {
+public class WxOauth2Tool {
 
     /**
      * 应用 appId
@@ -32,9 +33,9 @@ public class WxOauth2Util {
     /**
      * 为了防止反复初始化
      */
-    private final static ConcurrentMap<String, WxOauth2Util> OAUTH_MAP = new ConcurrentHashMap<>();
+    private final static ConcurrentMap<String, WxOauth2Tool> OAUTH_MAP = new ConcurrentHashMap<>();
 
-    private WxOauth2Util(String appId, String appSecret) {
+    private WxOauth2Tool(String appId, String appSecret) {
         this.appId = appId;
         this.appSecret = appSecret;
     }
@@ -46,12 +47,14 @@ public class WxOauth2Util {
      * @param appSecret
      * @return
      */
-    public static WxOauth2Util init(String appId, String appSecret) {
+    public static WxOauth2Tool init(String appId, String appSecret) {
+        appId = Prop.getKeyStrValue(appId);
+        appSecret = Prop.getKeyStrValue(appSecret);
         String key = appId.concat("_").concat(appSecret);
         if (OAUTH_MAP.containsKey(key)) {
             return OAUTH_MAP.get(key);
         }
-        WxOauth2Util wxOauth2 = new WxOauth2Util(appId, appSecret);
+        WxOauth2Tool wxOauth2 = new WxOauth2Tool(appId, appSecret);
         OAUTH_MAP.put(key, wxOauth2);
         return wxOauth2;
     }

@@ -59,6 +59,13 @@ public class ClientHolder {
     }
 
     /**
+     * 获取头部UserToken
+     * @return
+     */
+    public static String getUserToken(){
+        return getHeader("User-Token");
+    }
+    /**
      * 获取UserAgent信息
      *
      * @return
