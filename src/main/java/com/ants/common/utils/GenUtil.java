@@ -33,4 +33,20 @@ public class GenUtil {
         millis = millis.substring((millis.length() - 3), millis.length());
         return String.format(SERIAL_PATTERN_NUMBER, DateUtil.getDataTime(PATTERN_DATE), millis, System.currentTimeMillis());
     }
+
+    /**
+     * 根据多个参数生成md5前面
+     *
+     * @param params
+     * @return
+     */
+    public static String md5Str(Object... params) {
+        StringBuffer sb = new StringBuffer();
+        for (Object param : params) {
+            if(StrUtil.notNull(param)) {
+                sb.append(param);
+            }
+        }
+        return StrEncryptUtil.md5(sb.toString());
+    }
 }

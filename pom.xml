@@ -30,6 +30,7 @@
         <jetty.version>8.1.7.v20120910</jetty.version>
         <tomcat.version>8.5.20</tomcat.version>
         <redis.version>2.9.0</redis.version>
+        <oss.version>2.2.1</oss.version>
         <activemq.version>5.7.0</activemq.version>
     </properties>
 
@@ -57,6 +58,13 @@
             <groupId>cglib</groupId>
             <artifactId>cglib-nodep</artifactId>
             <version>${cglib-nodep.version}</version>
+        </dependency>
+        <!-- ===== 阿里云OSS ==== -->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+            <version>${oss.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- ==== 阿里巴巴 druid连接池 ==== -->
         <dependency>
