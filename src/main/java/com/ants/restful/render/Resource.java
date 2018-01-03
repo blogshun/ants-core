@@ -58,16 +58,15 @@ public class Resource {
             //设置文件MIME类型
             response.setContentType(contentType);
             if (contentType.startsWith("image/")) {
-                int i = in.available();
-                //byte数组用于存放图片字节数据
-                byte[] buff = new byte[i];
-                in.read(buff);
-                //记得关闭输入流
+                // 得到输出流
+                OutputStream output = response.getOutputStream();
+                byte[] buffer = new byte[2048];
+                int count;
+                while ((count = in.read(buffer)) > 0) {
+                    output.write(buffer, 0, count);
+                }
                 in.close();
-                OutputStream out = response.getOutputStream();
-                out.write(buff);
-                //关闭响应输出流
-                out.close();
+                output.close();
                 return;
             } else {
                 String content = FileUtil.read(in, AppConstant.DEFAULT_ENCODING);

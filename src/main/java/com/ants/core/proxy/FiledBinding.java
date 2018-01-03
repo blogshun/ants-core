@@ -7,6 +7,8 @@ import com.ants.common.bean.Log;
 import com.ants.common.bean.Prop;
 import com.ants.common.enums.DataSourceType;
 import com.ants.core.ext.InitializingBean;
+import com.ants.core.module.DbManager;
+import com.ants.core.module.PluginManager;
 import com.ants.core.module.ServiceManager;
 import com.ants.core.utils.GenerateUtil;
 import com.ants.core.utils.ParamTypeUtil;
@@ -84,21 +86,29 @@ public class FiledBinding {
                     ReflectionUtils.makeAccessible(field);
                     Source source = field.getAnnotation(Source.class);
                     if ("".equals(source.value()) && source.type() == DataSourceType.NONE) {
-                        field.set(object, new Db());
-                    } else {
-                        Db db;
-                        if (source.type() == DataSourceType.NONE) {
-                            db = DataSourceType.getNativeDb(source.value());
-                        } else {
-                            DataSource dataSource = DataSourceType.getDataSource(source);
-                            if (dataSource == null) {
-                                Log.warn("@Source 指定了 {} 数据源, 却没有进行配置!", source.type());
-                                db = new Db();
-                            } else {
-                                db = new Db(dataSource);
-                            }
+                        if(DbManager.containsKey("")){
+                            field.set(object, DbManager.get(""));
+                        }else {
+                            Db db = new Db();
+                            field.set(object, db);
+                            DbManager.add("", db);
                         }
-
+                    } else {
+                        Db db = DbManager.get(source.value());
+                        if(db == null) {
+                            if (source.type() == DataSourceType.NONE) {
+                                db = DataSourceType.getNativeDb(source.value());
+                            } else {
+                                DataSource dataSource = DataSourceType.getDataSource(source);
+                                if (dataSource == null) {
+                                    Log.warn("@Source 指定了 {} 数据源, 却没有进行配置!", source.type());
+                                    db = new Db();
+                                } else {
+                                    db = new Db(dataSource);
+                                }
+                            }
+                            DbManager.add(source.value(), db);
+                        }
                         field.set(object, db);
                     }
                 } catch (IllegalAccessException e) {
