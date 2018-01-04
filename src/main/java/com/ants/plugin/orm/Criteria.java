@@ -6,6 +6,7 @@ import com.ants.plugin.db.Db;
 import com.ants.plugin.orm.enums.Condition;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author MrShun
@@ -152,6 +153,14 @@ public class Criteria<T> extends Conditions {
         return result;
     }
 
+    public List<JsonMap> findMapList() {
+        TableBean tableBean = TableMapper.findTableBean(cls);
+        SqlParams sqlParams = TableMapper.createQuerySql(tableBean, this);
+        List result = db.list(sqlParams.getSql(), sqlParams.getParams());
+        //清除条件
+        clear();
+        return result;
+    }
     /**
      * 分页查询
      *

@@ -17,6 +17,9 @@ import org.apache.tomcat.util.descriptor.web.FilterDef;
 import org.apache.tomcat.util.descriptor.web.FilterMap;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 内嵌Tomcat容器
@@ -31,6 +34,8 @@ public class JTomcat extends CommonProperty {
     public JTomcat(String webApp, int port, String contextPath, Class loadClass, boolean isOpen) {
         super(webApp, port, contextPath, loadClass, isOpen);
     }
+
+
 
 
     @Override
