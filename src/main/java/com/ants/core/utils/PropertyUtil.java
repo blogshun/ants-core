@@ -1,13 +1,18 @@
 package com.ants.core.utils;
 
 import com.ants.common.bean.Log;
+import com.ants.common.enums.EncType;
+import com.ants.common.utils.StrEncryptUtil;
 import com.ants.common.utils.StrUtil;
 import com.ants.core.context.AppConstant;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -54,6 +59,23 @@ public class PropertyUtil {
             }
             Properties properties = new Properties();
             properties.load(new InputStreamReader(inputStream, encoding));
+            if(StrUtil.notBlank(AppConstant.SECRET_KEY)) {
+                Set<Map.Entry<Object, Object>> entries = properties.entrySet();
+                Map secretMap = new HashMap();
+                for (Map.Entry<Object, Object> entry : entries) {
+                    String key = String.valueOf(entry.getKey());
+                    if (key.startsWith("@")) {
+                        String value = String.valueOf(entry.getValue());
+                        Log.info("检测到加密属性 > {}", key);
+                        value = StrEncryptUtil.decrypt(AppConstant.SECRET_KEY, EncType.AES, value);
+                        if(value == null){
+                            throw new RuntimeException("配置文件解密失败, 请认真检查配置!");
+                        }
+                        secretMap.put(key.substring(1), value);
+                    }
+                }
+                properties.putAll(secretMap);
+            }
             PROP.putAll(properties);
         } catch (IOException e) {
             throw new RuntimeException("Error loading properties file.", e);

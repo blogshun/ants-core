@@ -49,4 +49,9 @@ public class AppConstant {
      */
     public static ViewConfiguration TPL_CONFIG;
 
+    /**
+     * 全局随机密钥
+     */
+    public static String SECRET_KEY;
+
 }

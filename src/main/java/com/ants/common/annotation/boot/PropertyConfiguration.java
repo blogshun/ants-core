@@ -29,5 +29,7 @@ public @interface PropertyConfiguration {
 
     boolean debug() default false;
 
+    String secretKey() default "";
+
     String encoding() default "UTF-8";
 }

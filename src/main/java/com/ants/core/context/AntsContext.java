@@ -41,7 +41,7 @@ import java.util.List;
  *
  * @author MrShun
  * @version 1.0
- * Date 2017-11-19
+ *          Date 2017-11-19
  */
 public class AntsContext {
 
@@ -77,6 +77,14 @@ public class AntsContext {
         //通过注解加载配置
         PropertyConfiguration propertyConfiguration = loadClass.getDeclaredAnnotation(PropertyConfiguration.class);
         if (propertyConfiguration != null) {
+            //初始化AES 16位随机密钥
+            String secretKey = propertyConfiguration.secretKey();
+            if(StrUtil.notBlank(secretKey)) {
+                if(secretKey.length() != 16){
+                    throw new RuntimeException("secretKey must be 16 digit.");
+                }
+                AppConstant.SECRET_KEY = secretKey;
+            }
             //加载配置文件
             String[] props = propertyConfiguration.value();
             Prop.use(props.length == 0 ? new String[]{AppConstant.DEFAULT_CONFIG} : props);
@@ -91,7 +99,7 @@ public class AntsContext {
 
             //设置全局后缀
             String regexSuffix = constant.getRegexSuffix();
-            if(!"{:()}".equals(regexSuffix)) {
+            if (!"{:()}".equals(regexSuffix)) {
                 AppConstant.URL_REGEX_SUFFIX = regexSuffix;
             }
         }
@@ -118,7 +126,7 @@ public class AntsContext {
 
         //获取需要扫描的包路径
         Application application = loadClass.getDeclaredAnnotation(Application.class);
-        if(application == null){
+        if (application == null) {
             throw new RuntimeException("启动类缺少@Application注解");
         }
         String[] packages = application.scanPackages();
