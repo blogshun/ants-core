@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2017-12-07
+ * Date 2017-12-07
  */
 public class TableBean {
 

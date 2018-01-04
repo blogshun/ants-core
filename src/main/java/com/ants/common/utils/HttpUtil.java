@@ -12,16 +12,16 @@ import java.util.Map;
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2017-06-21
+ * Date 2017-06-21
  */
 public class HttpUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(HttpUtil.class);
 
     /**
-     * @param path
+     * @param path    请求路径
      * @param charset 编码
-     * @return
+     * @return 文本内容
      */
     public static String sendGet(String path, Map<String, String> headers, String charset) {
         try {
@@ -67,6 +67,13 @@ public class HttpUtil {
 
     /**
      * POST请求获取数据
+     *
+     * @param path    路径
+     * @param body    请求体
+     * @param params  参数
+     * @param headers 头部信息
+     * @param charset 编码
+     * @return 文本内容
      */
     public static String sendPost(String path, String body, Map<String, String> params, Map<String, String> headers, String charset) {
         URL url = null;

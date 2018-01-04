@@ -19,16 +19,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 二维码生成器 需要导入 jar
- * <dependency>
- * <groupId>com.google.zxing</groupId>
- * <artifactId>core</artifactId>
- * </dependency>
  * 生成web链接二维码
  * 生成本地二维码图片, 可以根据需求定制二维码
  *
  * @author MrShun
  * @version 1.0
- * @Date 2017/11/13
+ * Date 2017/11/13
  */
 public class QRCodeUtil {
 
@@ -155,7 +151,7 @@ public class QRCodeUtil {
      * @param destPath 存放目录
      * @author lanyuan
      * Email: mmm333zzz520@163.com
-     * @date 2013-12-11 上午10:16:36
+     * Date 2013-12-11 上午10:16:36
      */
     private static void mkdirs(String destPath) {
         File file = new File(destPath);

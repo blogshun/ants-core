@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author MrShun
  * @version 1.0
- * @Date 2017-04-26
+ * Date 2017-04-26
  */
 public class FileUtil {
 
@@ -22,7 +22,7 @@ public class FileUtil {
      *
      * @param fileName 文件名称包含路径
      * @param isBuff   是否缓冲 true:缓冲 false:不缓冲
-     * @return
+     * @return 文本内容
      */
     public static String read(String fileName, boolean isBuff) {
         StringBuffer data = new StringBuffer();
@@ -72,7 +72,7 @@ public class FileUtil {
      * @param oldFile 旧文件地址
      * @param newFile 新文件地址
      * @param isCover 是否覆盖 true:是 false:否
-     * @return
+     * @return 布尔值
      */
     public static boolean move(String oldFile, String newFile, boolean isCover) {
         File file = new File(oldFile);
@@ -101,6 +101,7 @@ public class FileUtil {
      *
      * @param urlString 被下载的文件地址
      * @param filename  本地文件名
+     * @return 布尔值
      */
     public static boolean download(String urlString, String filename) {
         try {

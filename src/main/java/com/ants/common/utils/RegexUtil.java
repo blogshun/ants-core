@@ -10,14 +10,14 @@ import java.util.regex.Pattern;
  *
  * @author MrShun
  * @version 1.0
- * @Date 2017-08-29
+ * Date 2017-08-29
  */
 public class RegexUtil {
 
     /**
      * 判断字段是否为空 符合返回ture
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static synchronized boolean strIsNull(String str) {
@@ -27,7 +27,7 @@ public class RegexUtil {
     /**
      * 判断字段是非空 符合返回ture
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean strNotNull(String str) {
@@ -37,7 +37,7 @@ public class RegexUtil {
     /**
      * 字符串null转空
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static String nullToStr(String str) {
@@ -58,7 +58,7 @@ public class RegexUtil {
     /**
      * 判断字段是否为Email 符合返回ture
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isEmail(String str) {
@@ -68,7 +68,7 @@ public class RegexUtil {
     /**
      * 判断是否为电话号码 符合返回ture
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isPhone(String str) {
@@ -78,7 +78,7 @@ public class RegexUtil {
     /**
      * 判断是否为手机号码 符合返回ture
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isMobile(String str) {
@@ -88,7 +88,7 @@ public class RegexUtil {
     /**
      * 判断是否为Url 符合返回ture
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isUrl(String str) {
@@ -98,7 +98,7 @@ public class RegexUtil {
     /**
      * 判断字段是否为数字 正负整数 正负浮点数 符合返回ture
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isNumber(String str) {
@@ -108,7 +108,7 @@ public class RegexUtil {
     /**
      * 判断字段是否为INTEGER  符合返回ture
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isInteger(String str) {
@@ -116,9 +116,9 @@ public class RegexUtil {
     }
 
     /**
-     * 判断字段是否为正整数正则表达式 >=0 符合返回ture
+     * 判断字段是否为正整数正则表达式
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isINTEGER_NEGATIVE(String str) {
@@ -126,9 +126,9 @@ public class RegexUtil {
     }
 
     /**
-     * 判断字段是否为负整数正则表达式 <=0 符合返回ture
+     * 判断字段是否为负整数正则表达式
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isINTEGER_POSITIVE(String str) {
@@ -146,9 +146,9 @@ public class RegexUtil {
     }
 
     /**
-     * 判断字段是否为正浮点数正则表达式 >=0 符合返回ture
+     * 判断字段是否为正浮点数正则表达式
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isDOUBLE_NEGATIVE(String str) {
@@ -156,9 +156,9 @@ public class RegexUtil {
     }
 
     /**
-     * 判断字段是否为负浮点数正则表达式 <=0 符合返回ture
+     * 判断字段是否为负浮点数正则表达式
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isDOUBLE_POSITIVE(String str) {
@@ -168,7 +168,7 @@ public class RegexUtil {
     /**
      * 判断字段是否为日期 符合返回ture
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isDate(String str) {
@@ -178,7 +178,7 @@ public class RegexUtil {
     /**
      * 验证2010-12-10
      *
-     * @param str
+     * @param str 字符串
      * @return
      */
     public static boolean isDate1(String str) {
@@ -188,7 +188,7 @@ public class RegexUtil {
     /**
      * 判断字段是否为年龄 符合返回ture
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isAge(String str) {
@@ -199,7 +199,7 @@ public class RegexUtil {
      * 判断字段是否超长
      * 字串为空返回fasle, 超过长度{leng}返回ture 反之返回false
      *
-     * @param str
+     * @param str 字符串
      * @param leng
      * @return boolean
      */
@@ -210,7 +210,7 @@ public class RegexUtil {
     /**
      * 判断字段是否为身份证 符合返回ture
      *
-     * @param str
+     * @param str 字符串
      * @return boolean
      */
     public static boolean isIdCard(String str) {

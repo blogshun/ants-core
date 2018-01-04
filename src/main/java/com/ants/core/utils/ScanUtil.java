@@ -21,7 +21,7 @@ import java.util.jar.JarFile;
  *
  * @author MrShun
  * @version 1.0
- * @Date 2017-04-26
+ * Date 2017-04-26
  */
 public class ScanUtil {
 
@@ -48,7 +48,6 @@ public class ScanUtil {
                         String clsName = strCls.substring(0, strCls.lastIndexOf(".")).replace("/", ".");
                         if (check(clsName, packages)) {
                             Class<?> cls = Class.forName(clsName);
-                            System.out.println("@@@@@:"+clsName);
                             CLASSES.add(cls);
                             Annotation anno = cls.getDeclaredAnnotation(annotationCls);
                             if (anno != null) {

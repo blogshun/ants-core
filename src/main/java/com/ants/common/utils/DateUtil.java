@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2017-09-20
+ * Date 2017-09-20
  */
 public class DateUtil {
     /**
@@ -16,7 +16,7 @@ public class DateUtil {
      * @param date      需要判断的时间
      * @param now       当前时间
      * @param formatStr 格式化字符串
-     * @return
+     * @return 提示字符串
      */
     public static String toTips(Date date, Date now, String formatStr) {
         long l = now.getTime() - date.getTime();
@@ -49,7 +49,7 @@ public class DateUtil {
      *
      * @param startDate 开始时间
      * @param endDate   结束时间
-     * @return
+     * @return 提示字符串
      */
     public static String toMsTips(Date startDate, Date endDate) {
         long toDay = System.currentTimeMillis();
@@ -117,7 +117,7 @@ public class DateUtil {
      *
      * @param date 需要判断的时间
      * @param now  当前时间
-     * @return
+     * @return 布尔值
      */
     public static boolean isDay(Date date, Date now) {
         long l = now.getTime() - date.getTime();
@@ -129,7 +129,7 @@ public class DateUtil {
      * 根据时间格式转换成字符串
      *
      * @param formatStr 时间格式
-     * @return
+     * @return 格式化字符串
      */
     public static String getDataTime(String formatStr) {
         DateFormat df = new SimpleDateFormat(formatStr);

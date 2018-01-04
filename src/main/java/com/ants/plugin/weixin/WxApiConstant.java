@@ -5,7 +5,7 @@ package com.ants.plugin.weixin;
  *
  * @author MrShun
  * @version 1.0
- * @Date 2017/12/23
+ * Date 2017/12/23
  */
 public interface WxApiConstant {
 

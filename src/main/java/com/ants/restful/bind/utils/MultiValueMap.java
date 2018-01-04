@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2017-05-04
+ * Date 2017-05-04
  */
 public interface MultiValueMap<K, V> extends Map<K, List<V>> {
     V getFirst(K var1);

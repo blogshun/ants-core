@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2017-11-24
+ *          Date 2017-11-24
  */
 public class Prop extends PropertyUtil {
 
@@ -21,8 +21,8 @@ public class Prop extends PropertyUtil {
      * 根据内存中配置文件键获取值
      *
      * @param clsName 指定类
-     * @param key
-     * @return
+     * @param key     键
+     * @return 对象值
      */
     public static Object getKeyValue(String clsName, String key) {
         if (key.indexOf(START_SYMBOL) == -1 || key.indexOf(END_SYMBOL) == -1) {
@@ -63,7 +63,7 @@ public class Prop extends PropertyUtil {
      * 查询前缀能够匹配到的属性
      *
      * @param prefix 属性前缀
-     * @return
+     * @return 配置对象
      */
     public static Properties getProperties(String prefix) {
         ConcurrentHashMap prop = getProp();

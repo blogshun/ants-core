@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
  *
  * @author MrShun
  * @version 1.0
- * @Date 2017-06-16
+ * Date 2017-06-16
  */
 public class BindingParams {
 

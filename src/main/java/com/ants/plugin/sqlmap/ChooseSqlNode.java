@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2017-06-01
+ * Date 2017-06-01
  */
 public class ChooseSqlNode implements SqlNode {
 

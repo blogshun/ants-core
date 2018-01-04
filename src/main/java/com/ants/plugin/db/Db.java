@@ -29,7 +29,7 @@ import java.util.Properties;
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2017-09-06
+ *          Date 2017-09-06
  */
 public class Db<T> {
 
@@ -346,7 +346,6 @@ public class Db<T> {
      *
      * @param sql    预处理语句
      * @param params 参数
-     * @return
      */
     public void insert(String sql, Object... params) {
         PreparedStatement ps = null;
@@ -660,9 +659,9 @@ public class Db<T> {
         List data = (cls == null) ? list(sb.toString(), params) : list(sb.toString(), cls, params);
         //sql语句转大写
         String countSql = sb.toString().toUpperCase();
-        if(countSql.indexOf("GROUP") != -1 || sb.indexOf("DISTINCT") != -1){
+        if (countSql.indexOf("GROUP") != -1 || sb.indexOf("DISTINCT") != -1) {
             countSql = "select count(1) as count from (select count(1) " + sql.substring(sql.toUpperCase().indexOf("FROM"), sql.length()) + ") as temp";
-        }else {
+        } else {
             countSql = "select count(1) as count " + sql.substring(sql.toUpperCase().indexOf("FROM"), sql.length());
         }
         long rows = query(countSql, params).getLong("count");

@@ -6,7 +6,7 @@ import java.util.Arrays;
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2017-05-04
+ * Date 2017-05-04
  */
 public abstract class ObjectUtils {
     private static final int INITIAL_HASH = 7;

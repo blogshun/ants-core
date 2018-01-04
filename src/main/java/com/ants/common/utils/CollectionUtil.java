@@ -6,7 +6,7 @@ import java.util.*;
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2017-04-27
+ *          Date 2017-04-27
  */
 public class CollectionUtil {
 
@@ -20,7 +20,8 @@ public class CollectionUtil {
     /**
      * 根据HashCode进行排序
      *
-     * @param list
+     * @param list 集合对象
+     * @param type 排序方式
      */
     public static void hashCodeSort(List<?> list, final Type type) {
         Collections.sort(list, new Comparator() {
@@ -43,9 +44,9 @@ public class CollectionUtil {
     /**
      * 求两个字符串数组的并集，利用set的元素唯一性
      *
-     * @param cls1
-     * @param cls2
-     * @return
+     * @param cls1 对象class1
+     * @param cls2 对象class2
+     * @return class数组
      */
     public static Class[] union(Class[] cls1, Class[] cls2) {
         Set<Class> set = new HashSet<>();
@@ -67,9 +68,9 @@ public class CollectionUtil {
     /**
      * 求两个数组的差集
      *
-     * @param cls1
-     * @param cls2
-     * @return
+     * @param cls1 对象class1
+     * @param cls2 对象class2
+     * @return class数组
      */
     public static Class[] minus(Class[] cls1, Class[] cls2) {
         List<Class> ts = new ArrayList();

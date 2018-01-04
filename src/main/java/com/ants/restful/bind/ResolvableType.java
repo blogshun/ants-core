@@ -33,30 +33,6 @@ import java.util.Map;
 
 
 /**
- * Encapsulates a Java {@link Type}, providing access to
- * {@link #getSuperType() supertypes}, {@link #getInterfaces() interfaces}, and
- * {@link #getGeneric(int...) generic parameters} along with the ability to ultimately
- * {@link #resolve() resolve} to a {@link Class}.
- * <p/>
- * <p>{@code ResolvableTypes} may be obtained from {@link #forField(Field) fields},
- * {@link #forMethodParameter(Method, int) method parameters},
- * {@link #forMethodReturnType(Method) method returns} or
- * {@link #forClass(Class) classes}. Most methods on this class will themselves return
- * {@link ResolvableType}s, allowing easy navigation. For example:
- * <pre class="code">
- * private HashMap&lt;Integer, List&lt;String&gt;&gt; myMap;
- * <p/>
- * public void example() {
- * ResolvableType t = ResolvableType.forField(getClass().getDeclaredField("myMap"));
- * t.getSuperType(); // AbstractMap&lt;Integer, List&lt;String&gt;&gt;
- * t.asMap(); // Map&lt;Integer, List&lt;String&gt;&gt;
- * t.getGeneric(0).resolve(); // Integer
- * t.getGeneric(1).resolve(); // List
- * t.getGeneric(1); // List&lt;String&gt;
- * t.resolveGeneric(1, 0); // String
- * }
- * </pre>
- *
  * @author Phillip Webb
  * @author Juergen Hoeller
  * @see #forField(Field)

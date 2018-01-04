@@ -4,7 +4,7 @@ package com.ants.plugin.sqlmap;
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2017-12-02
+ * Date 2017-12-02
  */
 public class Sql {
 

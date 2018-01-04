@@ -2,10 +2,9 @@ package com.ants.common.bean;
 
 import com.alibaba.fastjson.JSON;
 import com.ants.common.annotation.service.Aop;
-import com.ants.common.utils.GenUtil;
-import com.ants.plugin.cache.Cacheable;
 import com.ants.common.annotation.service.Uop;
 import com.ants.common.utils.CollectionUtil;
+import com.ants.plugin.cache.Cacheable;
 import com.ants.restful.request.RequestMappingBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,7 @@ import java.util.Date;
  *
  * @author MrShun
  * @version 1.0
- * @Date 2017-06-12
+ *          Date 2017-06-12
  */
 public class Log {
 
@@ -58,6 +57,10 @@ public class Log {
 
     /**
      * Report the log
+     *
+     * @param target  目标url
+     * @param request request
+     * @param bean    mapping对象
      */
     public static final void action(String target, HttpServletRequest request, RequestMappingBean bean) {
         StringBuilder sb = new StringBuilder("\nAnts log report -------- ").append(SDF.get().format(new Date())).append(" ------------------------------\n");

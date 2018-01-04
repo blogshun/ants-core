@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentMap;
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2018-01-03
+ * Date 2018-01-03
  */
 final public class DbManager {
 

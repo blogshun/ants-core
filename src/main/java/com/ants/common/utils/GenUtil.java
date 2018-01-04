@@ -9,7 +9,7 @@ import java.util.UUID;
  *
  * @author MrShun
  * @version 1.0
- * @Date 2017/12/5
+ * Date 2017/12/5
  */
 public class GenUtil {
 
@@ -25,10 +25,9 @@ public class GenUtil {
     }
 
     /**
-     * 生成指定格式的唯一序列号
-     * <br/>[14位时间戳，年月日时分秒，各两位][3位毫秒数][15顺序数]
+     * 生成指定格式的唯一序列号[14位时间戳，年月日时分秒，各两位][3位毫秒数][15顺序数]
      *
-     * @return
+     * @return 字符串
      */
     public static String formatSerial() {
         String millis = String.valueOf(System.currentTimeMillis());
@@ -37,25 +36,31 @@ public class GenUtil {
     }
 
     /**
-     * 根据多个参数生成md5前面
+     * 根据多个参数生成md5密钥
      *
-     * @param params
-     * @return
+     * @param params 对象数组
+     * @return 密钥字符串
      */
     public static String makeMd5Str(Object... params) {
         StringBuffer sb = new StringBuffer();
         for (Object param : params) {
-            if(StrUtil.notNull(param)) {
+            if (StrUtil.notNull(param)) {
                 sb.append(param);
             }
         }
         return StrEncryptUtil.md5(sb.toString());
     }
 
-    public static String makeTokenStr(Object... params){
+    /**
+     * 生成token
+     *
+     * @param params 对象数组
+     * @return token字符串
+     */
+    public static String makeTokenStr(Object... params) {
         StringBuffer sb = new StringBuffer();
         for (Object param : params) {
-            if(StrUtil.notNull(param)) {
+            if (StrUtil.notNull(param)) {
                 sb.append(param);
             }
         }

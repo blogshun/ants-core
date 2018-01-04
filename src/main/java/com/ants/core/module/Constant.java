@@ -8,7 +8,7 @@ import com.ants.core.context.AppConstant;
  *
  * @author MrShun
  * @version 1.0
- * @Date 2017-11-16
+ * Date 2017-11-16
  */
 final public class Constant {
 

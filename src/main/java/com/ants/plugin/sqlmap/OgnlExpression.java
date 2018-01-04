@@ -5,9 +5,7 @@ package com.ants.plugin.sqlmap;
  *
  * @author MrShun
  * @version 1.0
- * @com.acxy.ants.core.plugin.sqlmap.OgnlExpression@TEST
- * @com.acxy.ants.core.plugin.sqlmap.OgnlExpression@TestMethod('Mr liu')
- * @Date 2017-06-01
+ * Date 2017-06-01
  */
 public class OgnlExpression {
 

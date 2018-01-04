@@ -21,7 +21,7 @@ import java.net.URLDecoder;
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2017-05-20
+ * Date 2017-05-20
  */
 public class SqlMapPlugin implements Plugin {
 
