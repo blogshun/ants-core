@@ -9,7 +9,35 @@
     <artifactId>ants-core</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
-    
+    <name>ants-core</name>
+    <url>https://github.com/blogshun/ants-core</url>
+    <description>Java rapid development framework.</description>
+
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <scm>
+        <url>https://github.com/blogshun/ants-core</url>
+        <connection>https://github.com/blogshun/ants-core.git</connection>
+        <developerConnection>http://shunblog.cn</developerConnection>
+    </scm>
+    <developers>
+        <developer>
+            <name>MrShun</name>
+            <email>530774513@qq.com</email>
+            <url>http://shunblog.cn</url>
+        </developer>
+    </developers>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
