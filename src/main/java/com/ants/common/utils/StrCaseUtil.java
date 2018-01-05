@@ -113,10 +113,10 @@ public class StrCaseUtil {
      * 字符串中_后面小写字母转大写, 首字母是否大写
      *
      * @param s       字符串
-     * @param isFrist true 是
+     * @param isFirst true 是
      * @return
      */
-    public static String toCapital(String s, boolean isFrist) {
+    public static String toCapital(String s, boolean isFirst) {
         if (s == null) {
             return null;
         }
@@ -131,7 +131,7 @@ public class StrCaseUtil {
             }
         }
         char[] cs = s.toCharArray();
-        if (isFrist) {
+        if (isFirst) {
             cs[0] -= 32;
         }
         return String.valueOf(cs);

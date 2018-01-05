@@ -2,6 +2,7 @@ package com.ants.plugin.orm;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.ants.common.utils.StrCaseUtil;
 import com.ants.common.utils.StrUtil;
 import com.ants.plugin.orm.enums.Condition;
 import com.ants.plugin.orm.enums.OrderBy;
@@ -16,7 +17,7 @@ import java.util.Set;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-12-08
+ *          Date 2017-12-08
  */
 public class Conditions {
 
@@ -64,12 +65,37 @@ public class Conditions {
         return this;
     }
 
+    public Conditions addRelation(Relation relation, String table, String cond1, String cond2) {
+        relations.add(String.format(relation.getValue(), table, table.concat("_"), cond1, cond2));
+        return this;
+    }
+
+    public Conditions addRelation(Relation relation, Class tableClass, String cond1, String cond2) {
+        TableBean tableBean = TableMapper.findTableBean(tableClass);
+        if (tableBean == null) {
+            throw new RuntimeException(tableClass + " -> 没有关联任何数据表!");
+        }
+        String table = tableBean.getTable();
+        String alias = StrCaseUtil.toCapital(table, false);
+        relations.add(String.format(relation.getValue(), table, alias, cond1.indexOf("_.") != -1 ? cond1 : "_.".concat(cond1), alias.concat(".").concat(cond2)));
+        return this;
+    }
+
     public List<String> getRelations() {
         return relations;
     }
 
-    public Conditions label(String label) {
-        this.label = " ".concat(label);
+    public Conditions label(String... labels) {
+        if (labels.length == 1) {
+            this.label = " ".concat(labels[0]);
+        } else {
+            StringBuffer sb = new StringBuffer(" ");
+            for (String label : labels) {
+                sb.append(label).append(",");
+            }
+            sb.delete(sb.length() - 1, sb.length());
+            this.label = sb.toString();
+        }
         return this;
     }
 

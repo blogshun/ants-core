@@ -58,6 +58,7 @@
         <jetty.version>8.1.7.v20120910</jetty.version>
         <tomcat.version>8.5.20</tomcat.version>
         <redis.version>2.9.0</redis.version>
+        <javapoet.version>1.7.0</javapoet.version>
         <oss.version>2.2.1</oss.version>
         <activemq.version>5.7.0</activemq.version>
     </properties>
@@ -177,7 +178,13 @@
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
             <version>3.3.0</version>
-            <!--<scope>provided</scope>-->
+            <scope>provided</scope>
+        </dependency>
+        <!-- ===== 代码生成工具 ==== -->
+        <dependency>
+            <groupId>com.squareup</groupId>
+            <artifactId>javapoet</artifactId>
+            <version>${javapoet.version}</version>
         </dependency>
         <!-- ===== 内嵌jetty 容器 ==== -->
         <dependency>

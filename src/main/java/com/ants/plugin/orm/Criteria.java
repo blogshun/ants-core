@@ -110,6 +110,19 @@ public class Criteria<T> extends Conditions {
         return result;
     }
 
+    public JsonMap findMapById(Object id) {
+        if (id == null) {
+            throw new RuntimeException("传递的主键为NULL");
+        }
+        TableBean tableBean = TableMapper.findTableBean(cls);
+        and(tableBean.getPrimaryKey(), Condition.EQ, id);
+        SqlParams sqlParams = TableMapper.createQuerySql(tableBean, this);
+        JsonMap result = db.query(sqlParams.getSql(), sqlParams.getParams());
+        //清除条件
+        clear();
+        return result;
+    }
+
     /**
      * 查询一条记录
      *
@@ -119,6 +132,15 @@ public class Criteria<T> extends Conditions {
         TableBean tableBean = TableMapper.findTableBean(cls);
         SqlParams sqlParams = TableMapper.createQuerySql(tableBean, this);
         T result = (T) db.query(sqlParams.getSql(), cls, sqlParams.getParams());
+        //清除条件
+        clear();
+        return result;
+    }
+
+    public JsonMap findMap() {
+        TableBean tableBean = TableMapper.findTableBean(cls);
+        SqlParams sqlParams = TableMapper.createQuerySql(tableBean, this);
+        JsonMap result = db.query(sqlParams.getSql(), sqlParams.getParams());
         //清除条件
         clear();
         return result;
