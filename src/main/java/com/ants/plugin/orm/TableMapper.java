@@ -72,7 +72,7 @@ public class TableMapper {
         StringBuffer sql = new StringBuffer("select");
         sql.append(conditions.getLabel());
         sql.append(" from ");
-        sql.append(tableBean.getTable() + " _");
+        sql.append(tableBean.getTable());
         List<String> relations = conditions.getRelations();
         if (relations.size() > 0) {
             for (String relation : relations) {
@@ -236,9 +236,8 @@ public class TableMapper {
                     sql.append(cond.getSymbol().getValue());
                 }
                 String field = cond.getField();
-                String qzStr = (isSelect ? (field.indexOf(".") != -1 ? "" : "_.") : "");
                 if (cond.getCond() == Condition.IN) {
-                    sql.append(" ").append(String.format(cond.getCond().getValue(), qzStr + StrCaseUtil.toUnderlineName(field)));
+                    sql.append(" ").append(String.format(cond.getCond().getValue(), StrCaseUtil.toUnderlineName(field)));
                     sql.append("(");
                     for (int j = 0; j < inParamSize; j++) {
                         sql.append("?,");
@@ -246,7 +245,7 @@ public class TableMapper {
                     sql.delete(sql.length() - 1, sql.length());
                     sql.append(")");
                 } else {
-                    sql.append(" ").append(String.format(cond.getCond().getValue(), qzStr + StrCaseUtil.toUnderlineName(field)));
+                    sql.append(" ").append(String.format(cond.getCond().getValue(), StrCaseUtil.toUnderlineName(field)));
                 }
             }
         }

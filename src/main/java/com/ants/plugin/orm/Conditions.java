@@ -24,7 +24,7 @@ public class Conditions {
     /**
      * 存放select label 标签
      */
-    private String label = " _.*";
+    private String label = "*";
 
     /**
      * 存放排序字符串
@@ -61,23 +61,12 @@ public class Conditions {
     }
 
     public Conditions addRelation(Relation relation, String table, String alias, String cond1, String cond2) {
-        relations.add(String.format(relation.getValue(), table, alias, cond1.indexOf("_.") != -1 ? cond1 : "_.".concat(cond1), cond2));
+        relations.add(String.format(relation.getValue(), table, alias, cond1, cond2));
         return this;
     }
 
     public Conditions addRelation(Relation relation, String table, String cond1, String cond2) {
-        relations.add(String.format(relation.getValue(), table, table.concat("_"), cond1, cond2));
-        return this;
-    }
-
-    public Conditions addRelation(Relation relation, Class tableClass, String cond1, String cond2) {
-        TableBean tableBean = TableMapper.findTableBean(tableClass);
-        if (tableBean == null) {
-            throw new RuntimeException(tableClass + " -> 没有关联任何数据表!");
-        }
-        String table = tableBean.getTable();
-        String alias = StrCaseUtil.toCapital(table, false);
-        relations.add(String.format(relation.getValue(), table, alias, cond1.indexOf("_.") != -1 ? cond1 : "_.".concat(cond1), alias.concat(".").concat(cond2)));
+        relations.add(String.format(relation.getValue(), table, "", cond1, cond2));
         return this;
     }
 
@@ -91,7 +80,13 @@ public class Conditions {
         } else {
             StringBuffer sb = new StringBuffer(" ");
             for (String label : labels) {
-                sb.append(label).append(",");
+                String asStr;
+                if (label.indexOf(".") != -1) {
+                    asStr = label.substring(label.indexOf(".") + 1, label.length());
+                } else {
+                    asStr = label;
+                }
+                sb.append(label).append(" as ").append(StrCaseUtil.toCapital(asStr, false)).append(",");
             }
             sb.delete(sb.length() - 1, sb.length());
             this.label = sb.toString();
@@ -111,8 +106,17 @@ public class Conditions {
         this.conditions = conditions;
     }
 
-    public Conditions orderBy(String field, OrderBy orderBy) {
-        this.orderBy = String.format(orderBy.getValue(), field);
+    public Conditions orderBy(OrderBy orderBy, String... fields) {
+        if (fields.length == 1) {
+            this.orderBy = String.format(orderBy.getValue(), fields[0]);
+        } else {
+            StringBuffer sb = new StringBuffer();
+            for (String field : fields) {
+                sb.append(field).append(",");
+            }
+            sb.delete(sb.length() - 1, sb.length());
+            this.orderBy = String.format(orderBy.getValue(), sb.toString());
+        }
         return this;
     }
 
@@ -142,7 +146,7 @@ public class Conditions {
     public Conditions clear() {
         conditions.clear();
         relations.clear();
-        this.label = " _.*";
+        this.label = "*";
         this.orderBy = null;
         this.limit = null;
         return this;
