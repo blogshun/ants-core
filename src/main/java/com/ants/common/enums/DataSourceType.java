@@ -10,7 +10,7 @@ import javax.sql.DataSource;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-05-17
+ * @date 2017-05-17
  */
 public enum DataSourceType {
 

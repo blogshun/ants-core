@@ -10,7 +10,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017/12/15
+ * @date 2017/12/15
  */
 public class SchedulerManager {
 

@@ -3,7 +3,7 @@ package com.ants.plugin.oss;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017/11/23
+ * @date 2017/11/23
  */
 public class OssResult {
 

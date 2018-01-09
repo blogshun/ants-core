@@ -5,7 +5,7 @@ import java.lang.annotation.*;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-05-11
+ * @date 2017-05-11
  */
 @Inherited
 @Target(ElementType.FIELD)

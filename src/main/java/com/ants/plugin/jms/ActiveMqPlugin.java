@@ -12,7 +12,7 @@ import javax.jms.Session;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-12-05
+ * @date 2017-12-05
  */
 public class ActiveMqPlugin implements Plugin {
 

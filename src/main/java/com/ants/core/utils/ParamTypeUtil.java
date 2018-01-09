@@ -12,7 +12,7 @@ import java.math.BigInteger;
  *
  * @author MrShun
  * @version 1.0
- * Date 2017-05-05
+ * @date 2017-05-05
  */
 public class ParamTypeUtil {
 

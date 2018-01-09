@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author MrShun
  * @version 1.0
- * Date 2017-05-10
+ * @date 2017-05-10
  */
 public class LimitRefreshHandler implements Handler {
 

@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-09-14
+ * @date 2017-09-14
  */
 public class RequestUtil {
 

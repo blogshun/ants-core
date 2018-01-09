@@ -6,7 +6,7 @@ import com.ants.plugin.orm.enums.Symbol;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-12-09
+ * @date 2017-12-09
  */
 public class Cond {
 

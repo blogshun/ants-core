@@ -3,7 +3,7 @@ package com.ants.core.holder;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017/12/19
+ * @date 2017/12/19
  */
 public class ContextRequestManager {
 

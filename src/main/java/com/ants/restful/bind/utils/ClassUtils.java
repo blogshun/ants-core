@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-05-04
+ * @date 2017-05-04
  */
 public abstract class ClassUtils {
     public static final String ARRAY_SUFFIX = "[]";

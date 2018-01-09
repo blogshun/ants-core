@@ -5,7 +5,7 @@ import com.ants.common.utils.StrUtil;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-12-02
+ * @date 2017-12-02
  */
 public class GenerateUtil {
 

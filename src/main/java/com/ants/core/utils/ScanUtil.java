@@ -21,7 +21,7 @@ import java.util.jar.JarFile;
  *
  * @author MrShun
  * @version 1.0
- * Date 2017-04-26
+ * @date 2017-04-26
  */
 public class ScanUtil {
 
