@@ -1,4 +1,4 @@
-package com.ants.plugin.weixin;
+package com.ants.plugin.tool;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -6,9 +6,9 @@ import com.ants.common.bean.Log;
 import com.ants.common.bean.Prop;
 import com.ants.common.utils.HttpUtil;
 import com.ants.core.holder.ClientHolder;
-import com.ants.plugin.weixin.common.SnsApi;
-import com.ants.plugin.weixin.common.WxApiConstant;
-import com.ants.plugin.weixin.common.WxUserMap;
+import com.ants.plugin.weixin.SnsApi;
+import com.ants.plugin.weixin.WxApiConstant;
+import com.ants.plugin.weixin.WxUserMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;

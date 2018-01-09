@@ -1,4 +1,4 @@
-package com.ants.plugin.weixin.common;
+package com.ants.plugin.weixin;
 
 import java.util.HashMap;
 import java.util.Map;

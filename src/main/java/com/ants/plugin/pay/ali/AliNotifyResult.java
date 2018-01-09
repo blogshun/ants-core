@@ -1,4 +1,4 @@
-package com.ants.plugin.pay.ali.common;
+package com.ants.plugin.pay.ali;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -7,7 +7,7 @@ import java.util.HashMap;
  * @author MrShun
  * @version 1.0
  */
-public class NotifyResult extends HashMap {
+public class AliNotifyResult extends HashMap {
 
     private HttpServletRequest request;
 
@@ -15,7 +15,7 @@ public class NotifyResult extends HashMap {
 
     private String msg;
 
-    public NotifyResult(HttpServletRequest request){
+    public AliNotifyResult(HttpServletRequest request){
         this.request = request;
         this.ok = true;
         this.msg = "ok";
@@ -24,7 +24,7 @@ public class NotifyResult extends HashMap {
         put("code", 0);
     }
 
-    public NotifyResult(String code, String msg){
+    public AliNotifyResult(String code, String msg){
         this.ok = false;
         this.msg = msg;
         put("message", msg);

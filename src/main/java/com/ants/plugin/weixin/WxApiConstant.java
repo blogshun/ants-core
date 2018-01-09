@@ -1,4 +1,4 @@
-package com.ants.plugin.weixin.common;
+package com.ants.plugin.weixin;
 
 /**
  * 微信Api接口常量
@@ -28,6 +28,13 @@ public interface WxApiConstant {
 
     /**
      * 获取基础支持access_token
+     * GET
      */
-    String ACCESS_TOKEN_API = "";
+    String ACCESS_TOKEN_API = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s";
+
+    /**
+     * 请求获得jsapi_ticket
+     * GET
+     */
+    String TICKET_API = "https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi";
 }

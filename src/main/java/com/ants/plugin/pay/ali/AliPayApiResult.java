@@ -1,6 +1,7 @@
-package com.ants.plugin.pay.ali.common;
+package com.ants.plugin.pay.ali;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 简单的封装支付返回
@@ -8,7 +9,7 @@ import java.util.HashMap;
  * @author MrShun
  * @version 1.0
  */
-public class PayApiResult extends HashMap {
+public class AliPayApiResult extends HashMap {
 
     private boolean ok;
 
@@ -16,7 +17,18 @@ public class PayApiResult extends HashMap {
 
     private String data;
 
-    public PayApiResult(String data) {
+    private Map<String, String> params;
+
+    public AliPayApiResult(Map<String, String> params) {
+        this.params = params;
+        this.ok = true;
+        this.msg = "ok";
+        put("data", params);
+        put("message", msg);
+        put("code", 0);
+    }
+
+    public AliPayApiResult(String data) {
         this.data = data;
         this.ok = true;
         this.msg = "ok";
@@ -25,7 +37,7 @@ public class PayApiResult extends HashMap {
         put("code", 0);
     }
 
-    public PayApiResult(String code, String msg) {
+    public AliPayApiResult(String code, String msg) {
         this.ok = false;
         this.msg = msg;
         put("message", msg);
@@ -47,5 +59,14 @@ public class PayApiResult extends HashMap {
      */
     public String getPayParams() {
         return data;
+    }
+
+
+    public Map<String, String> getParams() {
+        return params;
+    }
+
+    public String getParam(String key) {
+        return params.get(key);
     }
 }

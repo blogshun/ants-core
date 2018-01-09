@@ -1,4 +1,4 @@
-package com.ants.plugin.pay.wx.common;
+package com.ants.plugin.pay.wx;
 
 /**
  * 位微信支付类型枚举

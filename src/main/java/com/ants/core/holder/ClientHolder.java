@@ -59,11 +59,13 @@ public class ClientHolder {
 
     /**
      * 获取头部UserToken
+     *
      * @return
      */
-    public static String getUserToken(){
+    public static String getUserToken() {
         return getHeader("User-Token");
     }
+
     /**
      * 获取UserAgent信息
      *
@@ -163,5 +165,27 @@ public class ClientHolder {
             cookie.setMaxAge(0);
             getResponse().addCookie(cookie);
         }
+    }
+
+    public static String getWebUrl(boolean isHttps) {
+        HttpServletRequest request = getRequest();
+        int port = request.getServerPort();
+        String httpStr = "http://";
+        if (isHttps) {
+            httpStr = "https://";
+        }
+        return httpStr + request.getServerName()
+                //端口号
+                + (port == 80 ? "" : ":" + port)
+                //项目名称
+                + request.getContextPath()
+                //请求页面或其他地址
+                + request.getServletPath()
+                //参数
+                + "?" + (request.getQueryString());
+    }
+
+    public static String getWebUrl(){
+        return getWebUrl(false);
     }
 }

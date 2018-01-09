@@ -1,4 +1,4 @@
-package com.ants.plugin.pay.wx.common;
+package com.ants.plugin.pay.wx;
 
 import com.ants.common.bean.Log;
 import com.ants.common.utils.StrEncryptUtil;
@@ -7,6 +7,7 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +20,9 @@ import java.util.TreeMap;
  * @version 1.0
  */
 public class Sign {
+
+    private static final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5',
+            '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
     /**
      * 采用TreeMap 按首字母排序 统一小写字母 生成MD5签名
@@ -34,6 +38,30 @@ public class Sign {
         }
         Log.debug("签名Str > {}", stringSignTemp);
         return StrEncryptUtil.md5(stringSignTemp).toUpperCase();
+    }
+
+    /**
+     * sha1签名
+     *
+     * @param str 签名字符串
+     * @return
+     */
+    public static String sha1(String str) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA1");
+            messageDigest.update(str.getBytes());
+            byte[] bytes = messageDigest.digest();
+            int len = bytes.length;
+            StringBuilder buf = new StringBuilder(len * 2);
+            // 把密文转换成十六进制的字符串形式  
+            for (int j = 0; j < len; j++) {
+                buf.append(HEX_DIGITS[(bytes[j] >> 4) & 0x0f]);
+                buf.append(HEX_DIGITS[bytes[j] & 0x0f]);
+            }
+            return buf.toString();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

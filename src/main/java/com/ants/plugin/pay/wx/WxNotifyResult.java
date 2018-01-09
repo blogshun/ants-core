@@ -1,15 +1,13 @@
-package com.ants.plugin.pay.wx.common;
+package com.ants.plugin.pay.wx;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 简单的封装支付返回
- *
  * @author MrShun
  * @version 1.0
  */
-public class PayApiResult extends HashMap {
+public class WxNotifyResult extends HashMap {
 
     private boolean ok;
 
@@ -17,7 +15,7 @@ public class PayApiResult extends HashMap {
 
     private Map data;
 
-    public PayApiResult(Map map) {
+    public WxNotifyResult(Map map) {
         Object errcode = map.get("return_code");
         if ("FAIL".equals(errcode)) {
             ok = false;
@@ -51,34 +49,68 @@ public class PayApiResult extends HashMap {
     }
 
     /**
-     * 获取返回的签名
+     * 微信支付分配的终端设备号
+     *
      * @return
      */
-    public String getSign(){
-        return getStr("sign");
+    public String getDeviceInfo() {
+        return getStr("device_info");
     }
 
     /**
-     * 交易类型，取值为：JSAPI，NATIVE，APP等
+     * 用户标识
+     *
      * @return
      */
-    public String getTradeType(){
+    public String getOpenId() {
+        return getStr("openid");
+    }
+
+    /**
+     * 是否关注过公众号
+     *
+     * @return
+     */
+    public boolean isSubscribe() {
+        if ("Y".equals(getStr("is_subscribe"))) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 交易类型 JSAPI、NATIVE、APP
+     *
+     * @return
+     */
+    public String getTradeType() {
         return getStr("trade_type");
     }
 
     /**
-     * 微信生成的预支付会话标识，用于后续接口调用中使用，该值有效期为2小时
+     * 微信支付订单号
+     *
      * @return
      */
-    public String getPrepayId(){
-        return getStr("prepay_id");
+    public String getTransactionId() {
+        return getStr("transaction_id");
     }
 
     /**
-     * trade_type为NATIVE时有返回，用于生成二维码，展示给用户进行扫码支付
+     * 商户订单号
+     *
      * @return
      */
-    public String getCodeUrl(){
-        return getStr("code_url");
+    public String getOutTradeNo() {
+        return getStr("out_trade_no");
+    }
+
+    /**
+     * 商家数据包 String(128)
+     *
+     * @return
+     */
+    public String getAttach() {
+        return getStr("attach");
     }
 }

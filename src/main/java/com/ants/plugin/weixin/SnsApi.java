@@ -1,4 +1,4 @@
-package com.ants.plugin.weixin.common;
+package com.ants.plugin.weixin;
 
 /**
  * @author MrShun
