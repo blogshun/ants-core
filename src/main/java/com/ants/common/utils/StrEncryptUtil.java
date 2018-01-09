@@ -18,7 +18,6 @@ import java.security.SecureRandom;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-11-17
  */
 public class StrEncryptUtil {
 

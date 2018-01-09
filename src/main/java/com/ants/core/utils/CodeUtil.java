@@ -5,7 +5,6 @@ import com.ants.plugin.orm.TableMapper;
 /**
  * @author MrShun
  * @version 1.0
-  * @date 2018/1/5
  */
 public class CodeUtil {
 

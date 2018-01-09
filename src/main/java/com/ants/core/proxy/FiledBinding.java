@@ -23,7 +23,6 @@ import java.lang.reflect.Field;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-05-15
  */
 public class FiledBinding {
 

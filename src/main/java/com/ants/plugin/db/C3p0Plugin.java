@@ -10,7 +10,6 @@ import java.sql.SQLException;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-05-18
  */
 public class C3p0Plugin extends CommonProperty implements Plugin {
 

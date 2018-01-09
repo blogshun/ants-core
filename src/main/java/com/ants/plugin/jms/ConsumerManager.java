@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-12-05
  */
 public class ConsumerManager {
 

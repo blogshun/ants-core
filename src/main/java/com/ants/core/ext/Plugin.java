@@ -5,7 +5,6 @@ package com.ants.core.ext;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-11-19
  */
 public interface Plugin {
 

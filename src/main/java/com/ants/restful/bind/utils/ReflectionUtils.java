@@ -13,7 +13,6 @@ import java.util.Map;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-05-04
  */
 public abstract class ReflectionUtils {
     private static final String CGLIB_RENAMED_METHOD_PREFIX = "CGLIB$";

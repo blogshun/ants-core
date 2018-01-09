@@ -12,7 +12,6 @@ import redis.clients.jedis.JedisPoolConfig;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-12-27
  */
 public final class RedisTool extends ConcurrentToolMap {
 

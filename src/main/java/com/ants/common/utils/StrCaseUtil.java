@@ -4,7 +4,6 @@ package com.ants.common.utils;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-05-18
  */
 public class StrCaseUtil {
 

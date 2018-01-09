@@ -1,6 +1,5 @@
 package com.ants.plugin.cache;
 
-import com.alibaba.fastjson.JSON;
 import com.ants.common.bean.Log;
 import com.ants.common.utils.StrUtil;
 import com.ants.core.ext.Plugin;
@@ -9,13 +8,9 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-12-05
  */
 public class RedisPlugin implements Plugin {
 

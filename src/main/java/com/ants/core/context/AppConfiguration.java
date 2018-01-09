@@ -8,7 +8,6 @@ import com.ants.core.module.PluginManager;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-11-19
  */
 public class AppConfiguration {
 

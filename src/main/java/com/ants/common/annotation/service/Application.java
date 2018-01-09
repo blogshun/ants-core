@@ -5,7 +5,6 @@ import java.lang.annotation.*;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-10-25
  */
 @Inherited
 @Target({ElementType.TYPE})

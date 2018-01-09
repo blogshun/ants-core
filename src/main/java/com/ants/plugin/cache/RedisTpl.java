@@ -8,7 +8,6 @@ import redis.clients.jedis.Jedis;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017/11/13
  */
 public class RedisTpl {
 

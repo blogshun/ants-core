@@ -24,7 +24,6 @@ import java.util.EnumSet;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-11-16
  */
 public class Jetty extends CommonProperty {
 

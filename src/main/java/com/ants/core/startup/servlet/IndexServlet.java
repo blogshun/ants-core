@@ -12,7 +12,6 @@ import java.io.PrintWriter;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-11-29
  */
 public class IndexServlet extends HttpServlet {
 

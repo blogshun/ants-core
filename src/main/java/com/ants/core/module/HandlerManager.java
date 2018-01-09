@@ -22,7 +22,6 @@ import java.util.List;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-11-16
  */
 final public class HandlerManager {
 

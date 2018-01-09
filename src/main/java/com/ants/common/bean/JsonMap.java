@@ -5,7 +5,6 @@ import java.util.HashMap;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-05-17
  */
 public class JsonMap extends HashMap {
 

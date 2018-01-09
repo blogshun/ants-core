@@ -10,7 +10,6 @@ import java.io.*;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-11-30
  */
 public class LogoServlet extends HttpServlet {
 

@@ -17,7 +17,6 @@ import java.util.Set;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-08-29
  */
 public class Resource {
 

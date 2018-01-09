@@ -5,7 +5,6 @@ package com.ants.common.enums;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017/12/19
  */
 public enum LoadType {
     /**

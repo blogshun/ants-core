@@ -1,6 +1,5 @@
 package com.ants.core.module;
 
-import com.ants.common.enums.ViewType;
 import com.ants.core.context.AppConstant;
 
 /**
@@ -8,7 +7,6 @@ import com.ants.core.context.AppConstant;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-11-16
  */
 final public class Constant {
 

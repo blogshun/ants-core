@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017/11/25
  */
 public class EhCacheTpl {
 

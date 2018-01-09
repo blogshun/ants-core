@@ -1,11 +1,8 @@
 package com.ants.common.bean;
 
-import java.util.List;
-
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-05-10
  */
 public class Page<T> {
 

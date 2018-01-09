@@ -6,7 +6,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017/12/15
  */
 @Inherited
 @Target({ElementType.TYPE})

@@ -7,7 +7,6 @@ import java.io.Serializable;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-09-11
  */
 public class IBean implements Serializable {
 

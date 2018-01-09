@@ -11,7 +11,6 @@ import java.util.concurrent.Executors;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-12-16
  */
 public class ConsumerListener implements MessageListener {
 

@@ -12,7 +12,6 @@ import java.io.InputStream;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-12-27
  */
 public class EhCacheTool extends ConcurrentToolMap {
 

@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017/12/19
  */
 public class ClientRequest {
 

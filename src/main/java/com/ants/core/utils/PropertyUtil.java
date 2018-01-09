@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-05-05
  */
 public class PropertyUtil {
 

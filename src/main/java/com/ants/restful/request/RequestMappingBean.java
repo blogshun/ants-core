@@ -1,6 +1,5 @@
 package com.ants.restful.request;
 
-import com.alibaba.fastjson.JSONObject;
 import com.ants.common.enums.RequestMethod;
 
 import java.lang.reflect.Method;
@@ -9,7 +8,6 @@ import java.util.Arrays;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-04-26
  */
 public class RequestMappingBean {
 

@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-05-04
  */
 public interface ParameterNameDiscoverer {
 

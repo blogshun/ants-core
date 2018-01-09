@@ -13,7 +13,6 @@ import java.util.List;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-04-26
  */
 public class FileUtil {
 

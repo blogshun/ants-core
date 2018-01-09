@@ -8,7 +8,6 @@ import com.ants.plugin.orm.enums.OrderBy;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-05-10
  */
 public class PageConditions<T> {
 

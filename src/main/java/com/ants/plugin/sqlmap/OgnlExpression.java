@@ -5,7 +5,6 @@ package com.ants.plugin.sqlmap;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-06-01
  */
 public class OgnlExpression {
 

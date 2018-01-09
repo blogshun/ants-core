@@ -1,7 +1,5 @@
 package com.ants.common.annotation.boot;
 
-import com.ants.common.enums.ViewType;
-
 import java.lang.annotation.*;
 
 /**
@@ -9,7 +7,6 @@ import java.lang.annotation.*;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-04-26
  */
 @Inherited
 @Target({ElementType.TYPE})

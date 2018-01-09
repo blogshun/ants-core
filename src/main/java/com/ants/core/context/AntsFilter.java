@@ -19,7 +19,6 @@ import java.io.IOException;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-04-26
  */
 @WebFilter(filterName = "AntsFilter", urlPatterns = "/*")
 public class AntsFilter implements Filter {

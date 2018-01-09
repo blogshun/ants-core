@@ -12,7 +12,6 @@ import java.util.List;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-12-03
  */
 public class CommonProperty {
 

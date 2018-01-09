@@ -12,7 +12,6 @@ import java.util.Map;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017-04-27
  */
 public class MappingMatch {
 

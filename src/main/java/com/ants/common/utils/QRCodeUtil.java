@@ -24,7 +24,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author MrShun
  * @version 1.0
- * @date 2017/11/13
  */
 public class QRCodeUtil {
 
@@ -151,7 +150,7 @@ public class QRCodeUtil {
      * @param destPath 存放目录
      * @author lanyuan
      * Email: mmm333zzz520@163.com
-     * @date 2013-12-11 上午10:16:36
+     * Date 2013-12-11 上午10:16:36
      */
     private static void mkdirs(String destPath) {
         File file = new File(destPath);

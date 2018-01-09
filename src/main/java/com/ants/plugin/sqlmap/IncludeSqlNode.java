@@ -4,7 +4,6 @@ package com.ants.plugin.sqlmap;
 /**
  * @author MrShun
  * @version 1.0
- * @date 2017-05-31
  */
 public class IncludeSqlNode implements SqlNode {
 
