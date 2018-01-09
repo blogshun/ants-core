@@ -9,7 +9,6 @@ import java.sql.SQLException;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-12-03
  */
 public class DbPlugin extends CommonProperty implements Plugin {
 

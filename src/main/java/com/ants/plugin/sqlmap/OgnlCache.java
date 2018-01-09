@@ -9,7 +9,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-06-01
  */
 public class OgnlCache {
 

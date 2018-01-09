@@ -17,7 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-05-20
  */
 public class SqlXmlParser {
 

@@ -5,7 +5,6 @@ import java.io.Serializable;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-09-09
  */
 public class SqlParams implements Serializable {
 

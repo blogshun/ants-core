@@ -7,7 +7,6 @@ import com.ants.common.bean.Log;
  *
  * @author MrShun
  * @version 1.0
- * Date 2017-08-24
  */
 public class TipException extends RuntimeException {
 

@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-06-07
  */
 public class AopManager {
 

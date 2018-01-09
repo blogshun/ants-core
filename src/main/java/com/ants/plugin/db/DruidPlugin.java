@@ -14,7 +14,6 @@ import java.util.Properties;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-05-17
  */
 public class DruidPlugin extends CommonProperty implements Plugin {
 

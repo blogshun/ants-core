@@ -12,7 +12,6 @@ import java.util.Properties;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-05-18
  */
 public class HikariCpPlugin extends CommonProperty implements Plugin {
 

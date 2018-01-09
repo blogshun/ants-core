@@ -14,7 +14,6 @@ import javax.jms.Session;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-12-27
  */
 public class ActiveMqTool extends ConcurrentToolMap {
 

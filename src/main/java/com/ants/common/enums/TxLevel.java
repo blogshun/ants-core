@@ -3,7 +3,6 @@ package com.ants.common.enums;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-05-19
  */
 public enum TxLevel {
 

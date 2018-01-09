@@ -9,7 +9,6 @@ import java.util.UUID;
  *
  * @author MrShun
  * @version 1.0
- * Date 2017/12/5
  */
 public class GenUtil {
 

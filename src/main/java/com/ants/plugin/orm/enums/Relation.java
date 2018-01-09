@@ -3,7 +3,6 @@ package com.ants.plugin.orm.enums;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-09-07
  */
 public enum Relation {
 

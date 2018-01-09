@@ -12,7 +12,6 @@ import java.util.Map;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-06-21
  */
 public class HttpUtil {
 

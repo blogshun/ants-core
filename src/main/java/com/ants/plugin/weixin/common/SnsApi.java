@@ -1,9 +1,8 @@
-package com.ants.plugin.weixin;
+package com.ants.plugin.weixin.common;
 
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017/12/23
  */
 public enum SnsApi {
 

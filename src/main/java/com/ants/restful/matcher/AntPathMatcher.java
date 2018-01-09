@@ -1,18 +1,14 @@
 package com.ants.restful.matcher;
 
-/**
- * @author MrShun
- * @version 1.0
- * Date 2017-04-27
- */
-
-
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
+/**
+ * @author MrShun
+ * @version 1.0
+ */
 public class AntPathMatcher implements PathMatcher {
     public static final String DEFAULT_PATH_SEPARATOR = "/";
     private static final int CACHE_TURNOFF_THRESHOLD = 65536;

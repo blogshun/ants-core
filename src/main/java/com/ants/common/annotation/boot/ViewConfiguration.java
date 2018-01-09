@@ -8,7 +8,6 @@ import java.lang.annotation.*;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017/12/18
  */
 @Inherited
 @Target({ElementType.TYPE})

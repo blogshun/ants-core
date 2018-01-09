@@ -10,7 +10,6 @@ import java.lang.reflect.Method;
  *
  * @author MrShun
  * @version 1.0
- * @Date 2017-05-02
  */
 public class CglibProxy implements InvocationHandler {
 

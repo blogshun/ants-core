@@ -6,7 +6,6 @@ package com.ants.core.ext;
  *
  * @author MrShun
  * @version 1.0
- * Date 2017-10-26
  */
 public interface InitializingBean {
 

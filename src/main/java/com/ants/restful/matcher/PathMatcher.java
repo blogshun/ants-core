@@ -6,7 +6,6 @@ import java.util.Map;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-04-27
  */
 public interface PathMatcher {
 

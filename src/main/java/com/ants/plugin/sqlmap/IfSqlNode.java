@@ -6,7 +6,6 @@ import org.w3c.dom.Node;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-05-31
  */
 public class IfSqlNode implements SqlNode {
 

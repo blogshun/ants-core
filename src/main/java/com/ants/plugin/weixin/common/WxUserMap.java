@@ -1,4 +1,4 @@
-package com.ants.plugin.weixin;
+package com.ants.plugin.weixin.common;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,6 @@ import java.util.Map;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017/11/23
  */
 public class WxUserMap extends HashMap {
 

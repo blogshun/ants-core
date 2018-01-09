@@ -8,7 +8,6 @@ import java.util.Map;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017/12/12
  */
 public class SqlMap<T> {
 

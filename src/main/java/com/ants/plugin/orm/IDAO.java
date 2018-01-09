@@ -5,7 +5,6 @@ import com.ants.common.bean.IBean;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-12-07
  */
 public interface IDAO<T extends IBean> {
 

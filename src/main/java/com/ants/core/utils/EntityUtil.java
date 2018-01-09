@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 /**
  * @author MrShun
  * @version 1.0
- * Date 2017-05-06
  */
 public class EntityUtil {
 

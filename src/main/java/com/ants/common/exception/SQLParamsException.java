@@ -9,7 +9,6 @@ import java.sql.SQLException;
  *
  * @author MrShun
  * @version 1.0
- * Date 2017-08-27
  */
 public class SQLParamsException extends RuntimeException {
 
