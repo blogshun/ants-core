@@ -9,7 +9,6 @@ import java.util.HashMap;
  */
 public class NotifyResult extends HashMap {
 
-
     private HttpServletRequest request;
 
     private boolean ok;
@@ -20,7 +19,7 @@ public class NotifyResult extends HashMap {
         this.request = request;
         this.ok = true;
         this.msg = "ok";
-        put("message", "ok");
+        put("message", msg);
         put("data", request.getParameterMap());
         put("code", 0);
     }

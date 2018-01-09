@@ -1,11 +1,16 @@
 package com.ants.plugin.pay.ali;
 
+import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
+import com.alipay.api.AlipayResponse;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayTradeAppPayModel;
+import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.ants.common.bean.Prop;
 import com.ants.common.utils.StrUtil;
 import com.ants.core.holder.ClientHolder;
 import com.ants.plugin.pay.ali.common.NotifyResult;
+import com.ants.plugin.pay.ali.common.PayApiResult;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.ConcurrentHashMap;
@@ -69,6 +74,37 @@ public class AliPayTool {
         return init(appId, privateKey, notifyUrl, null, publicKey);
     }
 
+    /**
+     * App发起支付宝支付
+     *
+     * @return
+     */
+    public String outWebPay(){
+        return "";
+    }
+
+    /**
+     * App发起支付支付
+     *
+     * @param appPayModel
+     * @return
+     */
+    public PayApiResult getAppPaySign(AlipayTradeAppPayModel appPayModel) {
+        AlipayTradeAppPayRequest appRequest = new AlipayTradeAppPayRequest();
+        appRequest.setBizModel(appPayModel);
+        // 设置异步通知地址
+        appRequest.setNotifyUrl(notifyUrl);
+        //这里和普通的接口调用不同，使用的是sdkExecute
+        AlipayResponse response = null;
+        try {
+            response = client.sdkExecute(appRequest);
+            String data = response.getBody();
+            return new PayApiResult(data);
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+            return new PayApiResult(e.getErrCode(), e.getErrMsg());
+        }
+    }
 
     /**
      * 获取支付通知
