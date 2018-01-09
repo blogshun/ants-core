@@ -6,6 +6,9 @@ import com.ants.common.bean.Log;
 import com.ants.common.bean.Prop;
 import com.ants.common.utils.HttpUtil;
 import com.ants.core.holder.ClientHolder;
+import com.ants.plugin.weixin.common.SnsApi;
+import com.ants.plugin.weixin.common.WxApiConstant;
+import com.ants.plugin.weixin.common.WxUserMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
@@ -14,20 +17,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
+ * 微信授权获取用户信息工具类
+ *
  * @author MrShun
  * @version 1.0
  */
 public class WxOauth2Tool {
 
     /**
-     * 应用 appId
+     * 应用 appId, 应用 appSecret
      */
-    private String appId;
-
-    /**
-     * 应用 appSecret
-     */
-    private String appSecret;
+    private String appId, appSecret;
 
     /**
      * 为了防止反复初始化
@@ -53,9 +53,9 @@ public class WxOauth2Tool {
         if (OAUTH_MAP.containsKey(key)) {
             return OAUTH_MAP.get(key);
         }
-        WxOauth2Tool wxOauth2 = new WxOauth2Tool(appId, appSecret);
-        OAUTH_MAP.put(key, wxOauth2);
-        return wxOauth2;
+        WxOauth2Tool wxOauth2Tool = new WxOauth2Tool(appId, appSecret);
+        OAUTH_MAP.put(key, wxOauth2Tool);
+        return wxOauth2Tool;
     }
 
     /**
@@ -71,7 +71,7 @@ public class WxOauth2Tool {
         String oauth2Url;
         try {
             String enUrl = URLEncoder.encode(sbUrl.toString(), "utf-8");
-            oauth2Url = String.format(WxApiConstant.OAUTH2_REDIRECT_URL, appId, enUrl, scope.getType());
+            oauth2Url = String.format(WxApiConstant.OAUTH2_REDIRECT_API, appId, enUrl, scope.getType());
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             throw new RuntimeException("url编码转换异常!");
@@ -86,7 +86,7 @@ public class WxOauth2Tool {
      * @return
      */
     public JSONObject getAccessTokenStr(String code) {
-        String oauth2UrlStr = String.format(WxApiConstant.OAUTH2_ACCESS_TOKEN_URL, appId, appSecret, code);
+        String oauth2UrlStr = String.format(WxApiConstant.OAUTH2_ACCESS_TOKEN_API, appId, appSecret, code);
         String responseStr = HttpUtil.sendGet(oauth2UrlStr);
         Log.debug("基本授权返回数据 >> {} ", responseStr);
         return JSON.parseObject(responseStr);
@@ -102,7 +102,7 @@ public class WxOauth2Tool {
         JSONObject result = getAccessTokenStr(code);
         String accessToken = result.getString("access_token");
         String openId = result.getString("openid");
-        String userInfoUrlStr = String.format(WxApiConstant.USER_INFO_URL, accessToken, openId);
+        String userInfoUrlStr = String.format(WxApiConstant.USER_INFO_API, accessToken, openId);
         String responseStr = HttpUtil.sendGet(userInfoUrlStr);
         Log.debug("获取基本用户数据 >> {} ", responseStr);
         return new WxUserMap(JSON.parseObject(responseStr));

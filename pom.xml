@@ -173,6 +173,13 @@
             <version>${activemq.version}</version>
             <scope>provided</scope>
         </dependency>
+        <!-- ===== 支付宝SDK ==== -->
+        <dependency>
+            <groupId>com.ali</groupId>
+            <artifactId>alipay-sdk</artifactId>
+            <version>20170725114550</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- ===== QRCode二维码生成 ==== -->
         <dependency>
             <groupId>com.google.zxing</groupId>
