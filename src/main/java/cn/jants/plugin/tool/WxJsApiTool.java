@@ -1,6 +1,7 @@
 package cn.jants.plugin.tool;
 
 import cn.jants.common.bean.Log;
+import cn.jants.common.bean.Prop;
 import cn.jants.core.holder.ClientHolder;
 import cn.jants.plugin.pay.wx.Sign;
 import cn.jants.plugin.weixin.ApiResult;
@@ -33,6 +34,8 @@ public class WxJsApiTool {
      * @return
      */
     public static String getJsApiTicketStr(String appId, String appSecret) {
+        appId = Prop.getKeyStrValue(appId);
+        appSecret = Prop.getKeyStrValue(appSecret);
         Long expires = jsApiTicketCache.getExpires();
         long currentTime = System.currentTimeMillis();
         //当第一次获取jsapi_ticket 或者 时间设置已经过期
@@ -58,6 +61,8 @@ public class WxJsApiTool {
      * @return
      */
     public static ApiResult getJsApiSignature(String appId, String appSecret) {
+        appId = Prop.getKeyStrValue(appId);
+        appSecret = Prop.getKeyStrValue(appSecret);
         String jsApiTicketStr = getJsApiTicketStr(appId, appSecret);
         Long timeStamp = System.currentTimeMillis() / 1000;
         String nonceStr = StrUtil.randomUUID();

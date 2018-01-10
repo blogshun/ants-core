@@ -38,7 +38,11 @@ public class MapXmlUtil {
             String key = entry.getKey();
             Object value = entry.getValue();
             sb.append("<").append(key).append(">");
-            sb.append(value);
+            if (value instanceof String) {
+                sb.append("<![CDATA[").append(value).append("]]>");
+            } else {
+                sb.append(value);
+            }
             sb.append("</").append(key).append(">");
         }
         sb.append("</" + tagName + ">");

@@ -25,30 +25,28 @@ public class Prop extends PropertyUtil {
      * @return 对象值
      */
     public static Object getKeyValue(String clsName, String key) {
-        if (key.indexOf(START_SYMBOL) == -1 || key.indexOf(END_SYMBOL) == -1) {
-            throw new RuntimeException(key + " 配置参数解析错误!");
-        }
-        String value = key.replace(START_SYMBOL, "").replace(END_SYMBOL, "");
-        Object paramValue = null;
-        if (value.indexOf(":") != -1) {
-            String[] zs = value.split(":");
-            paramValue = get(zs[0]);
-            if (paramValue == null && zs.length > 1) {
-                paramValue = zs[1];
+        if (key.startsWith(START_SYMBOL) && key.endsWith(END_SYMBOL)) {
+            String value = key.replace(START_SYMBOL, "").replace(END_SYMBOL, "");
+            Object paramValue = null;
+            if (value.indexOf(":") != -1) {
+                String[] zs = value.split(":");
+                paramValue = get(zs[0]);
+                if (paramValue == null && zs.length > 1) {
+                    paramValue = zs[1];
+                }
+            } else {
+                paramValue = get(value);
+                if (paramValue == null && clsName != null) {
+                    throw new RuntimeException(clsName + " 中 " + key + " 没有在配置文件中找到属性, 却注入了属性!");
+                }
             }
+            return paramValue;
         } else {
-            paramValue = get(value);
-            if (paramValue == null && clsName != null) {
-                throw new RuntimeException(clsName + " 中 " + key + " 没有在配置文件中找到属性, 却注入了属性!");
-            }
+            return key;
         }
-        return paramValue;
     }
 
     public static String getKeyStrValue(String key) {
-        if (key.indexOf(START_SYMBOL) == -1 || key.indexOf(END_SYMBOL) == -1) {
-            return key;
-        }
         return String.valueOf(getKeyValue(null, key));
     }
 

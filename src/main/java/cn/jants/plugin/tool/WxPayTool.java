@@ -49,6 +49,9 @@ public class WxPayTool {
      */
     public static WxPayTool init(String appId, String mchId, String payKey, String notifyUrl) {
         appId = Prop.getKeyStrValue(appId);
+        mchId = Prop.getKeyStrValue(mchId);
+        payKey = Prop.getKeyStrValue(payKey);
+        notifyUrl = Prop.getKeyStrValue(notifyUrl);
         if (PAY_MAP.containsKey(appId)) {
             return PAY_MAP.get(appId);
         }
