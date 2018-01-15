@@ -38,7 +38,9 @@ public class AliOssTool extends ConcurrentToolMap {
             return (AliOssTpl) PLUGINS.get(key);
         }
         OSSClient client = new OSSClient(endpoint, accessKeyId, accessKeySecret);
-        return new AliOssTpl(client, url, bucketName);
+        AliOssTpl aliOssTpl = new AliOssTpl(client, url, bucketName);
+        PLUGINS.put(key, aliOssTpl);
+        return aliOssTpl;
     }
 
     public static AliOssTpl getAliOss() {

@@ -43,7 +43,9 @@ public class ActiveMqTool extends ConcurrentToolMap {
             //创建一个事务（这里通过参数可以设置事务的级别）
             Session session = connection.createSession(Boolean.TRUE, Session.SESSION_TRANSACTED);
             Log.debug("ActiveMq Jms 连接成功... ");
-            return new ActiveMqTpl(session);
+            ActiveMqTpl activeMqTpl = new ActiveMqTpl(session);
+            PLUGINS.put(key, activeMqTpl);
+            return activeMqTpl;
         } catch (JMSException e) {
             throw new RuntimeException(String.format("error , ActiveMq连接失败... -> %s", e.getMessage()));
         }

@@ -38,7 +38,9 @@ public class EhCacheTool extends ConcurrentToolMap {
         Cache cache = new Cache(EhCacheTpl.DEFAULT_CACHE, 5000, true, false, 36000, 36000);
         cacheManager.addCache(cache);
         Log.debug("Ehcache 缓存插件加载成功... ");
-        return new EhCacheTpl(cacheManager);
+        EhCacheTpl ehCacheTpl = new EhCacheTpl(cacheManager);
+        PLUGINS.put(key, ehCacheTpl);
+        return ehCacheTpl;
     }
 
     public static EhCacheTpl getEhCache(Class cls) {

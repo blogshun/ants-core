@@ -58,7 +58,9 @@ public final class RedisTool extends ConcurrentToolMap {
             throw new RuntimeException(String.format("error , Redis连接失败... -> %s", e.getMessage()));
         }
         Log.debug("db > db{} , Redis连接成功... ", database);
-        return new RedisTpl(jedis);
+        RedisTpl redisTpl = new RedisTpl(jedis);
+        PLUGINS.put(key, redisTpl);
+        return redisTpl;
     }
 
     public static RedisTpl getRedis(String host, String port, String password) {
