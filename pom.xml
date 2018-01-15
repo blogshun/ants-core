@@ -5,7 +5,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ants</groupId>
+    <groupId>cn.jants</groupId>
     <artifactId>ants-core</artifactId>
     <version>1.0</version>
     <packaging>jar</packaging>
@@ -175,9 +175,9 @@
         </dependency>
         <!-- ===== 支付宝SDK ==== -->
         <dependency>
-            <groupId>com.ali</groupId>
+            <groupId>com.github.1991wangliang</groupId>
             <artifactId>alipay-sdk</artifactId>
-            <version>20170725114550</version>
+            <version>1.0.0</version>
             <scope>provided</scope>
         </dependency>
         <!-- ===== QRCode二维码生成 ==== -->

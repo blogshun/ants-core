@@ -158,8 +158,8 @@ public class BindingParams {
                     }
                 }
 
-                //发现对象是实体对象的时候
-                if (parameterType.getAnnotation(Entity.class) != null) {
+                //发现对象是实体对象的时候 弃用parameterType.getAnnotation(Entity.class)
+                if (parameterType.getClassLoader() != null) {
                     Object entityObj = null;
                     try {
                         entityObj = parameterType.newInstance();

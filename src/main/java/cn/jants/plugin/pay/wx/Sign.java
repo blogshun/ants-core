@@ -65,7 +65,7 @@ public class Sign {
     }
 
     /**
-     * &符号拼接
+     * 符号拼接
      *
      * @return
      */

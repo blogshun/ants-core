@@ -50,12 +50,11 @@ public class MapXmlUtil {
     }
 
     /**
-     * 将xml转成map
+     * 将xml字符串转换成map
      *
      * @param strXml  xml字符串
      * @param tagName 标签节点
      * @return Map
-     * @description 将xml字符串转换成map
      */
     public static Map xml2Map(String strXml, String tagName) {
         JsonMap map = JsonMap.newJsonMap();
