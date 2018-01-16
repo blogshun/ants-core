@@ -25,7 +25,12 @@ QQ交流群： 创建中 ...
 ## maven 依赖
 
 ```xml
-正在构建中 ...
+<!-- https://mvnrepository.com/artifact/cn.jants/ants-core -->
+<dependency>
+    <groupId>cn.jants</groupId>
+    <artifactId>ants-core</artifactId>
+    <version>1.0</version>
+</dependency>
 ```
 
 
