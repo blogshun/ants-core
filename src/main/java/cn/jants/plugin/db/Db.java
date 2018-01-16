@@ -1,18 +1,18 @@
 package cn.jants.plugin.db;
 
 import cn.jants.common.bean.JsonMap;
-import cn.jants.common.exception.SQLParamsException;
-import cn.jants.common.utils.StrCaseUtil;
-import cn.jants.plugin.orm.Criteria;
-import cn.jants.plugin.orm.Table;
-import cn.jants.plugin.sqlmap.Sql;
-import com.alibaba.fastjson.JSON;
 import cn.jants.common.bean.Page;
 import cn.jants.common.bean.Prop;
 import cn.jants.common.enums.TxLevel;
+import cn.jants.common.exception.SQLParamsException;
+import cn.jants.common.utils.StrCaseUtil;
 import cn.jants.core.context.AppConstant;
 import cn.jants.core.utils.ParamTypeUtil;
+import cn.jants.plugin.orm.Criteria;
+import cn.jants.plugin.orm.Table;
+import cn.jants.plugin.sqlmap.Sql;
 import cn.jants.plugin.sqlmap.SqlParams;
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -778,6 +778,10 @@ public class Db<T> {
         return list(sqlParams.getSql(), sqlParams.getParams());
     }
 
+    public List<JsonMap> findList(String statement) {
+        return findList(statement, null);
+    }
+
     public List<T> findList(String statement, Class<T> cls, Map params) {
         SqlParams sqlParams = Sql.getSql(statement, params);
         return list(sqlParams.getSql(), cls, sqlParams.getParams());
@@ -793,6 +797,10 @@ public class Db<T> {
     public Page findPage(String statement, Integer index, Integer size, Map params) {
         SqlParams sqlParams = Sql.getSql(statement, params);
         return page(sqlParams.getSql(), index, size, sqlParams.getParams());
+    }
+
+    public Page<T> findPage(String statement, Integer index, Integer size) {
+        return findPage(statement, index, size, null);
     }
 
     /**
@@ -850,6 +858,10 @@ public class Db<T> {
     public int updateZ(String statement, Map params) {
         SqlParams sqlParams = Sql.getSql(statement, params);
         return update(sqlParams.getSql(), sqlParams.getParams());
+    }
+
+    public int updateZ(String statement) {
+        return updateZ(statement, null);
     }
 
 }
