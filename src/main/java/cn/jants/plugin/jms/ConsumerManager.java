@@ -43,11 +43,11 @@ public class ConsumerManager {
             Session session = connection.createSession(Boolean.FALSE, Session.AUTO_ACKNOWLEDGE);
 
             for (Class<?> consumerCls : consumers) {
-                JmsListener jmsListener = consumerCls.getDeclaredAnnotation(JmsListener.class);
+                JmsListener jmsListener = consumerCls.getAnnotation(JmsListener.class);
                 Object target = consumerCls.newInstance();
                 if (target instanceof JmsConsumer) {
                     //检测是否有Service
-                    if(consumerCls.getDeclaredAnnotation(Service.class) != null){
+                    if(consumerCls.getAnnotation(Service.class) != null){
                         String serName = consumerCls.getName();
                         String key = GenerateUtil.createServiceKey(serName);
                         target = ServiceManager.getService(key);

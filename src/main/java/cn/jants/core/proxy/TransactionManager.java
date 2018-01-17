@@ -33,7 +33,7 @@ public class TransactionManager {
             dbs = new ArrayList<>();
             for (Field field : fields) {
                 if (field.getType() == Db.class) {
-                    Source source = field.getDeclaredAnnotation(Source.class);
+                    Source source = field.getAnnotation(Source.class);
                     TxLevel level = TxLevel.REPEATED_READ;
                     if (methodTx != null) {
                         level = methodTx.value();

@@ -1,11 +1,11 @@
 package cn.jants.common.bean;
 
-import cn.jants.common.utils.CollectionUtil;
-import com.alibaba.fastjson.JSON;
 import cn.jants.common.annotation.service.Aop;
 import cn.jants.common.annotation.service.Uop;
+import cn.jants.common.utils.CollectionUtil;
 import cn.jants.plugin.cache.Cacheable;
 import cn.jants.restful.request.RequestMappingBean;
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 日志打印工具
@@ -72,7 +75,7 @@ public class Log {
         if ("application/json".equals(request.getContentType())) {
             sb.append("Parameter   : ").append(bean.getParams()).append("\n");
         } else {
-            sb.append("Parameter   : ").append(JSON.toJSON(request.getParameterMap())).append("\n");
+            sb.append("Parameter   : ").append(getParams(request.getParameterMap())).append("\n");
         }
         Cacheable cache = m.getAnnotation(Cacheable.class);
         if (cache != null) {
@@ -132,5 +135,21 @@ public class Log {
             }
         }
         return null;
+    }
+
+    /**
+     * 获取请求参数
+     *
+     * @param paramsMap
+     * @return
+     */
+    private static String getParams(Map<String, String[]> paramsMap) {
+        Set<Map.Entry<String, String[]>> entries = paramsMap.entrySet();
+        Map<String, Object> pm = new HashMap<>();
+        for (Map.Entry<String, String[]> entry : entries) {
+            String[] values = entry.getValue();
+            pm.put(entry.getKey(), values.length == 1 ? values[0] : values);
+        }
+        return JSON.toJSONString(pm);
     }
 }

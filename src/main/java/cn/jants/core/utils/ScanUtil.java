@@ -48,7 +48,7 @@ public class ScanUtil {
                         if (check(clsName, packages)) {
                             Class<?> cls = Class.forName(clsName);
                             CLASSES.add(cls);
-                            Annotation anno = cls.getDeclaredAnnotation(annotationCls);
+                            Annotation anno = cls.getAnnotation(annotationCls);
                             if (anno != null) {
                                 result.add(cls);
                             }
@@ -70,7 +70,7 @@ public class ScanUtil {
                 loadPathClass(classPath, packages);
             }
             for (Class cls : CLASSES) {
-                if (cls.getDeclaredAnnotation(annotationCls) != null) {
+                if (cls.getAnnotation(annotationCls) != null) {
                     result.add(cls);
                 }
             }

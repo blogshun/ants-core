@@ -32,7 +32,7 @@ public class SchedulerManager {
                 object = cls.newInstance();
                 if(object instanceof Runnable){
                     //检测是否有Service
-                    if(cls.getDeclaredAnnotation(Service.class) != null){
+                    if(cls.getAnnotation(Service.class) != null){
                         String serName = cls.getName();
                         String key = GenerateUtil.createServiceKey(serName);
                         object = ServiceManager.getService(key);

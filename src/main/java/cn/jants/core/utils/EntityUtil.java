@@ -26,7 +26,7 @@ public class EntityUtil {
      * @param <T>
      */
     public static <T> void optSetMethod(Field field, String[] value, T obj, List<String> errMsgs) {
-        Param param = field.getDeclaredAnnotation(Param.class);
+        Param param = field.getAnnotation(Param.class);
         if (value != null) {
             if (param != null) {
                 String regexType = param.type().getRegex();

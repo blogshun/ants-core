@@ -75,7 +75,7 @@ public class AntsContext {
     public AntsContext(Class<?> loadClass, ServletContext servletContext) {
         AppConstant.LOAD_CLASS = loadClass;
         //通过注解加载配置
-        PropertyConfiguration propertyConfiguration = loadClass.getDeclaredAnnotation(PropertyConfiguration.class);
+        PropertyConfiguration propertyConfiguration = loadClass.getAnnotation(PropertyConfiguration.class);
         if (propertyConfiguration != null) {
             //初始化AES 16位随机密钥
             String secretKey = propertyConfiguration.secretKey();
@@ -105,7 +105,7 @@ public class AntsContext {
         }
 
         //通过注解获取模板配置
-        ViewConfiguration tplConfiguration = loadClass.getDeclaredAnnotation(ViewConfiguration.class);
+        ViewConfiguration tplConfiguration = loadClass.getAnnotation(ViewConfiguration.class);
         if (tplConfiguration != null) {
             AppConstant.TPL_CONFIG = tplConfiguration;
 
@@ -125,7 +125,7 @@ public class AntsContext {
         }
 
         //获取需要扫描的包路径
-        Application application = loadClass.getDeclaredAnnotation(Application.class);
+        Application application = loadClass.getAnnotation(Application.class);
         if (application == null) {
             throw new RuntimeException("启动类缺少@Application注解");
         }
@@ -209,7 +209,7 @@ public class AntsContext {
         }
         List<SchedulerBean> schedulers = new ArrayList<>();
         for (Class<?> cls : classes) {
-            FixedDelay fixedDelay = cls.getDeclaredAnnotation(FixedDelay.class);
+            FixedDelay fixedDelay = cls.getAnnotation(FixedDelay.class);
             schedulers.add(new SchedulerBean(fixedDelay, cls));
         }
         return new SchedulerManager(schedulers);
@@ -220,7 +220,7 @@ public class AntsContext {
      */
     private void initAnnotationPlugin(Class<?> loadClass) {
         //加载数据库链接
-        DbConfiguration dbConfiguration = loadClass.getDeclaredAnnotation(DbConfiguration.class);
+        DbConfiguration dbConfiguration = loadClass.getAnnotation(DbConfiguration.class);
         if (dbConfiguration != null) {
             DbSource[] dbs = dbConfiguration.dbs();
             if (dbs.length > 0) {
@@ -261,7 +261,7 @@ public class AntsContext {
         }
 
         //初始化Reids插件
-        EnableRedisPlugin redisPlugin = loadClass.getDeclaredAnnotation(EnableRedisPlugin.class);
+        EnableRedisPlugin redisPlugin = loadClass.getAnnotation(EnableRedisPlugin.class);
         if (redisPlugin != null) {
             String hostStr = Prop.getKeyStrValue(redisPlugin.host());
             String defaultHostStr = Prop.getStr("ants.redis.host");
@@ -285,7 +285,7 @@ public class AntsContext {
         }
 
         //初始化ActiveMq生产者插件
-        EnableActiveMQPlugin activeMQPlugin = loadClass.getDeclaredAnnotation(EnableActiveMQPlugin.class);
+        EnableActiveMQPlugin activeMQPlugin = loadClass.getAnnotation(EnableActiveMQPlugin.class);
         if (activeMQPlugin != null) {
             String brokerUrlStr = Prop.getKeyStrValue(activeMQPlugin.brokerUrl());
             String defaultBrokerUrlStr = Prop.getStr("ants.jms.activemq.broker-url");
@@ -305,13 +305,13 @@ public class AntsContext {
         }
 
         //初始化Ehcache插件
-        EnableEhcachePlugin enableEhcachePlugin = loadClass.getDeclaredAnnotation(EnableEhcachePlugin.class);
+        EnableEhcachePlugin enableEhcachePlugin = loadClass.getAnnotation(EnableEhcachePlugin.class);
         if (enableEhcachePlugin != null) {
             plugins.add(new EhCachePlugin(enableEhcachePlugin.value()));
         }
 
         //初始化SqlMap插件
-        EnableSQLMapPlugin sqlMapPlugin = loadClass.getDeclaredAnnotation(EnableSQLMapPlugin.class);
+        EnableSQLMapPlugin sqlMapPlugin = loadClass.getAnnotation(EnableSQLMapPlugin.class);
         if (sqlMapPlugin != null) {
             plugins.add(new SqlMapPlugin(sqlMapPlugin.value()));
         }
@@ -325,7 +325,7 @@ public class AntsContext {
      */
     private void initJmsConsumer(String[] packages, Class<?> loadClass) {
         //初始化ActiveMq生产者插件
-        EnableActiveMQPlugin activeMQPlugin = loadClass.getDeclaredAnnotation(EnableActiveMQPlugin.class);
+        EnableActiveMQPlugin activeMQPlugin = loadClass.getAnnotation(EnableActiveMQPlugin.class);
         if (activeMQPlugin != null) {
             String brokerUrlStr = Prop.getKeyStrValue(activeMQPlugin.brokerUrl());
             String defaultBrokerUrlStr = Prop.getStr("ants.jms.activemq.broker-url");

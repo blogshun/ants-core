@@ -34,7 +34,7 @@ public class FiledBinding {
                 String key = "";
                 Object service;
                 try {
-                    Class targetClass = field.getDeclaredAnnotation(Autowired.class).value();
+                    Class targetClass = field.getAnnotation(Autowired.class).value();
                     Class typeClass = field.getType();
                     //判断是接口还是实现类
                     if (typeClass.isInterface() && targetClass == Autowired.class) {
