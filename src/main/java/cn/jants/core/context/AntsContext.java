@@ -1,28 +1,27 @@
 package cn.jants.core.context;
 
-import cn.jants.common.annotation.boot.PropertyConfiguration;
-import cn.jants.common.annotation.plugin.EnableEhcachePlugin;
-import cn.jants.common.annotation.service.Application;
-import cn.jants.common.enums.DataSourceType;
-import cn.jants.core.module.*;
-import cn.jants.plugin.db.*;
-import cn.jants.plugin.jms.ActiveMqPlugin;
-import cn.jants.plugin.template.VelocityTpl;
 import cn.jants.common.annotation.boot.DbConfiguration;
 import cn.jants.common.annotation.boot.DbSource;
+import cn.jants.common.annotation.boot.PropertyConfiguration;
 import cn.jants.common.annotation.boot.ViewConfiguration;
 import cn.jants.common.annotation.plugin.EnableActiveMQPlugin;
+import cn.jants.common.annotation.plugin.EnableEhcachePlugin;
 import cn.jants.common.annotation.plugin.EnableRedisPlugin;
 import cn.jants.common.annotation.plugin.EnableSQLMapPlugin;
+import cn.jants.common.annotation.service.Application;
 import cn.jants.common.bean.Log;
 import cn.jants.common.bean.Prop;
+import cn.jants.common.enums.DataSourceType;
 import cn.jants.common.enums.ViewType;
 import cn.jants.common.utils.StrUtil;
 import cn.jants.core.ext.Plugin;
 import cn.jants.core.handler.RenderHandler;
+import cn.jants.core.module.*;
 import cn.jants.core.utils.ScanUtil;
 import cn.jants.plugin.cache.EhCachePlugin;
 import cn.jants.plugin.cache.RedisPlugin;
+import cn.jants.plugin.db.*;
+import cn.jants.plugin.jms.ActiveMqPlugin;
 import cn.jants.plugin.jms.ConsumerManager;
 import cn.jants.plugin.jms.JmsListener;
 import cn.jants.plugin.scheduler.FixedDelay;
@@ -31,6 +30,7 @@ import cn.jants.plugin.scheduler.SchedulerManager;
 import cn.jants.plugin.sqlmap.SqlMapPlugin;
 import cn.jants.plugin.template.BeetlTpl;
 import cn.jants.plugin.template.FreeMarkerTpl;
+import cn.jants.plugin.template.VelocityTpl;
 
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
@@ -79,8 +79,8 @@ public class AntsContext {
         if (propertyConfiguration != null) {
             //初始化AES 16位随机密钥
             String secretKey = propertyConfiguration.secretKey();
-            if(StrUtil.notBlank(secretKey)) {
-                if(secretKey.length() != 16){
+            if (StrUtil.notBlank(secretKey)) {
+                if (secretKey.length() != 16) {
                     throw new RuntimeException("secretKey must be 16 digit.");
                 }
                 AppConstant.SECRET_KEY = secretKey;
@@ -314,6 +314,12 @@ public class AntsContext {
         EnableSQLMapPlugin sqlMapPlugin = loadClass.getAnnotation(EnableSQLMapPlugin.class);
         if (sqlMapPlugin != null) {
             plugins.add(new SqlMapPlugin(sqlMapPlugin.value()));
+            //注册Mapper
+            if (AppConstant.DEBUG) {
+                Log.debug("Register Mapper .....");
+            }
+            Package pgs = loadClass.getPackage();
+            MapperManager.register(pgs.getName());
         }
 
     }

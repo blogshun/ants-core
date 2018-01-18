@@ -20,14 +20,13 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class SqlXmlParser {
 
-    private static final Logger logger = LoggerFactory.getLogger(SqlXmlParser.class);
-
-
-    protected static Map<String, List<SqlNode>> sqlMap = new ConcurrentHashMap<>();
+    protected static Map<String, TagElement> sqlMap = new ConcurrentHashMap<>();
 
     private static final String STATIC_START_SYMBOL = "#{";
 
     private static final String STATIC_END_SYMBOL = "}";
+
+    private static final String[] OPTIONS = new String[]{"column", "select", "insert", "update"};
 
 
     /**
@@ -42,48 +41,57 @@ public class SqlXmlParser {
             if (rootName.isEmpty()) {
                 throw new RuntimeException("the namespace domain must be defined!");
             }
-            NodeList nodeList = documentElement.getElementsByTagName("sql");
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node item = nodeList.item(i);
-                String key = rootName + "." + ((Element) item).getAttribute("id");
-                NodeList childs = item.getChildNodes();
-                List<SqlNode> nodes = new ArrayList<>();
-                for (int j = 0; j < childs.getLength(); j++) {
-                    Node it = childs.item(j);
-                    if (it.getNodeType() == Node.TEXT_NODE) {
-                        nodes.add(new TextSqlNode(it.getTextContent()));
-                    } else {
-                        String nodeName = it.getNodeName();
-                        if (nodeName == Tag.INCLUDE) {
-                            String refid = ((Element) it).getAttribute("refid");
-                            String includKey = rootName + "." + refid;
-                            List<SqlNode> sqlNodes = sqlMap.get(includKey);
-                            if (sqlNodes == null || sqlNodes.size() == 0) {
-                                throw new RuntimeException(includKey + " the includ reference node must exist or can only be configured in the front!");
-                            }
-                            nodes.add(new IncludeSqlNode(sqlNodes.get(0)));
-                        } else if (nodeName == Tag.IF) {
-                            nodes.add(new IfSqlNode(it));
-                        } else if (nodeName == Tag.WHERE) {
-                            nodes.add(new WhereSqlNode(it));
-                        } else if (nodeName == Tag.SET) {
-                            nodes.add(new SetSqlNode(it));
-                        } else if (nodeName == Tag.TRIM) {
-                            nodes.add(new TrimSqlNode(it));
-                        } else if (nodeName == Tag.CHOOSE) {
-                            nodes.add(new ChooseSqlNode(it));
-                        } else if (nodeName == Tag.FOREACH) {
-                            nodes.add(new ForEachSqlNode(it));
+            for(String option: OPTIONS){
+                NodeList nodeList = documentElement.getElementsByTagName(option);
+                addTagElement(option, rootName, nodeList);
+            }
+        }
+        System.out.println(sqlMap.size());
+    }
+
+    private static void addTagElement(String type, String rootName, NodeList nodeList){
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node item = nodeList.item(i);
+            String key = rootName + "." + ((Element) item).getAttribute("id");
+            NodeList childs = item.getChildNodes();
+            List<SqlNode> nodes = new ArrayList<>();
+            for (int j = 0; j < childs.getLength(); j++) {
+                Node it = childs.item(j);
+                if (it.getNodeType() == Node.TEXT_NODE) {
+                    nodes.add(new TextSqlNode(it.getTextContent()));
+                } else {
+                    String nodeName = it.getNodeName();
+                    if (nodeName == Tag.INCLUDE) {
+                        String refid = ((Element) it).getAttribute("refid");
+                        String includKey = rootName + "." + refid;
+                        TagElement tagElement = sqlMap.get(includKey);
+                        if (tagElement == null) {
+                            throw new RuntimeException(String.format("not found %s !", includKey));
                         }
+                        List<SqlNode> sqlNodes = tagElement.getSqlNodeList();
+                        if (sqlNodes == null || sqlNodes.size() == 0) {
+                            throw new RuntimeException(includKey + " the includ reference node must exist or can only be configured in the front!");
+                        }
+                        nodes.add(new IncludeSqlNode(sqlNodes.get(0)));
+                    } else if (nodeName == Tag.IF) {
+                        nodes.add(new IfSqlNode(it));
+                    } else if (nodeName == Tag.WHERE) {
+                        nodes.add(new WhereSqlNode(it));
+                    } else if (nodeName == Tag.SET) {
+                        nodes.add(new SetSqlNode(it));
+                    } else if (nodeName == Tag.TRIM) {
+                        nodes.add(new TrimSqlNode(it));
+                    } else if (nodeName == Tag.CHOOSE) {
+                        nodes.add(new ChooseSqlNode(it));
+                    } else if (nodeName == Tag.FOREACH) {
+                        nodes.add(new ForEachSqlNode(it));
                     }
                 }
-                sqlMap.put(key, nodes);
-
             }
+            sqlMap.put(key, new TagElement(type, nodes));
 
         }
     }
-
 
     /**
      * 根据命名空间和参数对象获取sql语句对象
@@ -93,7 +101,8 @@ public class SqlXmlParser {
      * @return
      */
     public static SqlParams getPreparedStatement(String key, Object params) {
-        List<SqlNode> sqlNodes = sqlMap.get(key);
+        TagElement tagElement = sqlMap.get(key);
+        List<SqlNode> sqlNodes = tagElement.getSqlNodeList();
         if (sqlNodes == null || sqlNodes.size() == 0) {
             throw new IllegalArgumentException("not find " + key + "!");
         }
@@ -136,6 +145,15 @@ public class SqlXmlParser {
 
     public static void clear() {
         sqlMap.clear();
+    }
+
+    public static String getType(String key){
+        TagElement tagElement = sqlMap.get(key);
+        List<SqlNode> sqlNodes = tagElement.getSqlNodeList();
+        if (sqlNodes == null || sqlNodes.size() == 0) {
+            throw new IllegalArgumentException("not find " + key + "!");
+        }
+        return tagElement.getType();
     }
 
 }

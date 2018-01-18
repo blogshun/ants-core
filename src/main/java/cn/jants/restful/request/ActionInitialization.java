@@ -2,10 +2,10 @@ package cn.jants.restful.request;
 
 import cn.jants.common.annotation.action.*;
 import cn.jants.common.enums.RequestMethod;
-import cn.jants.core.proxy.FiledBinding;
 import cn.jants.core.context.AppConstant;
 import cn.jants.core.ext.InitializingBean;
 import cn.jants.core.proxy.CglibProxy;
+import cn.jants.core.proxy.FiledBinding;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -96,7 +96,6 @@ public class ActionInitialization {
         }
         return result;
     }
-
 
     /**
      * 格式化URL字符串 如果没有没有/前缀则添加
