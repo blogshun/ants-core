@@ -3,16 +3,18 @@ package cn.jants.core.utils;
 import cn.jants.plugin.orm.Table;
 import cn.jants.plugin.orm.TableBean;
 import cn.jants.plugin.orm.TableMapper;
+import cn.jants.plugin.sqlmap.SqlMapPlugin;
+import cn.jants.plugin.sqlmap.SqlXmlParser;
+import com.alibaba.fastjson.JSON;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
 import com.squareup.javapoet.TypeSpec;
+import org.xml.sax.SAXException;
 
 import javax.lang.model.element.Modifier;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author MrShun
@@ -33,7 +35,16 @@ public class CodeUtil {
      * @param targetDir 目标目录
      */
     public static void genStaticMapper(String sqlPath, String targetDir) {
+        SqlMapPlugin sqlMapPlugin = new SqlMapPlugin(sqlPath);
+        try {
+            sqlMapPlugin.start();
+          //  List<String> keys = SqlXmlParser.getKeys();
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -51,6 +62,33 @@ public class CodeUtil {
             System.out.println(tableBean.getTable());
             javaStaticFiledPoet(tableBean, scanCls, targetPkg, targetDirectory);
         }
+    }
+
+    public static Map<String, List<String>> javaStaticMapperPoet(List<String> keys, String targetDirectory) {
+        Map<String, List<String>> ckMap = new HashMap<>();
+
+        for(String key: keys){
+            String[] keyStr = key.split("\\.");
+            String className = keyStr[0];
+            String filed = keyStr[1];
+            if(!ckMap.containsKey(className)){
+                List<String> valList= new ArrayList<>();
+                ckMap.put(className, valList);
+            }else{
+                List<String> strings = ckMap.get(className);
+                strings.add(filed);
+                ckMap.put(className, strings);
+            }
+//            //生成类型
+//            TypeSpec.Builder builder = TypeSpec.classBuilder(className)
+//                    .addModifiers(Modifier.PUBLIC);
+//            String aliasStr = recursion();
+//            FieldSpec tableFieldSpec = FieldSpec.builder(String.class, filed.toUpperCase(), Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
+//                    .initializer("$S", key)
+//                    .build();
+//            builder.addField(tableFieldSpec);
+        }
+        return ckMap;
     }
 
     private static void javaStaticFiledPoet(TableBean tableBean, Class cls, String targetPkg, String targetDirectory) {
@@ -78,9 +116,9 @@ public class CodeUtil {
 
             builder.addField(defaultFieldSpec);
         }
-        TypeSpec hellworld = builder.build();
+        TypeSpec build = builder.build();
         //构建Java源文件
-        JavaFile javaFile = JavaFile.builder(targetPkg, hellworld).build();
+        JavaFile javaFile = JavaFile.builder(targetPkg, build).build();
 
         //5. 输出java源文件到文件系统
         try {
@@ -112,5 +150,17 @@ public class CodeUtil {
         int i = random.nextInt(25);
         int j = random.nextInt(9);
         return "" + letter.toCharArray()[i] + num.toCharArray()[j];
+    }
+
+    public static void main(String[] args) {
+        List<String> keys = new ArrayList<>();
+        keys.add("User.selectUser");
+        keys.add("User.deleteUser");
+        keys.add("User.updateUser");
+        keys.add("Admin.selectAdmin");
+        keys.add("Admin.deleteAdmin");
+        keys.add("Admin.updateAdmin");
+        Map<String, List<String>> stringListMap = javaStaticMapperPoet(keys, null);
+        System.out.println(JSON.toJSONString(stringListMap));
     }
 }

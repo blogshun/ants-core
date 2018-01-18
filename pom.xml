@@ -7,7 +7,7 @@
 
     <groupId>cn.jants</groupId>
     <artifactId>ants-core</artifactId>
-    <version>1.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>ants-core</name>
     <url>https://github.com/blogshun/ants-core</url>
@@ -192,6 +192,7 @@
             <groupId>com.squareup</groupId>
             <artifactId>javapoet</artifactId>
             <version>${javapoet.version}</version>
+            <scope>provided</scope>
         </dependency>
         <!-- ===== 内嵌jetty 容器 ==== -->
         <dependency>

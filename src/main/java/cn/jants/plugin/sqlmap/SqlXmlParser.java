@@ -1,8 +1,6 @@
 package cn.jants.plugin.sqlmap;
 
 import cn.jants.core.utils.ParamTypeUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,7 +24,7 @@ public class SqlXmlParser {
 
     private static final String STATIC_END_SYMBOL = "}";
 
-    private static final String[] OPTIONS = new String[]{"column", "select", "insert", "update"};
+    private static final String[] OPTIONS = new String[]{"sql", "select", "insert", "update", "delete"};
 
 
     /**
@@ -41,7 +39,7 @@ public class SqlXmlParser {
             if (rootName.isEmpty()) {
                 throw new RuntimeException("the namespace domain must be defined!");
             }
-            for(String option: OPTIONS){
+            for (String option : OPTIONS) {
                 NodeList nodeList = documentElement.getElementsByTagName(option);
                 addTagElement(option, rootName, nodeList);
             }
@@ -49,7 +47,7 @@ public class SqlXmlParser {
         System.out.println(sqlMap.size());
     }
 
-    private static void addTagElement(String type, String rootName, NodeList nodeList){
+    private static void addTagElement(String type, String rootName, NodeList nodeList) {
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node item = nodeList.item(i);
             String key = rootName + "." + ((Element) item).getAttribute("id");
@@ -116,7 +114,7 @@ public class SqlXmlParser {
         }
         List<Object> values = new ArrayList<>();
         //基本数据类型
-        if(ParamTypeUtil.isBaseDataType(params.getClass())) {
+        if (ParamTypeUtil.isBaseDataType(params.getClass())) {
             System.out.println(sql);
             int startNum = sql.indexOf(STATIC_START_SYMBOL);
             sql = sql.substring(0, startNum).concat("?");
@@ -147,13 +145,13 @@ public class SqlXmlParser {
         sqlMap.clear();
     }
 
-    public static String getType(String key){
+    public static String getOptionType(String key) {
         TagElement tagElement = sqlMap.get(key);
         List<SqlNode> sqlNodes = tagElement.getSqlNodeList();
         if (sqlNodes == null || sqlNodes.size() == 0) {
             throw new IllegalArgumentException("not find " + key + "!");
         }
-        return tagElement.getType();
+        return tagElement.getOptionType();
     }
 
 }

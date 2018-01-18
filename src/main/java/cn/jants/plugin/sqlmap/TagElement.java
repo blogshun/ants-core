@@ -9,21 +9,33 @@ import java.util.List;
  */
 public class TagElement {
 
-    private String type;
+    /**
+     * 操作类型
+     */
+    private String optionType;
 
+    /**
+     * 节点信息
+     */
     private List<SqlNode> sqlNodeList;
 
-    public TagElement(String type, List<SqlNode> sqlNodeList) {
-        this.type = type;
+    /**
+     * 返回类型
+     */
+    private String returnType;
+
+
+    public TagElement(String optionType, List<SqlNode> sqlNodeList) {
+        this.optionType = optionType;
         this.sqlNodeList = sqlNodeList;
     }
 
-    public String getType() {
-        return type;
+    public String getOptionType() {
+        return optionType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setOptionType(String optionType) {
+        this.optionType = optionType;
     }
 
     public List<SqlNode> getSqlNodeList() {
@@ -32,5 +44,13 @@ public class TagElement {
 
     public void setSqlNodeList(List<SqlNode> sqlNodeList) {
         this.sqlNodeList = sqlNodeList;
+    }
+
+    public String getReturnType() {
+        return returnType;
+    }
+
+    public void setReturnType(String returnType) {
+        this.returnType = returnType;
     }
 }

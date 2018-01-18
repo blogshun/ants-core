@@ -37,7 +37,7 @@ public class MapperProxy implements InvocationHandler {
         System.out.println("代理之前...");
         System.out.println(args);
         String sqlkey = mapperName.concat(".").concat(method.getName());
-        String optionType = SqlXmlParser.getType(sqlkey);
+        String optionType = SqlXmlParser.getOptionType(sqlkey);
         Mapper mapper = targetCls.getAnnotation(Mapper.class);
         Db db = DbManager.get(mapper.value());
         Class<?> returnType = method.getReturnType();
@@ -55,7 +55,7 @@ public class MapperProxy implements InvocationHandler {
 
         }
         //更新操作
-        else if ("update".equals(optionType)) {
+        else if ("update".equals(optionType) || "delete".equals(optionType)) {
 
         }
         return result;
