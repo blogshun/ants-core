@@ -1,17 +1,16 @@
 package cn.jants.restful.request;
 
-import cn.jants.common.annotation.action.Entity;
+import cn.jants.common.annotation.action.Param;
 import cn.jants.common.annotation.action.PathVariable;
 import cn.jants.common.bean.JsonMap;
 import cn.jants.common.exception.TipException;
 import cn.jants.common.utils.IOUtil;
 import cn.jants.core.utils.EntityUtil;
 import cn.jants.core.utils.ParamTypeUtil;
+import cn.jants.restful.bind.LocalVariableTableParameterNameDiscoverer;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import cn.jants.common.annotation.action.Param;
-import cn.jants.restful.bind.LocalVariableTableParameterNameDiscoverer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -45,8 +44,10 @@ public class BindingParams {
         }
         //定义参数数组并且绑定变量
         Object[] args = new Object[parameterTypes.length];
+
         //获取参数名称
         String[] params = LVP.getParameterNames(method);
+
         //定义错误消息
         List<String> errMsgs = new ArrayList<>();
         String jsonBodyStr = null;
@@ -62,7 +63,7 @@ public class BindingParams {
         }
 
         //给方法参数赋值
-        outterLoop:
+        outLoop:
         for (int i = 0; i < parameterTypes.length; i++) {
             Class parameterType = parameterTypes[i];
             if (parameterType == HttpServletRequest.class) {
@@ -80,12 +81,18 @@ public class BindingParams {
             } else if (parameterType == Map.class || parameterType == HashMap.class) {
                 args[i] = jsonBodyStr == null ? request.getParameterMap() : JSON.parseObject(jsonBodyStr, Map.class);
             } else if (parameterType == JsonMap.class) {
-                JsonMap jsonMap = JsonMap.newJsonMap();
-                Map<String, Object> parameterMap = jsonBodyStr == null ? request.getParameterMap() : JSON.parseObject(jsonBodyStr, Map.class);
-                for (Map.Entry<String, Object> entry : parameterMap.entrySet()) {
-                    jsonMap.put(entry.getKey(), entry.getValue());
+                if (jsonBodyStr == null) {
+                    JsonMap jsonMap = JsonMap.newJsonMap();
+                    Map<String, String[]> parameterMap = request.getParameterMap();
+                    for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
+                        String[] values = entry.getValue();
+                        jsonMap.put(entry.getKey(), values.length == 1 ? values[0] : values);
+                    }
+                    args[i] = request.getParameterMap();
+
+                } else {
+                    args[i] = JSON.parseObject(jsonBodyStr, JsonMap.class);
                 }
-                args[i] = jsonMap;
             } else {
 
                 //获取方法参数注解并进行校验
@@ -104,7 +111,7 @@ public class BindingParams {
                                 } else {
                                     args[i] = ParamTypeUtil.parse(val, parameterType);
                                 }
-                                continue outterLoop;
+                                continue outLoop;
                             }
                         }
 
@@ -153,12 +160,12 @@ public class BindingParams {
                                     }
                                 }
                             }
-                            continue outterLoop;
+                            continue outLoop;
                         }
                     }
                 }
 
-                //发现对象是实体对象的时候 弃用parameterType.getAnnotation(Entity.class)
+                //发现对象是实体对象的时候 弃用parameterType.getDeclaredAnnotation(Entity.class)
                 if (parameterType.getClassLoader() != null) {
                     Object entityObj = null;
                     try {

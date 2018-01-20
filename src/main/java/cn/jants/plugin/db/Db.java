@@ -556,7 +556,7 @@ public class Db<T> {
                 ResultSetMetaData rsm = rs.getMetaData();
                 obj = cls.newInstance();
                 Class<?> superclass = cls.getSuperclass();
-                if (superclass.getAnnotation(Table.class) != null) {
+                if (superclass.getDeclaredAnnotation(Table.class) != null) {
                     setColumns(rs, rsm, superclass.getDeclaredFields(), obj);
                 } else {
                     setColumns(rs, rsm, cls.getDeclaredFields(), obj);
@@ -616,7 +616,7 @@ public class Db<T> {
             //获得列集
             ResultSetMetaData rsm = rs.getMetaData();
             Class<?> superclass = cls.getSuperclass();
-            Table tableAnnotation = superclass.getAnnotation(Table.class);
+            Table tableAnnotation = superclass.getDeclaredAnnotation(Table.class);
             while (rs.next()) {
                 T obj = cls.newInstance();
                 if (tableAnnotation != null) {

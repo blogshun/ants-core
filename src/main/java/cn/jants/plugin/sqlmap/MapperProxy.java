@@ -37,18 +37,31 @@ public class MapperProxy implements InvocationHandler {
         System.out.println("代理之前...");
         System.out.println(args);
         String sqlkey = mapperName.concat(".").concat(method.getName());
-        String optionType = SqlXmlParser.getOptionType(sqlkey);
-        Mapper mapper = targetCls.getAnnotation(Mapper.class);
+        TagElement tagElement = SqlXmlParser.getOptionType(sqlkey);
+        Mapper mapper = targetCls.getDeclaredAnnotation(Mapper.class);
         Db db = DbManager.get(mapper.value());
-        Class<?> returnType = method.getReturnType();
+        Class<?> methodReturnType = method.getReturnType();
         SqlParams sqlParams = SqlXmlParser.getPreparedStatement(sqlkey, args);
+
+        String optionType = tagElement.getOptionType();
+        String returnType = tagElement.getReturnType();
         //查询操作
         if ("select".equals(optionType)) {
-            if (returnType == List.class) {
+//            if("jsonmap".equals(returnType)){
+//
+//            }else if("string".equals(returnType)){
+//
+//            }else if("int".equals(returnType)){
+//
+//            }else if("long".equals(returnType)){
+//
+//            }
+            if (methodReturnType == List.class) {
                 result = db.list(sqlParams.getSql(), sqlParams.getParams());
             } else {
                 result = db.query(sqlParams.getSql(), sqlParams.getParams());
             }
+
         }
         //保存操作
         else if ("insert".equals(optionType)) {

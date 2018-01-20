@@ -25,15 +25,15 @@ public class TransactionManager {
 
     public TransactionManager(Object target, Method method) {
         //=================== 处理事物 ======================
-        Tx methodTx = method.getAnnotation(Tx.class);
-        Tx classTx = target.getClass().getAnnotation(Tx.class);
+        Tx methodTx = method.getDeclaredAnnotation(Tx.class);
+        Tx classTx = target.getClass().getDeclaredAnnotation(Tx.class);
 
         if (methodTx != null || classTx != null) {
             Field[] fields = target.getClass().getDeclaredFields();
             dbs = new ArrayList<>();
             for (Field field : fields) {
                 if (field.getType() == Db.class) {
-                    Source source = field.getAnnotation(Source.class);
+                    Source source = field.getDeclaredAnnotation(Source.class);
                     TxLevel level = TxLevel.REPEATED_READ;
                     if (methodTx != null) {
                         level = methodTx.value();

@@ -278,7 +278,7 @@ public class MethodParameter {
      * @return the annotation object, or {@code null} if not found
      */
     public <T extends Annotation> T getMethodAnnotation(Class<T> annotationType) {
-        return getAnnotatedElement().getAnnotation(annotationType);
+        return getAnnotatedElement().getDeclaredAnnotation(annotationType);
     }
 
     /**

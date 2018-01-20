@@ -31,23 +31,23 @@ public class TableMapper {
         } else {
             TableBean tableBean = new TableBean();
             Class<?> superclass = cls.getSuperclass();
-            Table table = superclass.getAnnotation(Table.class);
+            Table table = superclass.getDeclaredAnnotation(Table.class);
             Field[] fields;
             if (table != null) {
                 fields = superclass.getDeclaredFields();
             } else {
-                table = cls.getAnnotation(Table.class);
+                table = cls.getDeclaredAnnotation(Table.class);
                 fields = cls.getDeclaredFields();
             }
             String tableName = table.name();
             tableBean.setTable(tableName);
             List list = new ArrayList<>();
             for (Field field : fields) {
-                Column column = field.getAnnotation(Column.class);
+                Column column = field.getDeclaredAnnotation(Column.class);
                 if (column != null) {
                     String columnName = column.name();
                     list.add(columnName);
-                    Id primaryKey = field.getAnnotation(Id.class);
+                    Id primaryKey = field.getDeclaredAnnotation(Id.class);
                     if (primaryKey != null) {
                         tableBean.setPrimaryKey(columnName);
                     }
@@ -138,7 +138,7 @@ public class TableMapper {
 //        if (tableBean.getPrimaryKey() == null) {
 //            throw new RuntimeException(cls + " 没有找到@Id主键注解!");
 //        }
-        if (cls.getAnnotation(Table.class) == null) {
+        if (cls.getDeclaredAnnotation(Table.class) == null) {
             throw new RuntimeException(obj + " 当前实体没有@Table注解, 不是实体映射类!");
         }
         StringBuffer sql = new StringBuffer("update ");
@@ -154,7 +154,7 @@ public class TableMapper {
             ReflectionUtils.makeAccessible(declaredField);
             Object objValue = ReflectionUtils.getField(declaredField, obj);
             if (StrUtil.notNull(objValue)) {
-                if (declaredField.getAnnotation(Id.class) == null) {
+                if (declaredField.getDeclaredAnnotation(Id.class) == null) {
                     sql.append(field).append("=?,");
                     params.add(objValue);
                 } else {

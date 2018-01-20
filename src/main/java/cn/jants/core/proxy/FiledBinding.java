@@ -1,6 +1,9 @@
 package cn.jants.core.proxy;
 
-import cn.jants.common.annotation.service.*;
+import cn.jants.common.annotation.service.Autowired;
+import cn.jants.common.annotation.service.Mapper;
+import cn.jants.common.annotation.service.Source;
+import cn.jants.common.annotation.service.Value;
 import cn.jants.common.bean.Log;
 import cn.jants.common.bean.Prop;
 import cn.jants.common.enums.DataSourceType;
@@ -31,11 +34,18 @@ public class FiledBinding {
             if (field.isAnnotationPresent(Autowired.class)) {
                 Class typeClass = field.getType();
                 ReflectionUtils.makeAccessible(field);
-                if (typeClass.isAnnotationPresent(Service.class)) {
+                if (typeClass.isAnnotationPresent(Mapper.class)) {
+                    Object mapper = MapperManager.getMapper(typeClass);
+                    try {
+                        field.set(object, mapper);
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                } else {
                     String key = "";
                     Object service;
                     try {
-                        Class targetClass = field.getAnnotation(Autowired.class).value();
+                        Class targetClass = field.getDeclaredAnnotation(Autowired.class).value();
                         //判断是接口还是实现类
                         if (typeClass.isInterface() && targetClass == Autowired.class) {
                             //默认直接实例化第一个接口
@@ -69,17 +79,10 @@ public class FiledBinding {
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
-                } else if (typeClass.isAnnotationPresent(Mapper.class)) {
-                    Object mapper = MapperManager.getMapper(typeClass);
-                    try {
-                        field.set(object, mapper);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
                 }
             } else if (field.isAnnotationPresent(Value.class)) {
                 try {
-                    Value v = field.getAnnotation(Value.class);
+                    Value v = field.getDeclaredAnnotation(Value.class);
                     Object paramValue = Prop.getKeyValue(cls.getName(), v.value());
                     Object objectValue = ParamTypeUtil.parse(String.valueOf(paramValue), field.getType());
                     ReflectionUtils.makeAccessible(field);
@@ -90,7 +93,7 @@ public class FiledBinding {
             } else if (field.isAnnotationPresent(Source.class) && field.getType() == Db.class) {
                 try {
                     ReflectionUtils.makeAccessible(field);
-                    Source source = field.getAnnotation(Source.class);
+                    Source source = field.getDeclaredAnnotation(Source.class);
                     if ("".equals(source.value()) && source.type() == DataSourceType.NONE) {
                         if (DbManager.containsKey("")) {
                             field.set(object, DbManager.get(""));

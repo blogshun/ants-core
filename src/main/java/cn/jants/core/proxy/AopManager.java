@@ -20,11 +20,11 @@ public class AopManager {
     public static Object handler(Object target, Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
         //=================== 处理AOP ======================
         //取方法上面的AOP注解
-        Aop methodAop = method.getAnnotation(Aop.class);
+        Aop methodAop = method.getDeclaredAnnotation(Aop.class);
         //取方法上面的UOP注解
-        Uop methodUop = method.getAnnotation(Uop.class);
+        Uop methodUop = method.getDeclaredAnnotation(Uop.class);
         //取类上面的AOP注解
-        Aop classAop = target.getClass().getAnnotation(Aop.class);
+        Aop classAop = target.getClass().getDeclaredAnnotation(Aop.class);
         Object result = null;
         if (methodAop != null || classAop != null || methodUop != null) {
             //方法上面的AOP注解优先级大于类上面的优先级

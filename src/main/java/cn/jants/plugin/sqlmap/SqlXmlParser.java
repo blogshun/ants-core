@@ -51,24 +51,25 @@ public class SqlXmlParser {
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node item = nodeList.item(i);
             String key = rootName + "." + ((Element) item).getAttribute("id");
-            NodeList childs = item.getChildNodes();
+            String returnType = ((Element) item).getAttribute("returnType");
+            NodeList childNodes = item.getChildNodes();
             List<SqlNode> nodes = new ArrayList<>();
-            for (int j = 0; j < childs.getLength(); j++) {
-                Node it = childs.item(j);
+            for (int j = 0; j < childNodes.getLength(); j++) {
+                Node it = childNodes.item(j);
                 if (it.getNodeType() == Node.TEXT_NODE) {
                     nodes.add(new TextSqlNode(it.getTextContent()));
                 } else {
                     String nodeName = it.getNodeName();
                     if (nodeName == Tag.INCLUDE) {
                         String refid = ((Element) it).getAttribute("refid");
-                        String includKey = rootName + "." + refid;
-                        TagElement tagElement = sqlMap.get(includKey);
+                        String includeKey = rootName + "." + refid;
+                        TagElement tagElement = sqlMap.get(includeKey);
                         if (tagElement == null) {
-                            throw new RuntimeException(String.format("not found %s !", includKey));
+                            throw new RuntimeException(String.format("not found %s !", includeKey));
                         }
                         List<SqlNode> sqlNodes = tagElement.getSqlNodeList();
                         if (sqlNodes == null || sqlNodes.size() == 0) {
-                            throw new RuntimeException(includKey + " the includ reference node must exist or can only be configured in the front!");
+                            throw new RuntimeException(includeKey + " the includ reference node must exist or can only be configured in the front!");
                         }
                         nodes.add(new IncludeSqlNode(sqlNodes.get(0)));
                     } else if (nodeName == Tag.IF) {
@@ -86,7 +87,7 @@ public class SqlXmlParser {
                     }
                 }
             }
-            sqlMap.put(key, new TagElement(type, nodes));
+            sqlMap.put(key, new TagElement(type, returnType, nodes));
 
         }
     }
@@ -145,13 +146,13 @@ public class SqlXmlParser {
         sqlMap.clear();
     }
 
-    public static String getOptionType(String key) {
+    public static TagElement getOptionType(String key) {
         TagElement tagElement = sqlMap.get(key);
         List<SqlNode> sqlNodes = tagElement.getSqlNodeList();
         if (sqlNodes == null || sqlNodes.size() == 0) {
             throw new IllegalArgumentException("not find " + key + "!");
         }
-        return tagElement.getOptionType();
+        return tagElement;
     }
 
 }

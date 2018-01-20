@@ -1,5 +1,10 @@
 package cn.jants.common.bean;
 
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -7,9 +12,6 @@ import java.util.HashMap;
  * @version 1.0
  */
 public class JsonMap extends HashMap {
-
-    private JsonMap() {
-    }
 
     public static <K, V> JsonMap newJsonMap() {
         return new JsonMap();
@@ -54,6 +56,20 @@ public class JsonMap extends HashMap {
 
     public Boolean getBoolean(String key, Boolean defaultValue) {
         return get(key) == null ? defaultValue : Boolean.parseBoolean(String.valueOf(get(key)));
+    }
+
+    public Date getDate(String key, String formatStr) {
+        DateFormat df = new SimpleDateFormat(formatStr);
+        try {
+            return df.parse(getStr(key));
+        } catch (ParseException e) {
+            Log.error("Date class transition anomaly.");
+            return null;
+        }
+    }
+
+    public BigDecimal getBigDecimal(String key){
+        return new BigDecimal(getStr(key));
     }
 
     @Override

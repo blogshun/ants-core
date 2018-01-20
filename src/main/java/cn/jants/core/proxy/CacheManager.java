@@ -52,7 +52,7 @@ public class CacheManager {
 
     public CacheManager(Object target, Method method, Object[] args) {
         //存入缓存
-        Cacheable cache = method.getAnnotation(Cacheable.class);
+        Cacheable cache = method.getDeclaredAnnotation(Cacheable.class);
         if (cache != null) {
             isOpen = true;
             key = StrUtil.notBlank(cache.key()) ? getVarKey(cache.key(), target, method, args) : encodeStr(target, method, args);
@@ -73,7 +73,7 @@ public class CacheManager {
         }
 
         //清除缓存
-        CacheEvict cacheEvict = method.getAnnotation(CacheEvict.class);
+        CacheEvict cacheEvict = method.getDeclaredAnnotation(CacheEvict.class);
         if (cacheEvict != null) {
             EhCacheTpl ehCacheTpl = ServiceManager.getService(EhCacheTpl.class);
             if (ehCacheTpl == null) {
@@ -90,7 +90,7 @@ public class CacheManager {
         }
 
         //清空并重新存入缓存
-        CachePut cachePut = method.getAnnotation(CachePut.class);
+        CachePut cachePut = method.getDeclaredAnnotation(CachePut.class);
         if (cachePut != null) {
             EhCacheTpl ehCacheTpl = ServiceManager.getService(EhCacheTpl.class);
             if (ehCacheTpl == null) {

@@ -25,8 +25,9 @@ public class TagElement {
     private String returnType;
 
 
-    public TagElement(String optionType, List<SqlNode> sqlNodeList) {
+    public TagElement(String optionType, String returnType, List<SqlNode> sqlNodeList) {
         this.optionType = optionType;
+        this.returnType = returnType;
         this.sqlNodeList = sqlNodeList;
     }
 

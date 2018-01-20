@@ -77,13 +77,13 @@ public class Log {
         } else {
             sb.append("Parameter   : ").append(getParams(request.getParameterMap())).append("\n");
         }
-        Cacheable cache = m.getAnnotation(Cacheable.class);
+        Cacheable cache = m.getDeclaredAnnotation(Cacheable.class);
         if (cache != null) {
             sb.append("Cache       : ").append("true").append("\n");
         }
-        Aop classAop = c.getAnnotation(Aop.class);
-        Aop methodAop = m.getAnnotation(Aop.class);
-        Uop methodUop = m.getAnnotation(Uop.class);
+        Aop classAop = c.getDeclaredAnnotation(Aop.class);
+        Aop methodAop = m.getDeclaredAnnotation(Aop.class);
+        Uop methodUop = m.getDeclaredAnnotation(Uop.class);
         if (classAop != null || methodAop != null) {
             Class[] interceptors = CollectionUtil.union(classAop == null ? null : classAop.value(), methodAop == null ? null : methodAop.value());
             if (interceptors != null && interceptors.length > 0) {

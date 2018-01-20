@@ -26,7 +26,7 @@ public class EntityUtil {
      * @param <T>
      */
     public static <T> void optSetMethod(Field field, String[] value, T obj, List<String> errMsgs) {
-        Param param = field.getAnnotation(Param.class);
+        Param param = field.getDeclaredAnnotation(Param.class);
         if (value != null) {
             if (param != null) {
                 String regexType = param.type().getRegex();
@@ -57,7 +57,7 @@ public class EntityUtil {
                 field.setAccessible(true);
                 if (value != null && !"".equals(value[0]) && field.getType() == Date.class) {
                     String parseStr = "yyyy-MM-dd HH:mm";
-                    JSONField jsonfield = field.getAnnotation(JSONField.class);
+                    JSONField jsonfield = field.getDeclaredAnnotation(JSONField.class);
                     if (jsonfield != null && StrUtil.notBlank(jsonfield.format())) {
                         parseStr = jsonfield.format();
                     }

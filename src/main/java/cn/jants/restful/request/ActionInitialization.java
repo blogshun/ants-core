@@ -41,7 +41,7 @@ public class ActionInitialization {
                     InitializingBean ib = (InitializingBean) proxy;
                     ib.afterPropertiesSet();
                 }
-                Controller ctlAnno = ctl.getAnnotation(Controller.class);
+                Controller ctlAnno = ctl.getDeclaredAnnotation(Controller.class);
                 //得到该类下面的所有方法
                 Method[] methods = ctl.getDeclaredMethods();
                 for (Method method : methods) {
@@ -56,22 +56,22 @@ public class ActionInitialization {
                         //默认方法名称作为URL
                         String[] strUrls = new String[]{method.getName()};
                         //为POST注解
-                        if ((post = method.getAnnotation(POST.class)) != null) {
+                        if ((post = method.getDeclaredAnnotation(POST.class)) != null) {
                             requestType = RequestMethod.POST;
                             strUrls = post.value();
                         }
                         //为GET注解
-                        else if ((get = method.getAnnotation(GET.class)) != null) {
+                        else if ((get = method.getDeclaredAnnotation(GET.class)) != null) {
                             requestType = RequestMethod.GET;
                             strUrls = get.value();
                         }
                         //为PUT注解
-                        else if ((put = method.getAnnotation(PUT.class)) != null) {
+                        else if ((put = method.getDeclaredAnnotation(PUT.class)) != null) {
                             requestType = RequestMethod.PUT;
                             strUrls = put.value();
                         }
                         //为DELETE注解
-                        else if ((delete = method.getAnnotation(DELETE.class)) != null) {
+                        else if ((delete = method.getDeclaredAnnotation(DELETE.class)) != null) {
                             requestType = RequestMethod.DELETE;
                             strUrls = delete.value();
                         }
