@@ -53,4 +53,8 @@ public class AppConstant {
      */
     public static String SECRET_KEY;
 
+    /**
+     * 是否驼峰
+     */
+    public static boolean HUMP = false;
 }

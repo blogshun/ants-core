@@ -4,7 +4,6 @@ import cn.jants.plugin.orm.Table;
 import cn.jants.plugin.orm.TableBean;
 import cn.jants.plugin.orm.TableMapper;
 import cn.jants.plugin.sqlmap.SqlMapPlugin;
-import cn.jants.plugin.sqlmap.SqlXmlParser;
 import com.alibaba.fastjson.JSON;
 import com.squareup.javapoet.FieldSpec;
 import com.squareup.javapoet.JavaFile;
@@ -59,7 +58,6 @@ public class CodeUtil {
         List<Class<?>> scanClass = ScanUtil.findScanClass(packages, Table.class);
         for (Class<?> scanCls : scanClass) {
             TableBean tableBean = TableMapper.findTableBean(scanCls);
-            System.out.println(tableBean.getTable());
             javaStaticFiledPoet(tableBean, scanCls, targetPkg, targetDirectory);
         }
     }

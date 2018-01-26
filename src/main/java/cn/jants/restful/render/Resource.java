@@ -1,9 +1,9 @@
 package cn.jants.restful.render;
 
 import cn.jants.common.exception.TipException;
+import cn.jants.common.utils.FileUtil;
 import cn.jants.common.utils.StrUtil;
 import cn.jants.core.context.AppConstant;
-import cn.jants.core.utils.FileUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

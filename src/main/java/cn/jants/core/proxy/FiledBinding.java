@@ -1,7 +1,7 @@
 package cn.jants.core.proxy;
 
 import cn.jants.common.annotation.service.Autowired;
-import cn.jants.common.annotation.service.Mapper;
+import cn.jants.plugin.sqlmap.annotation.Mapper;
 import cn.jants.common.annotation.service.Source;
 import cn.jants.common.annotation.service.Value;
 import cn.jants.common.bean.Log;

@@ -1,5 +1,6 @@
-package cn.jants.plugin.sqlmap;
+package cn.jants.plugin.sqlmap.node;
 
+import cn.jants.plugin.sqlmap.OgnlCache;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 

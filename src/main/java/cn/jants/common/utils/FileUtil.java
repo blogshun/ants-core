@@ -1,5 +1,7 @@
 package cn.jants.common.utils;
 
+import cn.jants.common.bean.Log;
+
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
@@ -81,7 +83,7 @@ public class FileUtil {
                 file.renameTo(neile);
             } else {
                 if (neile.exists()) {
-                    System.out.println(newFile + " > 文件已经存在!");
+                    Log.info(newFile + " > 文件已经存在!");
                 } else {
                     file.renameTo(neile);
                 }
@@ -223,7 +225,6 @@ public class FileUtil {
         for (File f : list) {
             String currentFile = f.getPath();
             String targetFile = targetFolder + currentFile.replace(currentFolder, "");
-            System.out.println(currentFile + "|" + targetFile);
             copyFile(currentFile, targetFile);
         }
     }

@@ -2,15 +2,18 @@ package cn.jants.plugin.db;
 
 import cn.jants.common.bean.JsonMap;
 import cn.jants.common.bean.Page;
+import cn.jants.common.bean.PageConditions;
 import cn.jants.common.bean.Prop;
 import cn.jants.common.enums.TxLevel;
 import cn.jants.common.exception.SQLParamsException;
 import cn.jants.common.utils.StrCaseUtil;
+import cn.jants.common.utils.StrUtil;
 import cn.jants.core.context.AppConstant;
 import cn.jants.core.utils.ParamTypeUtil;
 import cn.jants.plugin.orm.Criteria;
 import cn.jants.plugin.orm.Table;
-import cn.jants.plugin.sqlmap.Sql;
+import cn.jants.plugin.orm.enums.OrderBy;
+import cn.jants.plugin.sqlmap.SqlStatement;
 import cn.jants.plugin.sqlmap.SqlParams;
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
@@ -450,7 +453,7 @@ public class Db<T> {
                 for (int j = 1; j <= rsm.getColumnCount(); j++) {
                     String columnName = rsm.getColumnLabel(j);
                     Object val = rs.getObject(columnName);
-                    result.set(columnName, val);
+                    result.set(AppConstant.HUMP ? StrCaseUtil.toCamelCase(columnName) : columnName, val);
                 }
             }
             if (check) {
@@ -468,6 +471,49 @@ public class Db<T> {
     public JsonMap query(String sql) {
         return query(sql, new Object[]{});
     }
+
+    /**
+     * 查询一个字段值
+     *
+     * @param sql    sql语句
+     * @param params 条件
+     * @return
+     */
+    public Object queryOne(String sql, Object... params) {
+        Object result = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            boolean check = false;
+            Connection conn = connections.get();
+            if (conn == null) {
+                conn = getConnection();
+                check = true;
+            }
+            if (sql == null) {
+                if (conn != null) {
+                    conn.close();
+                }
+                throw new SQLException("Null SQL statement");
+            }
+            ps = conn.prepareStatement(sql);
+            fillStatement(sql, ps, params);
+            rs = ps.executeQuery();
+            if (rs.first()) {
+                result = rs.getObject(1);
+            }
+            if (check) {
+                close(conn);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLParamsException(e);
+        } finally {
+            close(rs, ps);
+        }
+        return result;
+    }
+
 
     /**
      * 查询列表结果填充JsonMap
@@ -503,7 +549,7 @@ public class Db<T> {
                 for (int j = 1; j <= rsm.getColumnCount(); j++) {
                     String columnName = rsm.getColumnLabel(j);
                     Object val = rs.getObject(columnName);
-                    jsonMap.set(columnName, val);
+                    jsonMap.set(AppConstant.HUMP ? StrCaseUtil.toCamelCase(columnName) : columnName, val);
                 }
                 result.add(jsonMap);
             }
@@ -521,6 +567,44 @@ public class Db<T> {
 
     public List<JsonMap> list(String sql) {
         return list(sql, new Object[]{});
+    }
+
+    public List<Object> listOne(String sql, Object... params) {
+        List<Object> result = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            boolean check = false;
+            Connection conn = connections.get();
+            if (conn == null) {
+                conn = getConnection();
+                check = true;
+            }
+            if (sql == null) {
+                if (conn != null) {
+                    conn.close();
+                }
+                throw new SQLException("Null SQL statement");
+            }
+            ps = conn.prepareStatement(sql);
+            fillStatement(sql, ps, params);
+            rs = ps.executeQuery();
+            //获得列集
+            ResultSetMetaData rsm = rs.getMetaData();
+            while (rs.next()) {
+                Object object = rs.getObject(rsm.getColumnLabel(1));
+                result.add(object);
+            }
+            if (check) {
+                close(conn);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new SQLParamsException(e);
+        } finally {
+            close(rs, ps);
+        }
+        return result;
     }
 
     /**
@@ -648,14 +732,34 @@ public class Db<T> {
 
 
     public Page page(String sql, Integer pageIndex, Integer pageSize, Object... params) {
-        return page(sql, null, pageIndex, pageSize, params);
+        PageConditions pageConditions = new PageConditions(pageIndex, pageSize);
+        pageConditions.setParams(params);
+        return page(sql, null, pageConditions);
     }
 
     public Page<T> page(String sql, Class<T> cls, Integer pageIndex, Integer pageSize, Object... params) {
+        PageConditions pageConditions = new PageConditions(pageIndex, pageSize);
+        pageConditions.setParams(params);
+        return page(sql, cls, pageConditions);
+    }
+
+    public Page page(String sql, PageConditions pageConditions) {
+        return page(sql, null, pageConditions);
+    }
+
+    public Page<T> page(String sql, Class<T> cls, PageConditions pageConditions) {
+        Integer pageIndex = pageConditions.getPageNum();
+        Integer pageSize = pageConditions.getPageSize();
         int page = (pageIndex == null || pageIndex <= 0) ? 0 : pageIndex;
         int size = (pageSize == null || pageSize < 0) ? 10 : pageSize;
         StringBuffer sb = new StringBuffer(sql);
+        String orderField = pageConditions.getOrderField();
+        OrderBy sortType = pageConditions.getSortType();
+        if (StrUtil.notBlank(orderField) && sortType != null) {
+            sb.append(" order by " + orderField + " " + sortType);
+        }
         sb.append(" limit " + (page * size) + "," + size);
+        Object[] params = pageConditions.getParams();
         List data = (cls == null) ? list(sb.toString(), params) : list(sb.toString(), cls, params);
         //sql语句转大写
         String countSql = sb.toString().toUpperCase();
@@ -666,6 +770,10 @@ public class Db<T> {
         }
         long rows = query(countSql, params).getLong("count");
         int total = (int) (rows / size + (rows % size == 0 ? 0 : 1));
+        if (AppConstant.DEBUG) {
+            logger.debug("\nSQL    : {}\nParams : {}\n", sb.toString(), JSON.toJSON(params));
+            logger.debug("\nSQL    : {}\nParams : {}\n", countSql, JSON.toJSON(params));
+        }
         return new Page(page, size, data, rows, total);
     }
 
@@ -739,7 +847,7 @@ public class Db<T> {
         if (!ParamTypeUtil.isBaseDataType(id.getClass())) {
             throw new RuntimeException(id + " 不是基本数据类型!");
         }
-        SqlParams sqlParams = Sql.getSql(statement, id);
+        SqlParams sqlParams = SqlStatement.getSql(statement, id);
         return query(sqlParams.getSql(), sqlParams.getParams());
     }
 
@@ -747,7 +855,7 @@ public class Db<T> {
         if (!ParamTypeUtil.isBaseDataType(id.getClass())) {
             throw new RuntimeException(id + " 不是基本数据类型!");
         }
-        SqlParams sqlParams = Sql.getSql(statement, id);
+        SqlParams sqlParams = SqlStatement.getSql(statement, id);
         return query(sqlParams.getSql(), cls, sqlParams.getParams());
     }
 
@@ -759,12 +867,12 @@ public class Db<T> {
      * @return
      */
     public JsonMap find(String statement, Map params) {
-        SqlParams sqlParams = Sql.getSql(statement, params);
+        SqlParams sqlParams = SqlStatement.getSql(statement, params);
         return query(sqlParams.getSql(), sqlParams.getParams());
     }
 
     public T find(String statement, Class<T> cls, Map params) {
-        SqlParams sqlParams = Sql.getSql(statement, params);
+        SqlParams sqlParams = SqlStatement.getSql(statement, params);
         return query(sqlParams.getSql(), cls, sqlParams.getParams());
     }
 
@@ -774,7 +882,7 @@ public class Db<T> {
      * @return
      */
     public List<JsonMap> findList(String statement, Map params) {
-        SqlParams sqlParams = Sql.getSql(statement, params);
+        SqlParams sqlParams = SqlStatement.getSql(statement, params);
         return list(sqlParams.getSql(), sqlParams.getParams());
     }
 
@@ -783,7 +891,7 @@ public class Db<T> {
     }
 
     public List<T> findList(String statement, Class<T> cls, Map params) {
-        SqlParams sqlParams = Sql.getSql(statement, params);
+        SqlParams sqlParams = SqlStatement.getSql(statement, params);
         return list(sqlParams.getSql(), cls, sqlParams.getParams());
     }
 
@@ -795,7 +903,7 @@ public class Db<T> {
      * @return
      */
     public Page findPage(String statement, Integer index, Integer size, Map params) {
-        SqlParams sqlParams = Sql.getSql(statement, params);
+        SqlParams sqlParams = SqlStatement.getSql(statement, params);
         return page(sqlParams.getSql(), index, size, sqlParams.getParams());
     }
 
@@ -811,7 +919,7 @@ public class Db<T> {
      * @return
      */
     public Page<T> findPage(String statement, Class<T> cls, Integer index, Integer size, Map params) {
-        SqlParams sqlParams = Sql.getSql(statement, params);
+        SqlParams sqlParams = SqlStatement.getSql(statement, params);
         return page(sqlParams.getSql(), cls, index, size, sqlParams.getParams());
     }
 
@@ -822,7 +930,7 @@ public class Db<T> {
      * @param params
      */
     public void save(String statement, Map params) {
-        SqlParams sqlParams = Sql.getSql(statement, params);
+        SqlParams sqlParams = SqlStatement.getSql(statement, params);
         insert(sqlParams.getSql(), sqlParams.getParams());
     }
 
@@ -833,7 +941,7 @@ public class Db<T> {
      * @param params
      */
     public Long saveReturnKey(String statement, Map params) {
-        SqlParams sqlParams = Sql.getSql(statement, params);
+        SqlParams sqlParams = SqlStatement.getSql(statement, params);
         return insertReturnKey(sqlParams.getSql(), sqlParams.getParams());
     }
 
@@ -844,7 +952,7 @@ public class Db<T> {
      * @return
      */
     public int updateById(String statement, Object id) {
-        SqlParams sqlParams = Sql.getSql(statement, id);
+        SqlParams sqlParams = SqlStatement.getSql(statement, id);
         return update(sqlParams.getSql(), sqlParams.getParams());
     }
 
@@ -856,7 +964,7 @@ public class Db<T> {
      * @return
      */
     public int updateZ(String statement, Map params) {
-        SqlParams sqlParams = Sql.getSql(statement, params);
+        SqlParams sqlParams = SqlStatement.getSql(statement, params);
         return update(sqlParams.getSql(), sqlParams.getParams());
     }
 

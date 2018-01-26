@@ -17,4 +17,9 @@ public @interface EnableSQLMapPlugin {
      * @return
      */
     String value() default "";
+
+    /**
+     * 是否驼峰, 默认false
+     */
+    boolean hump() default false;
 }

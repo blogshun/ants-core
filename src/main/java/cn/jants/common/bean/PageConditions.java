@@ -32,19 +32,15 @@ public class PageConditions<T> {
     private OrderBy sortType;
 
     /**
-     * 搜索字段
-     */
-    private String key;
-
-    /**
-     * 搜索值内容
-     */
-    private String val;
-
-    /**
-     * 搜索条件
+     * 条件
      */
     private JsonMap conditions;
+
+    /**
+     * 参数
+     */
+    private Object[] params;
+
 
     public PageConditions(Integer pageNum) {
         this.pageNum = pageNum;
@@ -87,22 +83,6 @@ public class PageConditions<T> {
         this.sortType = sortType;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getVal() {
-        return val;
-    }
-
-    public void setVal(String val) {
-        this.val = val;
-    }
-
     public JsonMap getConditions() {
         return conditions;
     }
@@ -116,5 +96,13 @@ public class PageConditions<T> {
             this.conditions = JsonMap.newJsonMap();
         }
         this.conditions.set(key, value);
+    }
+
+    public Object[] getParams() {
+        return params;
+    }
+
+    public void setParams(Object... params) {
+        this.params = params;
     }
 }

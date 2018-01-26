@@ -1,7 +1,7 @@
 /**
  * set标签里面包含if
  */
-package cn.jants.plugin.sqlmap;
+package cn.jants.plugin.sqlmap.node;
 
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

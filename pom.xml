@@ -54,7 +54,7 @@
         <freemarker.version>2.3.20</freemarker.version>
         <velocity.version>1.7</velocity.version>
         <ehcache-core.version>2.6.6</ehcache-core.version>
-        <ognl.version>2.6.11</ognl.version>
+        <ognl.version>2.6.9</ognl.version>
         <jetty.version>8.1.7.v20120910</jetty.version>
         <tomcat.version>8.5.20</tomcat.version>
         <redis.version>2.9.0</redis.version>
@@ -154,10 +154,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>opensymphony</groupId>
+            <groupId>ognl</groupId>
             <artifactId>ognl</artifactId>
             <version>${ognl.version}</version>
-            <scope>provided</scope>
         </dependency>
         <!-- ===== Redis 缓存 ==== -->
         <dependency>

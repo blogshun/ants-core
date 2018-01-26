@@ -5,7 +5,7 @@ package cn.jants.plugin.sqlmap;
  * @author MrShun
  * @version 1.0
  */
-public class Sql {
+public class SqlStatement {
 
     /**
      * 查询sql语句
@@ -15,10 +15,10 @@ public class Sql {
      * @return
      */
     public static SqlParams getSql(String key, Object params) {
-        return SqlXmlParser.getPreparedStatement(key, params);
+        return SqlParser.getPreparedStatement(key, params);
     }
 
     public static SqlParams getSql(String key) {
-        return SqlXmlParser.getPreparedStatement(key, null);
+        return SqlParser.getPreparedStatement(key, null);
     }
 }

@@ -46,7 +46,6 @@ public class PathUtil {
         try {
             // 转化为utf-8编码
             filePath = URLDecoder.decode(url.getPath(), "utf-8");
-            System.out.println("@@@@@@@Jar PATH:"+filePath);
         } catch (Exception e) {
             e.printStackTrace();
         }

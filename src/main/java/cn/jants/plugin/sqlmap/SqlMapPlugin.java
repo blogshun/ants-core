@@ -49,7 +49,7 @@ public class SqlMapPlugin implements Plugin {
 
     @Override
     public boolean start() throws IOException, SAXException {
-        SqlXmlParser.clear();
+        SqlParser.clear();
         logger.debug("初始化[XML SQL] 文件 ...");
         if (PathUtil.isJarMode()) {
             AppConstant.START_MODE = StartMode.JAR;
@@ -66,7 +66,7 @@ public class SqlMapPlugin implements Plugin {
                 for (File file : files) {
                     //迭代解析sql xml
                     Document document = documentBuilder.parse(file);
-                    SqlXmlParser.parse(document);
+                    SqlParser.parse(document);
                     logger.debug("读取 {} 成功 ...", file.getPath());
                 }
                 logger.debug("[XML SQL] 初始化完成 ...");
@@ -77,7 +77,7 @@ public class SqlMapPlugin implements Plugin {
 
     @Override
     public boolean destroy() {
-        SqlXmlParser.clear();
+        SqlParser.clear();
         return true;
     }
 }

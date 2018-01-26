@@ -1,10 +1,13 @@
 package cn.jants.common.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author MrShun
  * @version 1.0
  */
-public class Page<T> {
+public class Page<T> extends ArrayList{
 
     /**
      * 当前第几页
@@ -31,7 +34,20 @@ public class Page<T> {
      */
     private int pages;
 
-    public Page() {
+    public Page(List<T> list) {
+        if (list instanceof Page) {
+            Page page = (Page) list;
+            this.index = page.getIndex();
+            this.size = page.getSize();
+            this.total = page.getTotal();
+            this.data = (T) page.getData();
+            this.pages = page.getPages();
+        }
+    }
+
+    public Page(int index, int size) {
+        this.index = index;
+        this.size = size;
     }
 
     public Page(int index, int size, T data, long total, int pages) {

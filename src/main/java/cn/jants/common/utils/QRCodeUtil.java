@@ -82,7 +82,7 @@ public class QRCodeUtil {
         int height = bitMatrix.getHeight();
         BufferedImage image = new BufferedImage(width, height,
                 BufferedImage.TYPE_INT_RGB);
-        System.out.println(String.format("width:%s, height:%s", width, height));
+        LOG.info(String.format("width:%s, height:%s", width, height));
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 int rgb = new Color(x * 10 / 12, y * 10 / 12, 1).getRGB();

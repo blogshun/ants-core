@@ -1,11 +1,12 @@
 package cn.jants.plugin.sqlmap;
 
+import cn.jants.plugin.sqlmap.node.SqlNode;
+
 import java.util.List;
 
 /**
  * @author MrShun
  * @version 1.0
- * @Date 2018-01-17
  */
 public class TagElement {
 
@@ -22,12 +23,12 @@ public class TagElement {
     /**
      * 返回类型
      */
-    private String returnType;
+    private String resultType;
 
 
-    public TagElement(String optionType, String returnType, List<SqlNode> sqlNodeList) {
+    public TagElement(String optionType, String resultType, List<SqlNode> sqlNodeList) {
         this.optionType = optionType;
-        this.returnType = returnType;
+        this.resultType = resultType;
         this.sqlNodeList = sqlNodeList;
     }
 
@@ -47,11 +48,11 @@ public class TagElement {
         this.sqlNodeList = sqlNodeList;
     }
 
-    public String getReturnType() {
-        return returnType;
+    public String getResultType() {
+        return resultType;
     }
 
-    public void setReturnType(String returnType) {
-        this.returnType = returnType;
+    public void setResultType(String resultType) {
+        this.resultType = resultType;
     }
 }

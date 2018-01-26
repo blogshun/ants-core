@@ -1,4 +1,4 @@
-package cn.jants.plugin.sqlmap;
+package cn.jants.plugin.sqlmap.node;
 
 public interface SqlNode {
 

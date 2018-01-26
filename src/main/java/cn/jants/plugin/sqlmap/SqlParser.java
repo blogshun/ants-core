@@ -1,6 +1,7 @@
 package cn.jants.plugin.sqlmap;
 
 import cn.jants.core.utils.ParamTypeUtil;
+import cn.jants.plugin.sqlmap.node.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -16,15 +17,17 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author MrShun
  * @version 1.0
  */
-public class SqlXmlParser {
+public class SqlParser {
 
     protected static Map<String, TagElement> sqlMap = new ConcurrentHashMap<>();
+
+    protected static Map<String, String> resultTypeMap = new ConcurrentHashMap<>();
 
     private static final String STATIC_START_SYMBOL = "#{";
 
     private static final String STATIC_END_SYMBOL = "}";
 
-    private static final String[] OPTIONS = new String[]{"sql", "select", "insert", "update", "delete"};
+    private static final String[] OPTIONS = new String[]{"resultType", "sql", "select", "insert", "update", "delete"};
 
 
     /**
@@ -41,17 +44,29 @@ public class SqlXmlParser {
             }
             for (String option : OPTIONS) {
                 NodeList nodeList = documentElement.getElementsByTagName(option);
-                addTagElement(option, rootName, nodeList);
+                if ("resultType".equals(option)) {
+                    addResultType(rootName, nodeList);
+                } else {
+                    addTagElement(option, rootName, nodeList);
+                }
             }
         }
-        System.out.println(sqlMap.size());
+    }
+
+    private static void addResultType(String rootName, NodeList nodeList){
+        for (int i = 0; i < nodeList.getLength(); i++) {
+            Node item = nodeList.item(i);
+            String key = rootName + "." + ((Element) item).getAttribute("id");
+            String type = ((Element) item).getAttribute("type");
+            resultTypeMap.put(key, type);
+        }
     }
 
     private static void addTagElement(String type, String rootName, NodeList nodeList) {
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node item = nodeList.item(i);
             String key = rootName + "." + ((Element) item).getAttribute("id");
-            String returnType = ((Element) item).getAttribute("returnType");
+            String resultType = ((Element) item).getAttribute("resultType");
             NodeList childNodes = item.getChildNodes();
             List<SqlNode> nodes = new ArrayList<>();
             for (int j = 0; j < childNodes.getLength(); j++) {
@@ -87,7 +102,7 @@ public class SqlXmlParser {
                     }
                 }
             }
-            sqlMap.put(key, new TagElement(type, returnType, nodes));
+            sqlMap.put(key, new TagElement(type, resultType, nodes));
 
         }
     }
@@ -116,10 +131,13 @@ public class SqlXmlParser {
         List<Object> values = new ArrayList<>();
         //基本数据类型
         if (ParamTypeUtil.isBaseDataType(params.getClass())) {
-            System.out.println(sql);
             int startNum = sql.indexOf(STATIC_START_SYMBOL);
+            if (startNum == -1) {
+                return new SqlParams(sql, null);
+            }
             sql = sql.substring(0, startNum).concat("?");
             values.add(params);
+            return new SqlParams(sql, values.toArray());
         }
         //Map数据类型
         else if (params instanceof Map) {
@@ -132,14 +150,24 @@ public class SqlXmlParser {
                     sql = sql.replace(ikey, "? ");
                 }
             }
+            int paramsLen = values.size();
+            Object[] objects = new Object[paramsLen];
+            for (int i = 0; i < paramsLen; i++) {
+                objects[paramsLen - i - 1] = values.get(i);
+            }
+            return new SqlParams(sql, objects);
         } else {
             throw new IllegalArgumentException("[" + params + "] 传入的数据对象必须Map类型 或基本数据类型!");
         }
-        return new SqlParams(sql, values.toArray());
+
     }
 
     public static SqlParams getPreparedStatement(String key) {
         return getPreparedStatement(key, null);
+    }
+
+    public static String getResultType(String key) {
+        return resultTypeMap.get(key);
     }
 
     public static void clear() {

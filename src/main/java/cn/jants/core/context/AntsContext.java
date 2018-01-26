@@ -318,6 +318,9 @@ public class AntsContext {
             if (AppConstant.DEBUG) {
                 Log.debug("Register Mapper .....");
             }
+            if(sqlMapPlugin.hump()){
+                AppConstant.HUMP = true;
+            }
             Package pgs = loadClass.getPackage();
             MapperManager.register(pgs.getName());
         }
