@@ -102,6 +102,10 @@ public class AntsFilter implements Filter {
         if (isHandled[0]) {
             chain.doFilter(request, response);
         } else {
+            //设置允许域
+            if(StrUtil.notBlank(AppConstant.DOMAIN)) {
+                response.setHeader("Access-Control-Allow-Origin", AppConstant.DOMAIN);
+            }
             //交给handler处理
             boolean execute = handlerManager.execute(target, request, response);
             //当标志为true不执行下个过滤器

@@ -24,9 +24,20 @@ public @interface PropertyConfiguration {
 
     String page500() default "";
 
-    boolean debug() default false;
+    /**
+     * 日志调试
+     */
+    boolean debug() default true;
 
+    /**
+     * 配置加密key
+     */
     String secretKey() default "";
 
     String encoding() default "UTF-8";
+
+    /**
+     * 跨域
+     */
+    String domain() default "";
 }
