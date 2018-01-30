@@ -57,4 +57,9 @@ public class AppConstant {
      * 是否驼峰
      */
     public static boolean HUMP = false;
+
+    /**
+     * 跨域配置
+     */
+    public static String DOMAIN;
 }

@@ -102,6 +102,9 @@ public class AntsContext {
             if (!"{:()}".equals(regexSuffix)) {
                 AppConstant.URL_REGEX_SUFFIX = regexSuffix;
             }
+
+            //设置运行域
+            AppConstant.DOMAIN = propertyConfiguration.domain();
         }
 
         //通过注解获取模板配置
