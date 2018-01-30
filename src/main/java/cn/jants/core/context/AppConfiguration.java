@@ -2,6 +2,7 @@ package cn.jants.core.context;
 
 import cn.jants.core.module.Constant;
 import cn.jants.core.module.HandlerManager;
+import cn.jants.core.module.InterceptorManager;
 import cn.jants.core.module.PluginManager;
 
 /**
@@ -32,5 +33,13 @@ public class AppConfiguration {
      * @param handlers
      */
     public void configHandler(HandlerManager handlers) {
+    }
+
+    /**
+     * 拦截器配置
+     *
+     * @param interceptors
+     */
+    public void configInterceptor(InterceptorManager interceptors) {
     }
 }

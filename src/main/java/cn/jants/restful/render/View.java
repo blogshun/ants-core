@@ -6,7 +6,7 @@ import cn.jants.common.enums.ViewType;
 import cn.jants.common.utils.StrUtil;
 import cn.jants.core.context.AppConstant;
 import cn.jants.core.module.ServiceManager;
-import cn.jants.plugin.template.BeetlTpl;
+import cn.jants.plugin.template.BeetleTpl;
 import cn.jants.plugin.template.FreeMarkerTpl;
 
 import javax.servlet.RequestDispatcher;
@@ -46,7 +46,7 @@ public class View {
                 freeMarkerTpl.render(modelAndView, request, response);
             }
         }else if(tplConfig.viewType() == ViewType.BEETL){
-            BeetlTpl beetlTpl = (BeetlTpl) ServiceManager.getService("plugin_template_BeetlTpl");
+            BeetleTpl beetlTpl = (BeetleTpl) ServiceManager.getService("plugin_template_BeetleTpl");
             if(viewName != null) {
                 beetlTpl.render(String.valueOf(viewName), request, response);
             }else if(modelAndView != null){

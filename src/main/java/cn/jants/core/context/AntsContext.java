@@ -28,7 +28,7 @@ import cn.jants.plugin.scheduler.FixedDelay;
 import cn.jants.plugin.scheduler.SchedulerBean;
 import cn.jants.plugin.scheduler.SchedulerManager;
 import cn.jants.plugin.sqlmap.SqlMapPlugin;
-import cn.jants.plugin.template.BeetlTpl;
+import cn.jants.plugin.template.BeetleTpl;
 import cn.jants.plugin.template.FreeMarkerTpl;
 import cn.jants.plugin.template.VelocityTpl;
 
@@ -113,7 +113,7 @@ public class AntsContext {
             if (tplConfiguration.viewType() == ViewType.FREEMARKER) {
                 ServiceManager.setService("plugin_template_FreeMarkerTpl", new FreeMarkerTpl(tplConfiguration));
             } else if (tplConfiguration.viewType() == ViewType.BEETL) {
-                ServiceManager.setService("plugin_template_BeetlTpl", new BeetlTpl(tplConfiguration));
+                ServiceManager.setService("plugin_template_BeetleTpl", new BeetleTpl(tplConfiguration));
             } else if (tplConfiguration.viewType() == ViewType.VELOCITY) {
                 ServiceManager.setService("plugin_template_VelocityTpl", new VelocityTpl(tplConfiguration));
             }
@@ -365,6 +365,8 @@ public class AntsContext {
             appConfiguration.configPlugin(plugins);
             //初始化链
             appConfiguration.configHandler(handlers);
+            //初始化拦截器
+            appConfiguration.configInterceptor(interceptors);
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

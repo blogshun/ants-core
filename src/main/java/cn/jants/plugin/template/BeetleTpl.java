@@ -20,7 +20,7 @@ import java.util.Map;
  * @author MrShun
  * @version 1.0
  */
-public class BeetlTpl {
+public class BeetleTpl {
 
     public Configuration configuration;
 
@@ -28,7 +28,7 @@ public class BeetlTpl {
 
     private String tplDir;
 
-    public BeetlTpl(ViewConfiguration viewConfiguration){
+    public BeetleTpl(ViewConfiguration viewConfiguration){
         this.tplDir = viewConfiguration.loadPath();
         Configuration configuration;
         try {
