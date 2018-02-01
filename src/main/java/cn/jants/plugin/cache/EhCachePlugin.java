@@ -21,6 +21,7 @@ public class EhCachePlugin implements Plugin {
      */
     private String fileName = "/ehcache.xml";
 
+    private CacheManager cacheManager;
 
     public EhCachePlugin(String fileName) {
         if (StrUtil.notBlank(fileName)) {
@@ -32,10 +33,9 @@ public class EhCachePlugin implements Plugin {
     public boolean start() {
         InputStream resourceAsStream = this.getClass().getResourceAsStream(fileName);
         //创建缓存管理器
-        CacheManager cacheManager = CacheManager.create(resourceAsStream);
+        cacheManager = CacheManager.create(resourceAsStream);
         Cache cache = new Cache(EhCacheTpl.DEFAULT_CACHE, 5000, true, false, 36000, 36000);
         cacheManager.addCache(cache);
-
         Log.debug("Ehcache 缓存插件加载成功... ");
         //初始化EhCacheTpl
         EhCacheTpl chCacheTpl = new EhCacheTpl(cacheManager);
@@ -45,6 +45,7 @@ public class EhCachePlugin implements Plugin {
 
     @Override
     public boolean destroy() {
-        return false;
+        cacheManager.shutdown();
+        return true;
     }
 }

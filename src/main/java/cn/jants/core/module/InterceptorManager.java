@@ -2,6 +2,7 @@ package cn.jants.core.module;
 
 
 import cn.jants.core.ext.Interceptor;
+import cn.jants.core.interceptor.GlobalInterceptor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,9 @@ final public class InterceptorManager {
 
     private final static List<Interceptor> INTERCEPTORS = new ArrayList<>();
 
+    private static GlobalInterceptor global;
+
+
     public InterceptorManager add(Interceptor interceptor) {
         if (interceptor == null) {
             throw new IllegalArgumentException("interceptor can not be null");
@@ -24,6 +28,19 @@ final public class InterceptorManager {
         return this;
     }
 
+    public InterceptorManager addGlobal(Interceptor interceptor, String prefixPackage, String prefixMethod) {
+        global = new GlobalInterceptor(interceptor, prefixPackage, prefixMethod);
+        INTERCEPTORS.add(global.getInterceptor());
+        return this;
+    }
+
+    public static GlobalInterceptor getGlobalInterceptor(){
+        return global;
+    }
+
+    public InterceptorManager addGlobal(Interceptor interceptor, String pkg){
+        return addGlobal(interceptor, pkg, null);
+    }
 
     /**
      * 在对象列表中查找类型一样的对象

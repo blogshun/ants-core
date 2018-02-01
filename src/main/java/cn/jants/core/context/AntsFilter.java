@@ -1,5 +1,6 @@
 package cn.jants.core.context;
 
+import cn.jants.common.bean.Log;
 import cn.jants.core.module.Constant;
 import cn.jants.common.utils.StrUtil;
 import cn.jants.core.module.HandlerManager;
@@ -20,7 +21,6 @@ import java.io.IOException;
  * @author MrShun
  * @version 1.0
  */
-@WebFilter(filterName = "AntsFilter", urlPatterns = "/*")
 public class AntsFilter implements Filter {
 
     /**
@@ -38,6 +38,8 @@ public class AntsFilter implements Filter {
      */
     private int contextPathLength;
 
+    private AntsContext context;
+
     /**
      * Filter【Ants框架】初始化
      *
@@ -54,7 +56,7 @@ public class AntsFilter implements Filter {
             Class temp = Class.forName(configClass);
             ServletContext servletContext = filterConfig.getServletContext();
             //初始化
-            AntsContext context = new AntsContext(temp, servletContext);
+            context = new AntsContext(temp, servletContext);
             handlerManager = context.getHandlerManager();
             constant = context.getConstant();
             String contextPath = servletContext.getContextPath();
@@ -120,6 +122,7 @@ public class AntsFilter implements Filter {
      */
     @Override
     public void destroy() {
-
+        Log.debug("销毁所有插件...");
+        context.stopPlugins();
     }
 }

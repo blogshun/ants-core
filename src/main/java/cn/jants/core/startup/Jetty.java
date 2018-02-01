@@ -3,10 +3,10 @@ package cn.jants.core.startup;
 import cn.jants.common.bean.Log;
 import cn.jants.common.utils.StrUtil;
 import cn.jants.core.context.AntsFilter;
-import cn.jants.core.startup.servlet.IndexServlet;
-import cn.jants.core.startup.servlet.LogoServlet;
 import cn.jants.core.startup.assembly.FilterAssembly;
 import cn.jants.core.startup.assembly.ServletAssembly;
+import cn.jants.core.startup.servlet.IndexServlet;
+import cn.jants.core.startup.servlet.LogoServlet;
 import org.eclipse.jetty.http.MimeTypes;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
@@ -28,8 +28,8 @@ import java.util.EnumSet;
 public class Jetty extends CommonProperty {
 
 
-    public Jetty(String webApp, int port, String contextPath, Class loadClass, boolean isOpen) {
-        super(webApp, port, contextPath, loadClass, isOpen);
+    public Jetty(Class loadClass, int port, String contextPath) {
+        super(loadClass, port, contextPath);
     }
 
     /**
@@ -37,19 +37,20 @@ public class Jetty extends CommonProperty {
      */
     @Override
     public Jetty start() {
-
         Server server = new Server();
         Connector connector = new SelectChannelConnector();
         connector.setPort(port);
         server.addConnector(connector);
         WebAppContext webAppContext = new WebAppContext();
         webAppContext.setContextPath(contextPath);
+
         webAppContext.setBaseResource(Resource.newClassPathResource(""));
         webAppContext.setClassLoader(Thread.currentThread().getContextClassLoader());
         // 在启动过程中允许抛出异常终止启动并退出 JVM
         webAppContext.setThrowUnavailableOnStartupException(true);
         webAppContext.setConfigurationDiscovered(true);
         webAppContext.setParentLoaderPriority(true);
+
         server.setHandler(webAppContext);
 
         //添加默认首页
@@ -83,9 +84,6 @@ public class Jetty extends CommonProperty {
         try {
             Log.debug("jetty is success!");
             server.start();
-            if (isOpen) {
-                openBrowser();
-            }
             server.join();
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,36 +92,20 @@ public class Jetty extends CommonProperty {
     }
 
     public static Jetty run(Class loadClass) {
-        return new Jetty(null, 8080, "", loadClass, false).start();
+        return new Jetty(loadClass, 8080, "").start();
     }
 
-    public static Jetty run(Class loadClass, int port){
-        return new Jetty(null, port, "", loadClass, false).start();
+
+    public static void run(Class loadClass, int port) {
+        new Jetty(loadClass, port, "").start();
     }
 
-    public static Jetty run(Class loadClass, int port, boolean isOpen) {
-        return new Jetty(null, port, "", loadClass, isOpen).start();
+
+    public static void run(Class loadClass, String contextPath) {
+        new Jetty(loadClass, 8080, contextPath).start();
     }
 
-    public static Jetty run(Class loadClass, String[] args) {
-        int port = 8080;
-        String contextPath = "/";
-        if (args != null && args.length > 0) {
-            port = Integer.parseInt(args[0]);
-            contextPath = args[1] != null ? args[1] : "";
-        }
-        return new Jetty(null, port, contextPath, loadClass, false).start();
-    }
-
-    public static Jetty run(Class loadClass, String contextPath) {
-        return new Jetty(null, 8080, contextPath, loadClass, false).start();
-    }
-
-    public static Jetty run(Class loadClass, int port, String contextPath) {
-        return new Jetty(null, port, contextPath, loadClass, false).start();
-    }
-
-    public static Jetty run(Class loadClass, String webApp, int port, String contextPath) {
-        return new Jetty(webApp, port, contextPath, loadClass, false).start();
+    public static void run(Class loadClass, int port, String contextPath) {
+        new Jetty(loadClass, port, contextPath).start();
     }
 }

@@ -1,5 +1,7 @@
 package cn.jants.plugin.scheduler;
 
+import cn.jants.common.bean.Log;
+import cn.jants.core.ext.Plugin;
 import cn.jants.core.module.ServiceManager;
 import cn.jants.common.annotation.service.Service;
 import cn.jants.core.utils.GenerateUtil;
@@ -11,19 +13,20 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
  * @author MrShun
  * @version 1.0
  */
-public class SchedulerManager {
+public class SchedulerPlugin implements Plugin{
 
     private List<SchedulerBean> list;
 
     private ScheduledThreadPoolExecutor exec;
 
 
-    public SchedulerManager(List<SchedulerBean> list){
+    public SchedulerPlugin(List<SchedulerBean> list){
         this.exec = new ScheduledThreadPoolExecutor(1);
         this.list = list;
     }
 
-    public void start() {
+    @Override
+    public boolean start() {
         for(SchedulerBean scheduler: list){
             FixedDelay fixedDelay = scheduler.getFixedDelay();
             Class<?> cls = scheduler.getCls();
@@ -48,5 +51,13 @@ public class SchedulerManager {
                 break;
             }
         }
+        return true;
+    }
+
+    @Override
+    public boolean destroy() {
+        exec.shutdown();
+        Log.debug("ScheduledThreadPoolExecutor 任务调度已销毁 ...");
+        return true;
     }
 }

@@ -27,11 +27,9 @@ import javax.servlet.ServletException;
 public class JTomcat extends CommonProperty {
 
 
-    public JTomcat(String webApp, int port, String contextPath, Class loadClass, boolean isOpen) {
-        super(webApp, port, contextPath, loadClass, isOpen);
+    public JTomcat(Class loadClass, int port, String contextPath) {
+        super(loadClass, port, contextPath);
     }
-
-
 
 
     @Override
@@ -106,7 +104,6 @@ public class JTomcat extends CommonProperty {
                     fd.setFilterName(filter.getFilterName());
                     fd.setFilter(filter.getFilter());
                     ctx.addFilterDef(fd);
-
                     fm.setFilterName(filter.getFilterName());
                     fm.addURLPattern(filter.getUrlPattern());
                     ctx.addFilterMap(fm);
@@ -114,9 +111,6 @@ public class JTomcat extends CommonProperty {
             }
             // 启动tomcat
             tomcat.start();
-            if (isOpen) {
-                openBrowser();
-            }
             // 维持
             tomcat.getServer().await();
         } catch (ServletException e) {
@@ -127,37 +121,19 @@ public class JTomcat extends CommonProperty {
         return this;
     }
 
-    public static JTomcat run(Class loadClass) {
-        return new JTomcat(null, 8080, "", loadClass, false).start();
+    public static void run(Class loadClass) {
+        new JTomcat(loadClass, 8080, "").start();
     }
 
-    public static JTomcat run(Class loadClass, int port) {
-        return new JTomcat(null, port, "", loadClass, false).start();
+    public static void run(Class loadClass, int port) {
+        new JTomcat(loadClass, port, "").start();
     }
 
-    public static JTomcat run(Class loadClass, int port, boolean isOpen) {
-        return new JTomcat(null, port, "", loadClass, isOpen).start();
+    public static void run(Class loadClass, String contextPath) {
+        new JTomcat(loadClass, 8080, contextPath).start();
     }
 
-    public static JTomcat run(Class loadClass, String[] args) {
-        int port = 8080;
-        String contextPath = "/";
-        if (args != null && args.length > 0) {
-            port = Integer.parseInt(args[0]);
-            contextPath = args[1] != null ? args[1] : "";
-        }
-        return new JTomcat(null, port, contextPath, loadClass, false).start();
-    }
-
-    public static JTomcat run(Class loadClass, String contextPath) {
-        return new JTomcat(null, 8080, contextPath, loadClass, false).start();
-    }
-
-    public static JTomcat run(Class loadClass, int port, String contextPath) {
-        return new JTomcat(null, port, contextPath, loadClass, false).start();
-    }
-
-    public static JTomcat run(Class loadClass, String webApp, int port, String contextPath) {
-        return new JTomcat(webApp, port, contextPath, loadClass, false).start();
+    public static void run(Class loadClass, int port, String contextPath) {
+        new JTomcat(loadClass, port, contextPath).start();
     }
 }

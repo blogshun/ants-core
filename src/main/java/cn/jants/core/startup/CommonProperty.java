@@ -65,20 +65,13 @@ public class CommonProperty {
      */
     public Class loadClass;
 
-    /**
-     * 是否打开默认浏览器
-     */
-    public boolean isOpen = false;
-
-    public CommonProperty(String webApp, int port, String contextPath, Class loadClass, boolean isOpen) {
+    public CommonProperty(Class loadClass, int port, String contextPath) {
         if (port < 0 || port > 65535) {
             throw new IllegalArgumentException("Invalid port of web server: " + port);
         }
-        this.webApp = webApp;
         this.port = port;
         this.contextPath = contextPath;
         this.loadClass = loadClass;
-        this.isOpen = isOpen;
     }
 
     public CommonProperty setConnectionTimeout(Integer connectionTimeout) {

@@ -25,7 +25,6 @@ public class RedisPlugin implements Plugin {
 
     private Integer maxTotal = 500, maxIdle = 1000 * 60, maxWaitMillis = 1000 * 10;
 
-
     public RedisPlugin(String host, int port, Integer database, String password) {
         this.host = host;
         this.port = port;
@@ -66,6 +65,6 @@ public class RedisPlugin implements Plugin {
 
     @Override
     public boolean destroy() {
-        return false;
+        return true;
     }
 }

@@ -26,7 +26,7 @@ import cn.jants.plugin.jms.ConsumerManager;
 import cn.jants.plugin.jms.JmsListener;
 import cn.jants.plugin.scheduler.FixedDelay;
 import cn.jants.plugin.scheduler.SchedulerBean;
-import cn.jants.plugin.scheduler.SchedulerManager;
+import cn.jants.plugin.scheduler.SchedulerPlugin;
 import cn.jants.plugin.sqlmap.SqlMapPlugin;
 import cn.jants.plugin.template.BeetleTpl;
 import cn.jants.plugin.template.FreeMarkerTpl;
@@ -65,6 +65,10 @@ public class AntsContext {
      */
     private final HandlerManager handlers = new HandlerManager();
 
+    /**
+     * 任务调度
+     */
+    private SchedulerPlugin schedulers;
 
     /**
      * 基于注解初始化
@@ -147,7 +151,7 @@ public class AntsContext {
         String[] pgs = packages.length == 0 ? defaultPackage : packages;
 
         //初始化任务调度
-        SchedulerManager schedulers = initSchedulerPlugin(pgs);
+        schedulers = initSchedulerPlugin(pgs);
 
         if (AppConstant.DEBUG) {
             Log.debug("初始化注解插件 .....");
@@ -205,7 +209,7 @@ public class AntsContext {
      * @param packages
      * @return
      */
-    private SchedulerManager initSchedulerPlugin(String[] packages) {
+    private SchedulerPlugin initSchedulerPlugin(String[] packages) {
         List<Class<?>> classes = ScanUtil.findScanClass(packages, FixedDelay.class);
         if (classes == null || classes.size() == 0) {
             return null;
@@ -215,7 +219,7 @@ public class AntsContext {
             FixedDelay fixedDelay = cls.getDeclaredAnnotation(FixedDelay.class);
             schedulers.add(new SchedulerBean(fixedDelay, cls));
         }
-        return new SchedulerManager(schedulers);
+        return new SchedulerPlugin(schedulers);
     }
 
     /**
@@ -406,7 +410,10 @@ public class AntsContext {
     /**
      * 停止所有插件
      */
-    private void stopPlugins() {
+    public void stopPlugins() {
+        if (schedulers != null) {
+            schedulers.destroy();
+        }
         List<Plugin> pluginList = PluginManager.getPluginList();
         if (pluginList != null) {
             for (int i = pluginList.size() - 1; i >= 0; i--) {
