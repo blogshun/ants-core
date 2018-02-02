@@ -72,15 +72,16 @@ public class Json {
      * @param <T>
      * @return
      */
-    public static <T> Map<String, T> success(T data, Long startTime) {
+    public static <T> Map success(T data, Long startTime) {
+        if (data == null) {
+            return fail(ResponseCode.DATA_NULL_ERROR);
+        }
         Map map = new HashMap(10);
         map.put(STATE, ResponseCode.SUCCESS.getCode());
         map.put(MSG, ResponseCode.SUCCESS.getMsg());
         if (startTime != null) {
             map.put(TIMESPAN, System.currentTimeMillis() - startTime + " msec");
-        } else if(data == null){
-            map.put(RESULT, null);
-        }else if (data.getClass() == Page.class) {
+        } else if (data.getClass() == Page.class) {
             Page page = ((Page) data);
             map.put(RESULT, page.getData());
             map.put(INDEX, page.getIndex());
