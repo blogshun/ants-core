@@ -36,7 +36,9 @@ public enum ResponseCode {
 
     RESTRIC_ERROR(2001, "table data is associated with restrictions"),
 
-    COLUMN_LONG_ERROR(2002, "data too long for column");
+    COLUMN_LONG_ERROR(2002, "data too long for column"),
+
+    SQL_PARAM_ERROR(2003, "sql params exception");
 
     private int code;
     private String msg;

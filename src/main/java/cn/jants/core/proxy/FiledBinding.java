@@ -95,12 +95,12 @@ public class FiledBinding {
                     ReflectionUtils.makeAccessible(field);
                     Source source = field.getDeclaredAnnotation(Source.class);
                     if ("".equals(source.value()) && source.type() == DataSourceType.NONE) {
-                        if (DbManager.containsKey("")) {
-                            field.set(object, DbManager.get(""));
+                        if (DbManager.containsKey(DbManager.DEFAULT_NAME)) {
+                            field.set(object, DbManager.get(DbManager.DEFAULT_NAME));
                         } else {
                             Db db = new Db();
                             field.set(object, db);
-                            DbManager.add("", db);
+                            DbManager.add(DbManager.DEFAULT_NAME, db);
                         }
                     } else {
                         Db db = DbManager.get(source.value());

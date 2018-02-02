@@ -53,7 +53,7 @@ public class SqlParser {
         }
     }
 
-    private static void addResultType(String rootName, NodeList nodeList){
+    private static void addResultType(String rootName, NodeList nodeList) {
         for (int i = 0; i < nodeList.getLength(); i++) {
             Node item = nodeList.item(i);
             String key = rootName + "." + ((Element) item).getAttribute("id");
@@ -128,7 +128,7 @@ public class SqlParser {
         if (params == null) {
             return new SqlParams(sql, null);
         }
-        List<Object> values = new ArrayList<>();
+
         //基本数据类型
         if (ParamTypeUtil.isBaseDataType(params.getClass())) {
             int startNum = sql.indexOf(STATIC_START_SYMBOL);
@@ -136,26 +136,22 @@ public class SqlParser {
                 return new SqlParams(sql, null);
             }
             sql = sql.substring(0, startNum).concat("?");
-            values.add(params);
-            return new SqlParams(sql, values.toArray());
+            return new SqlParams(sql, new Object[]{params});
         }
         //Map数据类型
         else if (params instanceof Map) {
-            Set<Map.Entry<String, Object>> entries = ((Map<String, Object>) params).entrySet();
-            for (Map.Entry<String, Object> entry : entries) {
-                String ikey = STATIC_START_SYMBOL + entry.getKey() + STATIC_END_SYMBOL;
-                Object v = entry.getValue();
-                if (sql.indexOf(ikey) != -1) {
-                    values.add(v);
-                    sql = sql.replace(ikey, "? ");
+            List<String> fieldList = getFieldList(sql);
+            Map<String, Object> mapParams = (Map<String, Object>) params;
+            List<Object> values = new ArrayList<>(mapParams.size());
+            for(String filed: fieldList){
+                if(mapParams.containsKey(filed)){
+                    Object val = mapParams.get(filed);
+                    sql = sql.replace(STATIC_START_SYMBOL.concat(filed).concat(STATIC_END_SYMBOL), "? ");
+                    values.add(val);
                 }
+
             }
-            int paramsLen = values.size();
-            Object[] objects = new Object[paramsLen];
-            for (int i = 0; i < paramsLen; i++) {
-                objects[paramsLen - i - 1] = values.get(i);
-            }
-            return new SqlParams(sql, objects);
+            return new SqlParams(sql, values.toArray());
         } else {
             throw new IllegalArgumentException("[" + params + "] 传入的数据对象必须Map类型 或基本数据类型!");
         }
@@ -181,6 +177,24 @@ public class SqlParser {
             throw new IllegalArgumentException("not find " + key + "!");
         }
         return tagElement;
+    }
+
+    /**
+     * 获取字段
+     *
+     * @param sql sql语句
+     * @return
+     */
+    private static List<String> getFieldList(String sql) {
+        List<String> list = new ArrayList<>();
+        while (sql.indexOf(STATIC_START_SYMBOL) != -1) {
+            int sNum = sql.indexOf(STATIC_START_SYMBOL);
+            int eNum = sql.indexOf(STATIC_END_SYMBOL, sNum);
+            String str = sql.substring(sNum + 2, eNum);
+            sql = sql.replace(STATIC_START_SYMBOL + str + STATIC_END_SYMBOL, "");
+            list.add(str);
+        }
+        return list;
     }
 
 }

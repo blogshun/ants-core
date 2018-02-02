@@ -1,12 +1,14 @@
 package cn.jants.core.proxy;
 
 
+import cn.jants.common.annotation.service.Source;
 import cn.jants.common.annotation.service.Tx;
 import cn.jants.common.enums.DataSourceType;
-import cn.jants.restful.bind.utils.ReflectionUtils;
-import cn.jants.common.annotation.service.Source;
 import cn.jants.common.enums.TxLevel;
+import cn.jants.core.module.DbManager;
 import cn.jants.plugin.db.Db;
+import cn.jants.plugin.sqlmap.annotation.Mapper;
+import cn.jants.restful.bind.utils.ReflectionUtils;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
@@ -32,7 +34,9 @@ public class TransactionManager {
             Field[] fields = target.getClass().getDeclaredFields();
             dbs = new ArrayList<>();
             for (Field field : fields) {
-                if (field.getType() == Db.class) {
+                Class<?> type = field.getType();
+                Mapper mapper = type.getDeclaredAnnotation(Mapper.class);
+                if (type == Db.class) {
                     Source source = field.getDeclaredAnnotation(Source.class);
                     TxLevel level = TxLevel.REPEATED_READ;
                     if (methodTx != null) {
@@ -53,6 +57,10 @@ public class TransactionManager {
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();
                     }
+                }else if(mapper != null){
+                    Db db = DbManager.get(mapper.value());
+                    db.startTx(db.getDataSource(), "{默认} ", TxLevel.REPEATED_READ);
+                    dbs.add(db);
                 }
             }
         }

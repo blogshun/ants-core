@@ -9,7 +9,9 @@ import cn.jants.plugin.orm.enums.OrderBy;
  */
 public class Paging {
 
-    //分页线程对象
+    /**
+     * 分页线程对象
+     */
     private final static ThreadLocal<PageConditions> TL = new ThreadLocal<>();
 
     /**

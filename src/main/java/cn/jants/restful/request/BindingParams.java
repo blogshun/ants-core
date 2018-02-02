@@ -88,7 +88,7 @@ public class BindingParams {
                         String[] values = entry.getValue();
                         jsonMap.put(entry.getKey(), values.length == 1 ? values[0] : values);
                     }
-                    args[i] = request.getParameterMap();
+                    args[i] = jsonMap;
 
                 } else {
                     args[i] = JSON.parseObject(jsonBodyStr, JsonMap.class);

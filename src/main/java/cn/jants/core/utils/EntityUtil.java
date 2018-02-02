@@ -55,7 +55,7 @@ public class EntityUtil {
 
             try {
                 field.setAccessible(true);
-                if (value != null && !"".equals(value[0]) && field.getType() == Date.class) {
+                if (value != null && StrUtil.notBlank(value[0]) && field.getType() == Date.class) {
                     String parseStr = "yyyy-MM-dd HH:mm";
                     JSONField jsonfield = field.getDeclaredAnnotation(JSONField.class);
                     if (jsonfield != null && StrUtil.notBlank(jsonfield.format())) {

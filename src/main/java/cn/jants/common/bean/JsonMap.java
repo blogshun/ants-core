@@ -1,5 +1,8 @@
 package cn.jants.common.bean;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,8 +16,23 @@ import java.util.HashMap;
  */
 public class JsonMap extends HashMap {
 
+    public JsonMap(){}
+
+    public JsonMap(Object javaObject){
+        if(javaObject != null) {
+            JSONObject jsonObject = (JSONObject) JSON.toJSON(javaObject);
+            putAll(jsonObject);
+        }
+    }
+
+
     public static <K, V> JsonMap newJsonMap() {
         return new JsonMap();
+    }
+
+    public <T> T toJavaObject(Class<T> cls){
+        JSON jsonMap = (JSON) JSON.toJSON(this);
+        return JSON.toJavaObject(jsonMap, cls);
     }
 
     public JsonMap set(Object key, Object value) {
@@ -68,7 +86,7 @@ public class JsonMap extends HashMap {
         }
     }
 
-    public BigDecimal getBigDecimal(String key){
+    public BigDecimal getBigDecimal(String key) {
         return new BigDecimal(getStr(key));
     }
 

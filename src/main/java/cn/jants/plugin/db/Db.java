@@ -9,6 +9,7 @@ import cn.jants.common.exception.SQLParamsException;
 import cn.jants.common.utils.StrCaseUtil;
 import cn.jants.common.utils.StrUtil;
 import cn.jants.core.context.AppConstant;
+import cn.jants.core.module.DbManager;
 import cn.jants.core.utils.ParamTypeUtil;
 import cn.jants.plugin.orm.Criteria;
 import cn.jants.plugin.orm.Table;
@@ -21,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,7 +52,7 @@ public class Db<T> {
      * 默认原生Db配置
      */
     public Db() {
-        this.name = "";
+        this.name = DbManager.DEFAULT_NAME;
         this.url = Prop.getStr("ants.db.url");
         this.driverClassName = Prop.getStr("ants.db.driver-class-name");
         this.username = Prop.getStr("ants.db.username");
@@ -69,6 +71,10 @@ public class Db<T> {
             dataSource = new HikariCpPlugin(url, driverClassName, username, password).getDataSource(properties);
         }
         getConnection();
+    }
+
+    public DataSource getDataSource() {
+        return dataSource;
     }
 
     /**
@@ -750,7 +756,7 @@ public class Db<T> {
     public Page<T> page(String sql, Class<T> cls, PageConditions pageConditions) {
         Integer pageIndex = pageConditions.getPageNum();
         Integer pageSize = pageConditions.getPageSize();
-        int page = (pageIndex == null || pageIndex <= 0) ? 0 : pageIndex;
+        int page = (pageIndex == null || pageIndex <= 1) ? 1 : pageIndex;
         int size = (pageSize == null || pageSize < 0) ? 10 : pageSize;
         StringBuffer sb = new StringBuffer(sql);
         String orderField = pageConditions.getOrderField();
@@ -758,7 +764,7 @@ public class Db<T> {
         if (StrUtil.notBlank(orderField) && sortType != null) {
             sb.append(" order by " + orderField + " " + sortType);
         }
-        sb.append(" limit " + (page * size) + "," + size);
+        sb.append(" limit " + ((page - 1) * size) + "," + size);
         Object[] params = pageConditions.getParams();
         List data = (cls == null) ? list(sb.toString(), params) : list(sb.toString(), cls, params);
         //sql语句转大写
@@ -771,8 +777,8 @@ public class Db<T> {
         long rows = query(countSql, params).getLong("count");
         int total = (int) (rows / size + (rows % size == 0 ? 0 : 1));
         if (AppConstant.DEBUG) {
-            logger.debug("\nSQL    : {}\nParams : {}\n", sb.toString(), JSON.toJSON(params));
-            logger.debug("\nSQL    : {}\nParams : {}\n", countSql, JSON.toJSON(params));
+            logger.debug("\nSQL    : {}\nParams : {}\n", sb.toString(), params == null ? "" : JSON.toJSON(params));
+            logger.debug("\nSQL    : {}\nParams : {}\n", countSql, params == null ? "" : JSON.toJSON(params));
         }
         return new Page(page, size, data, rows, total);
     }
@@ -807,7 +813,6 @@ public class Db<T> {
      * @throws SQLException
      */
     private void setColumns(ResultSet rs, ResultSetMetaData rsm, Field[] fields, Object obj) throws SQLException {
-        DateFormat df = new SimpleDateFormat();
         for (int j = 1; j <= rsm.getColumnCount(); j++) {
             String columnName = rsm.getColumnLabel(j);
             Object val = rs.getObject(columnName);
@@ -815,6 +820,10 @@ public class Db<T> {
                 if (StrCaseUtil.toUnderlineName(columnName).equals(StrCaseUtil.toUnderlineName(field.getName()))) {
                     field.setAccessible(true);
                     try {
+                        Class<?> type = field.getType();
+                        if(type == Long.class){
+                            val = rs.getLong(columnName);
+                        }
                         field.set(obj, val);
                     } catch (IllegalAccessException e) {
                         e.printStackTrace();

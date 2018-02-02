@@ -3,6 +3,7 @@ package cn.jants.common.bean;
 import cn.jants.common.annotation.service.Aop;
 import cn.jants.common.annotation.service.Uop;
 import cn.jants.common.utils.CollectionUtil;
+import cn.jants.core.context.AppConstant;
 import cn.jants.plugin.cache.Cacheable;
 import cn.jants.restful.request.RequestMappingBean;
 import com.alibaba.fastjson.JSON;
@@ -102,6 +103,9 @@ public class Log {
         }
 
         sb.append("---------------------------------------------------------------------------\n");
+        if(AppConstant.DEBUG){
+            Log.debug(sb.toString());
+        }
     }
 
     /**

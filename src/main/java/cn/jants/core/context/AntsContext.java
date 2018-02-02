@@ -264,6 +264,9 @@ public class AntsContext {
                                 , Prop.getKeyStrValue(db.password())));
                     }
                 }
+            }else{
+                Db db = new Db();
+                DbManager.add(DbManager.DEFAULT_NAME, db);
             }
         }
 

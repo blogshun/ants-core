@@ -72,16 +72,15 @@ public class Json {
      * @param <T>
      * @return
      */
-    public static <T> Map success(T data, Long startTime) {
-        if (data == null) {
-            return fail(ResponseCode.DATA_NULL_ERROR);
-        }
+    public static <T> Map<String, T> success(T data, Long startTime) {
         Map map = new HashMap(10);
         map.put(STATE, ResponseCode.SUCCESS.getCode());
         map.put(MSG, ResponseCode.SUCCESS.getMsg());
         if (startTime != null) {
             map.put(TIMESPAN, System.currentTimeMillis() - startTime + " msec");
-        } else if (data.getClass() == Page.class) {
+        } else if(data == null){
+            map.put(RESULT, null);
+        }else if (data.getClass() == Page.class) {
             Page page = ((Page) data);
             map.put(RESULT, page.getData());
             map.put(INDEX, page.getIndex());
@@ -94,7 +93,7 @@ public class Json {
         return map;
     }
 
-    public static <T> Map success(T data) {
+    public static <T> Map<String, T> success(T data) {
         return success(data, null);
     }
 
@@ -106,7 +105,7 @@ public class Json {
      * @param <T>
      * @return
      */
-    public static <T> Map ui(T data) {
+    public static <T> Map<String, T> ui(T data) {
         if (data == null) {
             return fail(ResponseCode.DATA_NULL_ERROR);
         }
@@ -133,8 +132,8 @@ public class Json {
     public static Object exception(ResponseCode responseCode, String exception) {
         Map map = new HashMap(10);
         map.put(STATE, responseCode.getCode());
-        map.put(MSG, exception);
-        map.put(ERROR, responseCode.getMsg());
+        map.put(MSG, responseCode.getMsg());
+        map.put(ERROR, exception);
         return JSON.toJSON(map);
     }
 
