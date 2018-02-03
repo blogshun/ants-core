@@ -28,12 +28,9 @@ public class Prop extends PropertyUtil {
         if (key.startsWith(START_SYMBOL) && key.endsWith(END_SYMBOL)) {
             String value = key.replace(START_SYMBOL, "").replace(END_SYMBOL, "");
             Object paramValue = null;
-            if (value.indexOf(":") != -1) {
-                String[] zs = value.split(":");
-                paramValue = get(zs[0]);
-                if (paramValue == null && zs.length > 1) {
-                    paramValue = zs[1];
-                }
+            int i = value.indexOf(":");
+            if (i != -1) {
+                paramValue = value.substring(i + 1, value.length());
             } else {
                 paramValue = get(value);
                 if (paramValue == null && clsName != null) {

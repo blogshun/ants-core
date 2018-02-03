@@ -238,6 +238,12 @@ public class QRCodeUtil {
     }
 
     public static void main(String[] args) {
-        writeToFile("这临时文件所在的本地路临时文件所在的本地路临时文件所在的本地路是", "e:/aa.jpg", "e:/code/tes.png", true);
+        /**
+         * 参数一：内容
+         * 参数二：头像地址
+         * 参数三：二维码路径名称
+         * 参数四：是否压缩LOGO
+         */
+        writeToFile("这里存放测试内容...", "e:/aa.jpg", "e:/code/tes.png", true);
     }
 }

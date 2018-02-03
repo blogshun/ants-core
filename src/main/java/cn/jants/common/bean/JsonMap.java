@@ -35,6 +35,10 @@ public class JsonMap extends HashMap {
         return JSON.toJavaObject(jsonMap, cls);
     }
 
+    public String toJsonString(){
+        return JSON.toJSONString(this);
+    }
+
     public JsonMap set(Object key, Object value) {
         put(key, value);
         return this;
