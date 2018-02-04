@@ -67,7 +67,9 @@ public class WxOauth2Tool {
     public String getOauth2Url(SnsApi scope) {
         HttpServletRequest request = ClientHolder.getRequest();
         StringBuffer sbUrl = new StringBuffer();
-        sbUrl.append("http://" + request.getServerName() + request.getContextPath() + request.getServletPath());
+        //协议类型
+        String scheme = request.getScheme();
+        sbUrl.append(scheme + "://" + request.getServerName() + request.getContextPath() + request.getServletPath());
         String oauth2Url;
         try {
             String enUrl = URLEncoder.encode(sbUrl.toString(), "utf-8");

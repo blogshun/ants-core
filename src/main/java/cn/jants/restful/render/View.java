@@ -33,8 +33,13 @@ public class View {
         if (tplConfig == null) {
             throw new RuntimeException("错误, 没有配置任何模板引擎!");
         }
+        String suffix = tplConfig.suffix();
+        if(StrUtil.notBlank()){
+            viewName = viewName + suffix;
+        }
         String view = StrUtil.setFirstInitial(String.valueOf(viewName), '/');
         response.setContentType("text/html");
+        request.setAttribute("ctx", request.getContextPath());
         if (tplConfig.viewType() == ViewType.JSP) {
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(view);
             requestDispatcher.forward(request, response);
