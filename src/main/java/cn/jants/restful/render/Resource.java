@@ -28,13 +28,13 @@ public class Resource {
     /**
      * 填充的数据
      */
-    private Object data;
+    private Map data;
 
     public Resource(String resName) {
         this.resName = StrUtil.delFirstInitial(resName, '/');
     }
 
-    public Resource(String resName, Object data) {
+    public Resource(String resName, Map data) {
         this.resName = StrUtil.delFirstInitial(resName, '/');
         this.data = data;
     }
@@ -77,6 +77,12 @@ public class Resource {
                     dataMap.put("CSS_PATH", "/static/css");
                     dataMap.put("SWF_PATH", "/static/swf");
                     dataMap.put("UE_PATH", "/static/ueditor");
+                    if(data != null){
+                        Set<Map.Entry<String, Object>> sets = data.entrySet();
+                        for(Map.Entry<String, Object> entry: sets){
+                            dataMap.put(entry.getKey(), entry.getValue());
+                        }
+                    }
                     if (dataMap != null) {
                         content = replace(content, dataMap);
                     }
