@@ -7,6 +7,7 @@ import cn.jants.core.ext.Handler;
 import cn.jants.restful.render.Json;
 import com.mysql.jdbc.MysqlDataTruncation;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -92,6 +93,8 @@ final public class HandlerManager {
             else if (sqlClass == MysqlDataTruncation.class) {
                 Json.writeJson(Json.exception(ResponseCode.COLUMN_LONG_ERROR, sqlException.getMessage()), response);
             }else if(sqlClass == SQLException.class){
+                Json.writeJson(Json.exception(ResponseCode.SQL_PARAM_ERROR, sqlException.getMessage()), response);
+            }else if(sqlClass == MySQLSyntaxErrorException.class){
                 Json.writeJson(Json.exception(ResponseCode.SQL_PARAM_ERROR, sqlException.getMessage()), response);
             }
         } else if (cls == NullPointerException.class) {
