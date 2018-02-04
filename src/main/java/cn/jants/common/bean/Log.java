@@ -74,7 +74,8 @@ public class Log {
         Method m = bean.getMethod();
         //TODO 判断是否有上传文件打印出路径
         if ("application/json".equals(request.getContentType())) {
-            sb.append("Parameter   : ").append(bean.getParams()).append("\n");
+            Object params = bean.getParams();
+            sb.append("Parameter   : ").append(params == null ? "" : params).append("\n");
         } else {
             sb.append("Parameter   : ").append(getParams(request.getParameterMap())).append("\n");
         }
@@ -103,7 +104,7 @@ public class Log {
         }
 
         sb.append("---------------------------------------------------------------------------\n");
-        if(AppConstant.DEBUG){
+        if (AppConstant.DEBUG) {
             Log.debug(sb.toString());
         }
     }

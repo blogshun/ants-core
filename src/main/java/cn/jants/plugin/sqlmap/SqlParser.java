@@ -172,9 +172,8 @@ public class SqlParser {
 
     public static TagElement getOptionType(String key) {
         TagElement tagElement = sqlMap.get(key);
-        List<SqlNode> sqlNodes = tagElement.getSqlNodeList();
-        if (sqlNodes == null || sqlNodes.size() == 0) {
-            throw new IllegalArgumentException("not find " + key + "!");
+        if (tagElement == null) {
+            throw new IllegalArgumentException("not found " + key + "!");
         }
         return tagElement;
     }
