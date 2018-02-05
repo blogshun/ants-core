@@ -168,28 +168,24 @@ public class BindingParams {
                 //发现对象是实体对象的时候 弃用parameterType.getDeclaredAnnotation(Entity.class)
                 if (parameterType.getClassLoader() != null) {
                     Object entityObj = null;
-                    try {
+                    if(jsonBodyStr == null){
                         entityObj = parameterType.newInstance();
-                    } catch (InstantiationException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
-                    Field[] fields = parameterType.getDeclaredFields();
-                    for (Field field : fields) {
-                        String[] fieldVal = null;
-                        if (field.getType().isArray()) {
-                            JSONArray jsonArray = jsonObject.getJSONArray(field.getName());
-                            String[] s = new String[jsonArray.size()];
-                            for (int j = 0; j < s.length; j++) {
-                                s[j] = String.valueOf(jsonArray.get(j));
+                        Field[] fields = parameterType.getFields();
+                        for (Field field : fields) {
+                            String[] fieldVal = null;
+                            if (field.getType().isArray()) {
+                                JSONArray jsonArray = jsonObject.getJSONArray(field.getName());
+                                fieldVal = new String[jsonArray.size()];
+                                for (int j = 0; j < fieldVal.length; j++) {
+                                    fieldVal[j] = String.valueOf(jsonArray.get(j));
+                                }
+                            } else {
+                                fieldVal = new String[]{jsonObject.getString(field.getName())};
                             }
-                            fieldVal = jsonBodyStr == null ? request.getParameterValues(field.getName()) : s;
-                        } else {
-                            fieldVal = jsonBodyStr == null ? request.getParameterValues(field.getName()) :
-                                    new String[]{jsonObject.getString(field.getName())};
+                            EntityUtil.optSetMethod(field, fieldVal, entityObj, errMsgs);
                         }
-                        EntityUtil.optSetMethod(field, fieldVal, entityObj, errMsgs);
+                    }else {
+                        entityObj = JSON.parseObject(jsonBodyStr, parameterType);
                     }
                     args[i] = entityObj;
                 } else {
