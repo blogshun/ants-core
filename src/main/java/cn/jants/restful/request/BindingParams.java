@@ -205,15 +205,17 @@ public class BindingParams {
                                 args[i] = ParamTypeUtil.setDefault(parameterType);
                             }
                         } else {
-                            if (parameterType.isArray()) {
-                                JSONArray jsonArray = jsonObject.getJSONArray(params[i]);
-                                String[] s = new String[jsonArray.size()];
-                                for (int j = 0; j < s.length; j++) {
-                                    s[j] = String.valueOf(jsonArray.get(j));
+                            if(jsonObject != null) {
+                                if (parameterType.isArray()) {
+                                    JSONArray jsonArray = jsonObject.getJSONArray(params[i]);
+                                    String[] s = new String[jsonArray.size()];
+                                    for (int j = 0; j < s.length; j++) {
+                                        s[j] = String.valueOf(jsonArray.get(j));
+                                    }
+                                    args[i] = ParamTypeUtil.parse(s, parameterType);
+                                } else {
+                                    args[i] = ParamTypeUtil.parse(jsonObject.getString(params[i]), parameterType);
                                 }
-                                args[i] = ParamTypeUtil.parse(s, parameterType);
-                            } else {
-                                args[i] = ParamTypeUtil.parse(jsonObject.getString(params[i]), parameterType);
                             }
                         }
                     }

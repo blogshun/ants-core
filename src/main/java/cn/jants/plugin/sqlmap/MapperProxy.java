@@ -114,6 +114,7 @@ public class MapperProxy implements InvocationHandler {
                     if (pageConditions == null) {
                         result = db.list(sqlParams.getSql(), cls, sqlParams.getParams());
                     } else {
+                        pageConditions.setParams(sqlParams.getParams());
                         result = db.page(sqlParams.getSql(), cls, pageConditions);
                     }
                 }
