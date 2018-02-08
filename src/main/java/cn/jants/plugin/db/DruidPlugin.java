@@ -20,9 +20,9 @@ public class DruidPlugin extends CommonProperty implements Plugin {
     /**
      * 初始连接池大小、最小空闲连接数、最大活跃连接数
      */
-    private int initialSize = 10;
-    private int minIdle = 10;
-    private int maxActive = 100;
+    private int initialSize = 1;
+    private int minIdle = 1;
+    private int maxActive = 20;
 
     /**
      * 配置获取连接等待超时的时间
@@ -48,7 +48,7 @@ public class DruidPlugin extends CommonProperty implements Plugin {
      * DB2 - "select 1 from sysibm.sysdummy1"
      * mysql - "select 1"
      */
-    private String validationQuery = "select 1";
+    private String validationQuery = "select 'x'";
     private boolean testWhileIdle = true;
     private boolean testOnBorrow = false;
     private boolean testOnReturn = false;
@@ -79,7 +79,7 @@ public class DruidPlugin extends CommonProperty implements Plugin {
     /**
      * 监控统计："stat"    防SQL注入："wall"     组合使用： "stat,wall"
      */
-    private String filters = "stat,wall";
+    private String filters = "stat";
     private List<Filter> filterList;
 
     private DataSource dataSource = null;
