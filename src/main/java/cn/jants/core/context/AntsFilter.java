@@ -107,6 +107,7 @@ public class AntsFilter implements Filter {
             //设置允许域
             if(StrUtil.notBlank(AppConstant.DOMAIN)) {
                 response.setHeader("Access-Control-Allow-Origin", AppConstant.DOMAIN);
+                response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
             }
             //交给handler处理
             boolean execute = handlerManager.execute(target, request, response);

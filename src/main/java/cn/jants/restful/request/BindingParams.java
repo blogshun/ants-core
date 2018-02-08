@@ -170,18 +170,9 @@ public class BindingParams {
                     Object entityObj = null;
                     if(jsonBodyStr == null){
                         entityObj = parameterType.newInstance();
-                        Field[] fields = parameterType.getFields();
+                        Field[] fields = parameterType.getDeclaredFields();
                         for (Field field : fields) {
-                            String[] fieldVal = null;
-                            if (field.getType().isArray()) {
-                                JSONArray jsonArray = jsonObject.getJSONArray(field.getName());
-                                fieldVal = new String[jsonArray.size()];
-                                for (int j = 0; j < fieldVal.length; j++) {
-                                    fieldVal[j] = String.valueOf(jsonArray.get(j));
-                                }
-                            } else {
-                                fieldVal = new String[]{jsonObject.getString(field.getName())};
-                            }
+                            String[] fieldVal = request.getParameterValues(field.getName());
                             EntityUtil.optSetMethod(field, fieldVal, entityObj, errMsgs);
                         }
                     }else {

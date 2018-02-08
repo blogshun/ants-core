@@ -49,7 +49,7 @@ public class MapperProxy implements InvocationHandler {
             TagElement tagElement = SqlParser.getOptionType(sqlKey);
             optionType = tagElement.getOptionType();
             resultType = tagElement.getResultType();
-            if (args == null) {
+            if (args == null || args[0] == null) {
                 sqlParams = SqlParser.getPreparedStatement(sqlKey);
             } else if (args.length == 1) {
                 Object param = args[0];
