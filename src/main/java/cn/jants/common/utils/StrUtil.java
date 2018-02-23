@@ -125,6 +125,25 @@ public class StrUtil {
     }
 
     /**
+     * 判断是否传是否存在某个后缀, 不存在则加入
+     *
+     * @param str    字符串
+     * @param suffix 后缀
+     * @return
+     */
+    public static String joinLastSuffix(String str, String suffix) {
+        if (str == null) {
+            return null;
+        }
+        int num = str.lastIndexOf(suffix);
+        if (num + 1 == str.length()) {
+            return str;
+        } else {
+            return str.concat(suffix);
+        }
+    }
+
+    /**
      * 从第几个数组开始加入字符
      *
      * @param stringArray 对象数组
