@@ -19,10 +19,7 @@ import javax.servlet.http.Part;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -74,7 +71,16 @@ public class BindingParams {
                 args[i] = request.getSession();
             } else if (parameterType == Part.class || parameterType == Part[].class) {
                 if (parameterType.isArray()) {
-                    args[i] = request.getParts().toArray();
+                    Collection<Part> parts = request.getParts();
+                    Iterator<Part> iterator = parts.iterator();
+                    List<Part> list = new ArrayList<>();
+                    while (iterator.hasNext()){
+                        Part part = iterator.next();
+                        if(part.getContentType() != null){
+                            list.add(part);
+                        }
+                    }
+                    args[i] = list.toArray(new Part[list.size()]);
                 } else {
                     args[i] = request.getPart(params[i]);
                 }
@@ -168,14 +174,14 @@ public class BindingParams {
                 //发现对象是实体对象的时候 弃用parameterType.getDeclaredAnnotation(Entity.class)
                 if (parameterType.getClassLoader() != null) {
                     Object entityObj = null;
-                    if(jsonBodyStr == null){
+                    if (jsonBodyStr == null) {
                         entityObj = parameterType.newInstance();
                         Field[] fields = parameterType.getDeclaredFields();
                         for (Field field : fields) {
                             String[] fieldVal = request.getParameterValues(field.getName());
                             EntityUtil.optSetMethod(field, fieldVal, entityObj, errMsgs);
                         }
-                    }else {
+                    } else {
                         entityObj = JSON.parseObject(jsonBodyStr, parameterType);
                     }
                     args[i] = entityObj;
@@ -196,7 +202,7 @@ public class BindingParams {
                                 args[i] = ParamTypeUtil.setDefault(parameterType);
                             }
                         } else {
-                            if(jsonObject != null) {
+                            if (jsonObject != null) {
                                 if (parameterType.isArray()) {
                                     JSONArray jsonArray = jsonObject.getJSONArray(params[i]);
                                     String[] s = new String[jsonArray.size()];

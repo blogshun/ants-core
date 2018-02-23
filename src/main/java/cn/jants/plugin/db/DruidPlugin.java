@@ -20,9 +20,9 @@ public class DruidPlugin extends CommonProperty implements Plugin {
     /**
      * 初始连接池大小、最小空闲连接数、最大活跃连接数
      */
-    private int initialSize = 1;
-    private int minIdle = 1;
-    private int maxActive = 20;
+    private int initialSize = 10;
+    private int minIdle = 5;
+    private int maxActive = 50;
 
     /**
      * 配置获取连接等待超时的时间
@@ -57,6 +57,9 @@ public class DruidPlugin extends CommonProperty implements Plugin {
      * 是否打开连接泄露自动检测
      */
     private boolean removeAbandoned = false;
+
+    private String removeAbandonedTimeout = "1800";
+
     /**
      * 连接长时间没有使用，被认为发生泄露时长
      */
@@ -186,6 +189,14 @@ public class DruidPlugin extends CommonProperty implements Plugin {
 
     public void setRemoveAbandoned(boolean removeAbandoned) {
         this.removeAbandoned = removeAbandoned;
+    }
+
+    public String getRemoveAbandonedTimeout() {
+        return removeAbandonedTimeout;
+    }
+
+    public void setRemoveAbandonedTimeout(String removeAbandonedTimeout) {
+        this.removeAbandonedTimeout = removeAbandonedTimeout;
     }
 
     public String getRemoveAbandonedTimeoutMillis() {
