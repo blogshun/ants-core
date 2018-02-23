@@ -66,8 +66,8 @@ public class Db<T> {
         } else if ("dbcp".equalsIgnoreCase(dataSourceTypeStr)) {
             Properties properties = Prop.getProperties("ants.db.data-source.dbcp");
             dataSource = new DbcpPlugin(url, driverClassName, username, password).getDataSource(properties);
-        } else if ("hikaricp".equalsIgnoreCase(dataSourceTypeStr)) {
-            Properties properties = Prop.getProperties("ants.db.data-source.hikaricp");
+        } else if ("hikari".equalsIgnoreCase(dataSourceTypeStr)) {
+            Properties properties = Prop.getProperties("ants.db.data-source.hikari");
             dataSource = new HikariCpPlugin(url, driverClassName, username, password).getDataSource(properties);
         }
         getConnection();

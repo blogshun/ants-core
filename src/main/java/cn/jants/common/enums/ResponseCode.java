@@ -8,19 +8,22 @@ public enum ResponseCode {
 
     SUCCESS(0, "ok"),
 
-    TOKEN_EXPIRED_INFO(100, "token is expired"),
+    //token is expired
+    TOKEN_EXPIRED_INFO(100, "Token令牌已经过期!"),
 
-    TOKEN_INVALID_INFO(101, "token is invalid"),
+    //token is invalid
+    TOKEN_INVALID_INFO(101, "无效的Token令牌!"),
 
-    AUTH_INFO(102, "no operation authority"),
+    //no operation authority
+    AUTH_INFO(102, "您没有操作权限!"),
 
-    LOGIN_INFO(103, "please log in again"),
+    LOGIN_INFO(103, "请再次登录!"),
 
-    MYSQL_PK_ERROR(104, "the record was referenced, and the operation failed"),
+    MYSQL_PK_ERROR(104, "该记录被引用，操作失败!"),
 
-    FILE_MAX_INFO(105, "upload file size out of range"),
+    FILE_MAX_INFO(105, "上传文件超出指定大小!"),
 
-    REFRESH_INFO(106, "your refresh is too fast to stand"),
+    REFRESH_INFO(106, "你的刷新速度太快了!"),
 
     REQUEST_ERROR(107, "500 program internal error"),
 
@@ -34,9 +37,9 @@ public enum ResponseCode {
 
     UNKNOWN_ERROR(1012, "unknown error"),
 
-    RESTRIC_ERROR(2001, "table data is associated with restrictions"),
+    RESTRIC_ERROR(2001, "该记录已被其他数据引用, 操作失败!"),
 
-    COLUMN_LONG_ERROR(2002, "data too long for column"),
+    COLUMN_LONG_ERROR(2002, "提交的数据长度超出!"),
 
     SQL_PARAM_ERROR(2003, "sql params exception");
 

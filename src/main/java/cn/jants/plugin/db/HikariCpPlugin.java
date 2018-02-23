@@ -35,6 +35,11 @@ public class HikariCpPlugin extends CommonProperty implements Plugin {
         hikariConfig.setJdbcUrl(this.getUrl());
         hikariConfig.setUsername(this.getUsername());
         hikariConfig.setPassword(this.getPassword());
+
+        hikariConfig.setIdleTimeout(60000);
+        hikariConfig.setConnectionTimeout(60000);
+        hikariConfig.setValidationTimeout(3000);
+        hikariConfig.setMaxLifetime(60000);
         dataSource = new HikariDataSource(hikariConfig);
         test("HikariCp DataSource", dataSource);
         return true;
