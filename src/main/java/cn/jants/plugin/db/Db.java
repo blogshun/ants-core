@@ -243,9 +243,9 @@ public class Db<T> {
                 }
             }
             int[] res = ps.executeBatch();
-            if (check) {
-                close(conn);
-            }
+//            if (check) {
+//                close(conn);
+//            }
             return res;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -296,9 +296,9 @@ public class Db<T> {
                     i++;
                 }
             }
-            if (check) {
-                close(conn);
-            }
+//            if (check) {
+//                close(conn);
+//            }
             return keys;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -338,9 +338,9 @@ public class Db<T> {
             if (rs.first()) {
                 return rs.getLong(1);
             }
-            if (check) {
-                close(conn);
-            }
+//            if (check) {
+//                close(conn);
+//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -375,9 +375,9 @@ public class Db<T> {
             ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             fillStatement(sql, ps, params);
             ps.execute();
-            if (check) {
-                close(conn);
-            }
+//            if (check) {
+//                close(conn);
+//            }
         } catch (SQLException e) {
             throw new SQLParamsException(e);
         } finally {
@@ -410,9 +410,9 @@ public class Db<T> {
             ps = conn.prepareStatement(sql);
             fillStatement(sql, ps, params);
             int res = ps.executeUpdate();
-            if (check) {
-                close(conn);
-            }
+//            if (check) {
+//                close(conn);
+//            }
             return res;
         } catch (SQLException e) {
             throw new SQLParamsException(e);
@@ -462,9 +462,9 @@ public class Db<T> {
                     result.set(AppConstant.HUMP ? StrCaseUtil.toCamelCase(columnName) : columnName, val);
                 }
             }
-            if (check) {
-                close(conn);
-            }
+//            if (check) {
+//                close(conn);
+//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -508,9 +508,9 @@ public class Db<T> {
             if (rs.first()) {
                 result = rs.getObject(1);
             }
-            if (check) {
-                close(conn);
-            }
+//            if (check) {
+//                close(conn);
+//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -559,9 +559,9 @@ public class Db<T> {
                 }
                 result.add(jsonMap);
             }
-            if (check) {
-                close(conn);
-            }
+//            if (check) {
+//                close(conn);
+//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -601,9 +601,9 @@ public class Db<T> {
                 Object object = rs.getObject(rsm.getColumnLabel(1));
                 result.add(object);
             }
-            if (check) {
-                close(conn);
-            }
+//            if (check) {
+//                close(conn);
+//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -655,9 +655,9 @@ public class Db<T> {
             } else {
                 obj = null;
             }
-            if (check) {
-                close(conn);
-            }
+//            if (check) {
+//                close(conn);
+//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -714,11 +714,12 @@ public class Db<T> {
                 } else {
                     setColumns(rs, rsm, cls.getDeclaredFields(), obj);
                 }
+                System.out.println("come me ~~");
                 result.add(obj);
             }
-            if (check) {
-                close(conn);
-            }
+//            if (check) {
+//                close(conn);
+//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
