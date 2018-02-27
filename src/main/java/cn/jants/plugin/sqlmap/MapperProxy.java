@@ -114,6 +114,8 @@ public class MapperProxy implements InvocationHandler {
                     if (pageConditions == null) {
                         result = db.list(sqlParams.getSql(), cls, sqlParams.getParams());
                     } else {
+                        //移除当前线程分页对象
+                        Paging.remove();
                         pageConditions.setParams(sqlParams.getParams());
                         result = db.page(sqlParams.getSql(), cls, pageConditions);
                     }

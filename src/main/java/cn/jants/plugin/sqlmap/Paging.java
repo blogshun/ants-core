@@ -53,4 +53,13 @@ public class Paging {
     public static PageConditions getPageConditions() {
         return TL.get();
     }
+
+    /**
+     * 移除当前线程分页对象
+     *
+     * @return
+     */
+    public static void remove() {
+        TL.remove();
+    }
 }

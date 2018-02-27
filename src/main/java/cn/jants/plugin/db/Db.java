@@ -714,7 +714,6 @@ public class Db<T> {
                 } else {
                     setColumns(rs, rsm, cls.getDeclaredFields(), obj);
                 }
-                System.out.println("come me ~~");
                 result.add(obj);
             }
 //            if (check) {
