@@ -48,14 +48,7 @@ public class ParamTypeUtil {
                 BigDecimal decimal = new BigDecimal(value);
                 result = (T) decimal;
             }
-        }
-
-//        catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();
-//            throw new IllegalArgumentException("字符编码转换出现异常!");
-//        }
-
-        catch (Exception e) {
+        }catch (Exception e) {
             throw new IllegalArgumentException("参数异常, 类型不匹配!");
         }
         return result;
