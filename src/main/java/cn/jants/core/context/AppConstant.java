@@ -62,4 +62,10 @@ public class AppConstant {
      * 跨域配置
      */
     public static String DOMAIN;
+
+
+    /**
+     * 过滤包路径 例如 .api .web
+     */
+    public static String[] FILTER_PACKAGES = null;
 }

@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -121,6 +122,14 @@ public class ScanUtil {
      * @return
      */
     private static boolean check(String clsName, String[] packages) {
+        String[] filterPackages = AppConstant.FILTER_PACKAGES;
+        if(filterPackages != null){
+            for(String packStr: filterPackages){
+                if(clsName.indexOf(packStr) != -1){
+                    return false;
+                }
+            }
+        }
         for (String pg : packages) {
             if (clsName.startsWith(pg)) {
                 return true;
