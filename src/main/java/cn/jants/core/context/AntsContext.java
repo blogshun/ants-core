@@ -17,6 +17,7 @@ import cn.jants.common.utils.StrUtil;
 import cn.jants.core.ext.Plugin;
 import cn.jants.core.handler.RenderHandler;
 import cn.jants.core.module.*;
+import cn.jants.core.utils.PropertyUtil;
 import cn.jants.core.utils.ScanUtil;
 import cn.jants.plugin.cache.EhCachePlugin;
 import cn.jants.plugin.cache.RedisPlugin;
@@ -108,7 +109,7 @@ public class AntsContext {
             }
 
             //设置运行域
-            AppConstant.DOMAIN = propertyConfiguration.domain();
+            AppConstant.DOMAIN = PropertyUtil.getStr("ants.domain", propertyConfiguration.domain());
         }
 
         //通过注解获取模板配置
@@ -325,7 +326,7 @@ public class AntsContext {
             if (AppConstant.DEBUG) {
                 Log.debug("Register Mapper .....");
             }
-            if(sqlMapPlugin.hump()){
+            if (sqlMapPlugin.hump()) {
                 AppConstant.HUMP = true;
             }
             Package pgs = loadClass.getPackage();

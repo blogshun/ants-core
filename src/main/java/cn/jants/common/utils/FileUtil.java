@@ -116,7 +116,7 @@ public class FileUtil {
             byte[] bs = new byte[1024];
             // 读取到的数据长度
             int len;
-            File file = new File(filename.substring(0, filename.lastIndexOf("/")));
+            File file = new File(filename.substring(0, filename.lastIndexOf(File.separator)));
             if (!file.exists()) {
                 file.mkdirs();
             }
