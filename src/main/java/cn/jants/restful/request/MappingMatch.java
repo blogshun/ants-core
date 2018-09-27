@@ -22,24 +22,24 @@ public class MappingMatch {
      * 如果相等直接放回
      * 如果不相等则放回字符串长的匹配
      *
-     * @param mappingBeangList RequestMappingBean集合
+     * @param mappingBeanList RequestMappingBean集合
      * @param target           匹配的URL
      * @return
      */
-    public static RequestMappingBean match(List<RequestMappingBean> mappingBeangList, String target) {
+    public static RequestMappingBean match(List<RequestMappingBean> mappingBeanList, String target) {
         if (target.lastIndexOf("/") == target.length() - 1) {
             target = target + "index";
         }
         int k = -1, temp = 0;
-        for (int i = 0; i < mappingBeangList.size(); i++) {
-            RequestMappingBean mapping = mappingBeangList.get(i);
+        for (int i = 0; i < mappingBeanList.size(); i++) {
+            RequestMappingBean mapping = mappingBeanList.get(i);
             String[] urls = mapping.getUrls();
             for (String url : urls) {
                 boolean result = PATH_MATCHER.match(url, target);
                 if (result) {
                     if (url.equals(target)) {
                         mapping.setCurrentUrl(url);
-                        return mappingBeangList.get(i);
+                        return mappingBeanList.get(i);
                     } else {
                         int num = url.length();
                         if (num > temp) {
@@ -55,7 +55,27 @@ public class MappingMatch {
         if (k == -1) {
             return null;
         }
-        return mappingBeangList.get(k);
+        return mappingBeanList.get(k);
+    }
+
+    /**
+     * 链接匹配
+     *
+     * @param requests
+     * @param target
+     * @return
+     */
+    public static boolean matchRequests(List<String[]> requests, String target) {
+        for (int i = 0; i < requests.size(); i++) {
+            String[] urls = requests.get(i);
+            for (String url : urls) {
+                boolean result = PATH_MATCHER.match(url, target);
+                if (result) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
 

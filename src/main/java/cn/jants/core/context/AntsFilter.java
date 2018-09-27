@@ -1,12 +1,13 @@
 package cn.jants.core.context;
 
 import cn.jants.common.bean.Log;
-import cn.jants.core.module.Constant;
 import cn.jants.common.utils.StrUtil;
+import cn.jants.core.module.Constant;
 import cn.jants.core.module.HandlerManager;
+import cn.jants.core.module.RequestMappingManager;
+import cn.jants.restful.request.MappingMatch;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -101,11 +102,11 @@ public class AntsFilter implements Filter {
             }
         }
 
-        if (isHandled[0]) {
+        if (isHandled[0] || !MappingMatch.matchRequests(RequestMappingManager.getRequests(), target)) {
             chain.doFilter(request, response);
         } else {
             //设置允许域
-            if(StrUtil.notBlank(AppConstant.DOMAIN)) {
+            if (StrUtil.notBlank(AppConstant.DOMAIN)) {
                 response.setHeader("Access-Control-Allow-Origin", AppConstant.DOMAIN);
                 response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
             }

@@ -1,7 +1,5 @@
 package cn.jants.plugin.weixin;
 
-import org.apache.commons.collections.map.HashedMap;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +7,7 @@ import java.util.Map;
  * @author MrShun
  * @version 1.0
  */
-public class TplMsgParams extends HashedMap {
+public class TplMsgParams extends HashMap {
 
 
     /**

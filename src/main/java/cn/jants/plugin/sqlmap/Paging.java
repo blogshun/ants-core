@@ -17,6 +17,15 @@ public class Paging {
     /**
      * 开始分页
      *
+     * @param pc 分页对象
+     */
+    public static void startPage(PageConditions pc) {
+        TL.set(pc);
+    }
+
+    /**
+     * 开始分页
+     *
      * @param pageNum  当前页数
      * @param pageSize 每页大小
      */
@@ -41,7 +50,6 @@ public class Paging {
             pageConditions.setSortType(orderBy);
             TL.set(pageConditions);
         }
-
     }
 
 
@@ -51,13 +59,12 @@ public class Paging {
      * @return
      */
     public static PageConditions getPageConditions() {
-        return TL.get();
+        PageConditions pageConditions = TL.get();
+        return pageConditions;
     }
 
     /**
      * 移除当前线程分页对象
-     *
-     * @return
      */
     public static void remove() {
         TL.remove();

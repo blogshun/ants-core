@@ -80,9 +80,7 @@ public class WxPayTool {
         result.put("timestamp", timeStamp);
         result.put("sign", Sign.md5Sign(result, payKey));
 
-        WxPayApiResult payApiResult = new WxPayApiResult(result);
-        payApiResult.set("prepay_id", prepayId);
-        return payApiResult;
+        return new WxPayApiResult(result);
     }
 
     /**
@@ -106,9 +104,7 @@ public class WxPayTool {
         result.put("paySign", Sign.md5Sign(result, payKey));
         result.put("prepayId", prepayId);
 
-        WxPayApiResult payApiResult = new WxPayApiResult(result);
-        payApiResult.set("prepay_id", prepayId);
-        return payApiResult;
+        return new WxPayApiResult(result);
     }
 
     /**
@@ -155,10 +151,11 @@ public class WxPayTool {
         params.setSign(Sign.md5Sign(params, payKey));
         String xml = MapXmlUtil.map2Xml(params, "xml");
         String url = WxPayApiConstant.UNIFIED_ORDER_QUERY_API;
-        if (type == 1)
+        if (type == 1) {
             url = WxPayApiConstant.CLOSE_ORDER_API;
-        else if (type == 2)
+        }else if (type == 2) {
             url = WxPayApiConstant.REFUND_QUERY_API;
+        }
         String responseXml = HttpUtil.sendPost(url, xml);
         return MapXmlUtil.xml2Map(responseXml, "xml");
     }
@@ -168,7 +165,7 @@ public class WxPayTool {
      *
      * @return
      */
-    public WxNotifyResult getNotify() {
+    public static WxNotifyResult getNotify() {
         try {
             HttpServletRequest request = ClientHolder.getRequest();
             String xmlStr = IOUtil.parseStr(request.getInputStream());

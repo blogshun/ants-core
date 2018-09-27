@@ -1,7 +1,7 @@
 package cn.jants.plugin.weixin;
 
-import com.alibaba.fastjson.JSON;
 import cn.jants.common.exception.TipException;
+import com.alibaba.fastjson.JSON;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,31 +16,29 @@ public class ApiResult extends HashMap {
 
     private boolean ok;
 
-    private Object msg;
+    private String msg;
     /**
      * 数据对象
      */
     private Map data;
 
-    public ApiResult(){
+    public ApiResult() {
         put("message", "ok");
         put("code", 0);
     }
 
     public ApiResult(String result) {
         Map map = JSON.parseObject(result, Map.class);
-        Object errcode = map.get("errcode");
-        if (errcode == null || errcode.equals(0)) {
+        Object errCode = map.get("errcode");
+        if (errCode == null || errCode.equals(0)) {
             this.data = map;
             this.ok = true;
             put("data", data);
             put("message", "ok");
             put("code", 0);
         } else {
-            this.msg = String.valueOf(map.get("errmsg"));
-            put("message", msg);
-            put("code", errcode);
-            throw new TipException(String.format("code -> %s, msg -> %s", errcode, msg));
+            Object msg = map.get("errmsg");
+            throw new TipException(8003, String.format("%s", errCode, msg));
         }
 
     }
@@ -49,11 +47,11 @@ public class ApiResult extends HashMap {
         return ok;
     }
 
-    public Object getMsg() {
+    public String getMsg() {
         return msg;
     }
 
-    public String getStr(String key){
+    public String getStr(String key) {
         return String.valueOf(data.get(key));
     }
 }

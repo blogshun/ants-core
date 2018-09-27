@@ -23,7 +23,7 @@ public class AppConstant {
 
 
     /**
-     * 全局调式配置,默认false
+     * 全局调式配置,默认true
      */
     public static Boolean DEBUG = true;
 

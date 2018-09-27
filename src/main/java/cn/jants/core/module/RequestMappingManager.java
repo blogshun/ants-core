@@ -19,6 +19,7 @@ final public class RequestMappingManager {
 
     private static final List<RequestMappingBean> REQUEST_MAPPINGS = new ArrayList<>();
 
+    private static final List<String[]> REQUESTS = new ArrayList<>();
 
     /**
      * 注册RequestMapping
@@ -32,6 +33,7 @@ final public class RequestMappingManager {
             if (AppConstant.DEBUG) {
                 Log.debug(">>> {} :: Generator Success !", bean.toString());
             }
+            REQUESTS.add(bean.getUrls());
             REQUEST_MAPPINGS.add(bean);
         }
         if (AppConstant.DEBUG) {
@@ -41,5 +43,9 @@ final public class RequestMappingManager {
 
     public static List<RequestMappingBean> getRequestMappingManager() {
         return REQUEST_MAPPINGS;
+    }
+
+    public static List<String[]> getRequests() {
+        return REQUESTS;
     }
 }

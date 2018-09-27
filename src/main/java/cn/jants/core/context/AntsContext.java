@@ -4,10 +4,7 @@ import cn.jants.common.annotation.boot.DbConfiguration;
 import cn.jants.common.annotation.boot.DbSource;
 import cn.jants.common.annotation.boot.PropertyConfiguration;
 import cn.jants.common.annotation.boot.ViewConfiguration;
-import cn.jants.common.annotation.plugin.EnableActiveMQPlugin;
-import cn.jants.common.annotation.plugin.EnableEhcachePlugin;
-import cn.jants.common.annotation.plugin.EnableRedisPlugin;
-import cn.jants.common.annotation.plugin.EnableSQLMapPlugin;
+import cn.jants.common.annotation.plugin.*;
 import cn.jants.common.annotation.service.Application;
 import cn.jants.common.bean.Log;
 import cn.jants.common.bean.Prop;
@@ -25,6 +22,7 @@ import cn.jants.plugin.db.*;
 import cn.jants.plugin.jms.ActiveMqPlugin;
 import cn.jants.plugin.jms.ConsumerManager;
 import cn.jants.plugin.jms.JmsListener;
+import cn.jants.plugin.mongo.MongoDbPlugin;
 import cn.jants.plugin.scheduler.FixedDelay;
 import cn.jants.plugin.scheduler.SchedulerBean;
 import cn.jants.plugin.scheduler.SchedulerPlugin;
@@ -331,6 +329,12 @@ public class AntsContext {
             }
             Package pgs = loadClass.getPackage();
             MapperManager.register(pgs.getName());
+        }
+
+        //初始化MongoDb插件
+        EnableMongoDbPlugin mongoDbPlugin = loadClass.getDeclaredAnnotation(EnableMongoDbPlugin.class);
+        if (mongoDbPlugin != null) {
+            plugins.add(new MongoDbPlugin(mongoDbPlugin.uri()));
         }
 
     }

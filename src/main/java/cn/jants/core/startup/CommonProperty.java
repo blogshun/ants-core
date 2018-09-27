@@ -7,6 +7,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -115,8 +116,24 @@ public class CommonProperty {
         return this;
     }
 
+    public CommonProperty addServlet(ServletAssembly servlet) {
+        if(servlets == null){
+            servlets = new ArrayList<>();
+        }
+        servlets.add(servlet);
+        return this;
+    }
+
     public CommonProperty addFilters(List<FilterAssembly> filters) {
         this.filters = filters;
+        return this;
+    }
+
+    public CommonProperty addFilter(FilterAssembly filter) {
+        if(filters == null){
+            filters = new ArrayList<>();
+        }
+        filters.add(filter);
         return this;
     }
 

@@ -107,7 +107,7 @@ public class LimitRefreshHandler implements Handler {
                             long lastTime = client.getLastTime();
                             long currentTime = System.currentTimeMillis() - lastTime;
                             if (client.getCount() > count) {
-                                //TODO 大于多少次记录到IP黑名单
+                                //大于多少次记录到IP黑名单
                                 client.setCheck(false);
                                 tokens.put(sessionId, client);
                                 writeBlackList(response);

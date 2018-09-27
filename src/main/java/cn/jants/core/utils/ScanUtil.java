@@ -5,12 +5,14 @@ import cn.jants.common.bean.Log;
 import cn.jants.common.enums.StartMode;
 import cn.jants.common.utils.PathUtil;
 import cn.jants.core.context.AppConstant;
+import cn.jants.plugin.sqlmap.SqlMapPlugin;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -54,6 +56,10 @@ public class ScanUtil {
                                 result.add(cls);
                             }
                         }
+                    } else if (strCls.endsWith(".xml")) {
+                        InputStream in = new BufferedInputStream(ScanUtil.class.getClassLoader().getResourceAsStream(strCls));
+                        SqlMapPlugin.parse(in);
+                        Log.info("读取 {} 成功 ...", strCls);
                     }
                 }
             } catch (IOException e) {
@@ -123,9 +129,9 @@ public class ScanUtil {
      */
     private static boolean check(String clsName, String[] packages) {
         String[] filterPackages = AppConstant.FILTER_PACKAGES;
-        if(filterPackages != null){
-            for(String packStr: filterPackages){
-                if(clsName.indexOf(packStr) != -1){
+        if (filterPackages != null) {
+            for (String packStr : filterPackages) {
+                if (clsName.indexOf(packStr) != -1) {
                     return false;
                 }
             }

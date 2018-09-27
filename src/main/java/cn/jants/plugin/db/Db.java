@@ -14,18 +14,15 @@ import cn.jants.core.utils.ParamTypeUtil;
 import cn.jants.plugin.orm.Criteria;
 import cn.jants.plugin.orm.Table;
 import cn.jants.plugin.orm.enums.OrderBy;
-import cn.jants.plugin.sqlmap.SqlStatement;
 import cn.jants.plugin.sqlmap.SqlParams;
+import cn.jants.plugin.sqlmap.SqlStatement;
 import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 import java.lang.reflect.Field;
-import java.math.BigInteger;
 import java.sql.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +43,9 @@ public class Db<T> {
 
     private String name, url, driverClassName, username, password;
 
-    private Connection conn = null;
+    private Connection connection = null;
+
+    private String[] dataType = new String[]{"druid", "c3p0", "dbcp", "hikari"};
 
     /**
      * 默认原生Db配置
@@ -58,15 +57,15 @@ public class Db<T> {
         this.username = Prop.getStr("ants.db.username");
         this.password = Prop.getStr("ants.db.password");
         String dataSourceTypeStr = Prop.getStr("ants.db.data-source");
-        if ("druid".equalsIgnoreCase(dataSourceTypeStr)) {
+        if (dataType[0].equalsIgnoreCase(dataSourceTypeStr)) {
             Properties properties = Prop.getProperties("ants.db.data-source.druid");
             dataSource = new DruidPlugin(url, driverClassName, username, password).getDataSource(properties);
-        } else if ("c3p0".equalsIgnoreCase(dataSourceTypeStr)) {
+        } else if (dataType[1].equalsIgnoreCase(dataSourceTypeStr)) {
             dataSource = C3p0Plugin.getDataSource(url, driverClassName, username, password);
-        } else if ("dbcp".equalsIgnoreCase(dataSourceTypeStr)) {
+        } else if (dataType[1].equalsIgnoreCase(dataSourceTypeStr)) {
             Properties properties = Prop.getProperties("ants.db.data-source.dbcp");
             dataSource = new DbcpPlugin(url, driverClassName, username, password).getDataSource(properties);
-        } else if ("hikari".equalsIgnoreCase(dataSourceTypeStr)) {
+        } else if (dataType[1].equalsIgnoreCase(dataSourceTypeStr)) {
             Properties properties = Prop.getProperties("ants.db.data-source.hikari");
             dataSource = new HikariCpPlugin(url, driverClassName, username, password).getDataSource(properties);
         }
@@ -90,8 +89,8 @@ public class Db<T> {
         if (dataSource == null) {
             try {
                 Class.forName(driverClassName);
-                conn = DriverManager.getConnection(url, username, password);
-                connections.set(conn);
+                connection = DriverManager.getConnection(url, username, password);
+                connections.set(connection);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 logger.debug("原生加载 com.mysql.jdbc.Driver 失败!");
@@ -102,14 +101,14 @@ public class Db<T> {
 
         } else {
             try {
-                conn = dataSource.getConnection();
-                connections.set(conn);
+                connection = dataSource.getConnection();
+                connections.set(connection);
             } catch (SQLException e) {
                 e.printStackTrace();
                 logger.debug("获取数据源失败, 请认真检查配置!");
             }
         }
-        return conn;
+        return connection;
     }
 
     /**
@@ -138,13 +137,13 @@ public class Db<T> {
      * @param level
      */
     public void startTx(DataSource dataSource, String currentSource, TxLevel level) {
-        if (dataSource == null && conn == null) {
+        if (dataSource == null || connection == null) {
             throw new RuntimeException(currentSource + " 没有配置数据源, 错误!");
         }
         Connection conn = connections.get();
         try {
             //如果在当前线程中没有绑定相应的connection
-            if (dataSource != null && conn == null) {
+            if (dataSource != null || conn == null) {
                 conn = dataSource.getConnection();
             } else if (dataSource == null && conn == null) {
                 conn = getConnection();
@@ -219,15 +218,12 @@ public class Db<T> {
      * @return
      */
     public int[] batch(String sql, Object[]... params) {
-        int[] rows = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            boolean check = false;
             Connection conn = connections.get();
-            if (conn == null) {
+            if (conn == null || conn.isClosed()) {
                 conn = getConnection();
-                check = true;
             }
             if (sql == null) {
                 if (conn != null) {
@@ -243,9 +239,6 @@ public class Db<T> {
                 }
             }
             int[] res = ps.executeBatch();
-//            if (check) {
-//                close(conn);
-//            }
             return res;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -267,11 +260,9 @@ public class Db<T> {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            boolean check = false;
             Connection conn = connections.get();
-            if (conn == null) {
+            if (conn == null || conn.isClosed()) {
                 conn = getConnection();
-                check = true;
             }
             if (sql == null) {
                 if (conn != null) {
@@ -296,9 +287,6 @@ public class Db<T> {
                     i++;
                 }
             }
-//            if (check) {
-//                close(conn);
-//            }
             return keys;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -319,11 +307,9 @@ public class Db<T> {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            boolean check = false;
             Connection conn = connections.get();
-            if (conn == null) {
+            if (conn == null || conn.isClosed()) {
                 conn = getConnection();
-                check = true;
             }
             if (sql == null) {
                 if (conn != null) {
@@ -338,9 +324,6 @@ public class Db<T> {
             if (rs.first()) {
                 return rs.getLong(1);
             }
-//            if (check) {
-//                close(conn);
-//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -360,11 +343,9 @@ public class Db<T> {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            boolean check = false;
             Connection conn = connections.get();
-            if (conn == null) {
+            if (conn == null || conn.isClosed()) {
                 conn = getConnection();
-                check = true;
             }
             if (sql == null) {
                 if (conn != null) {
@@ -375,9 +356,6 @@ public class Db<T> {
             ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             fillStatement(sql, ps, params);
             ps.execute();
-//            if (check) {
-//                close(conn);
-//            }
         } catch (SQLException e) {
             throw new SQLParamsException(e);
         } finally {
@@ -395,11 +373,9 @@ public class Db<T> {
     public int update(String sql, Object... params) {
         PreparedStatement ps = null;
         try {
-            boolean check = false;
             Connection conn = connections.get();
-            if (conn == null) {
+            if (conn == null || conn.isClosed()) {
                 conn = getConnection();
-                check = true;
             }
             if (sql == null) {
                 if (conn != null) {
@@ -410,9 +386,6 @@ public class Db<T> {
             ps = conn.prepareStatement(sql);
             fillStatement(sql, ps, params);
             int res = ps.executeUpdate();
-//            if (check) {
-//                close(conn);
-//            }
             return res;
         } catch (SQLException e) {
             throw new SQLParamsException(e);
@@ -437,11 +410,9 @@ public class Db<T> {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            boolean check = false;
             Connection conn = connections.get();
-            if (conn == null) {
+            if (conn == null || conn.isClosed()) {
                 conn = getConnection();
-                check = true;
             }
             if (sql == null) {
                 if (conn != null) {
@@ -462,9 +433,6 @@ public class Db<T> {
                     result.set(AppConstant.HUMP ? StrCaseUtil.toCamelCase(columnName) : columnName, val);
                 }
             }
-//            if (check) {
-//                close(conn);
-//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -490,11 +458,9 @@ public class Db<T> {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            boolean check = false;
             Connection conn = connections.get();
-            if (conn == null) {
+            if (conn == null || conn.isClosed()) {
                 conn = getConnection();
-                check = true;
             }
             if (sql == null) {
                 if (conn != null) {
@@ -508,9 +474,6 @@ public class Db<T> {
             if (rs.first()) {
                 result = rs.getObject(1);
             }
-//            if (check) {
-//                close(conn);
-//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -532,12 +495,10 @@ public class Db<T> {
         List<JsonMap> result = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
+        Connection conn = connections.get();
         try {
-            boolean check = false;
-            Connection conn = connections.get();
-            if (conn == null) {
+            if (conn == null || conn.isClosed()) {
                 conn = getConnection();
-                check = true;
             }
             if (sql == null) {
                 if (conn != null) {
@@ -559,9 +520,7 @@ public class Db<T> {
                 }
                 result.add(jsonMap);
             }
-//            if (check) {
-//                close(conn);
-//            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -580,11 +539,9 @@ public class Db<T> {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            boolean check = false;
             Connection conn = connections.get();
-            if (conn == null) {
+            if (conn == null || conn.isClosed()) {
                 conn = getConnection();
-                check = true;
             }
             if (sql == null) {
                 if (conn != null) {
@@ -601,9 +558,6 @@ public class Db<T> {
                 Object object = rs.getObject(rsm.getColumnLabel(1));
                 result.add(object);
             }
-//            if (check) {
-//                close(conn);
-//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -626,11 +580,9 @@ public class Db<T> {
         ResultSet rs = null;
         T obj = null;
         try {
-            boolean check = false;
             Connection conn = connections.get();
-            if (conn == null) {
+            if (conn == null || conn.isClosed()) {
                 conn = getConnection();
-                check = true;
             }
             if (sql == null) {
                 if (conn != null) {
@@ -655,9 +607,6 @@ public class Db<T> {
             } else {
                 obj = null;
             }
-//            if (check) {
-//                close(conn);
-//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -688,11 +637,9 @@ public class Db<T> {
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
-            boolean check = false;
             Connection conn = connections.get();
-            if (conn == null) {
+            if (conn == null || conn.isClosed()) {
                 conn = getConnection();
-                check = true;
             }
             if (sql == null) {
                 if (conn != null) {
@@ -716,9 +663,6 @@ public class Db<T> {
                 }
                 result.add(obj);
             }
-//            if (check) {
-//                close(conn);
-//            }
         } catch (SQLException e) {
             e.printStackTrace();
             throw new SQLParamsException(e);
@@ -793,6 +737,7 @@ public class Db<T> {
      */
     private void fillStatement(String sql, PreparedStatement ps, Object... params) throws SQLException {
         if (params == null || params.length == 0) {
+            logger.debug("SQL    : {}\n", sql);
             return;
         }
         for (int i = 1; i <= params.length; i++) {
@@ -821,7 +766,7 @@ public class Db<T> {
                     field.setAccessible(true);
                     try {
                         Class<?> type = field.getType();
-                        if(type == Long.class){
+                        if (type == Long.class) {
                             val = rs.getLong(columnName);
                         }
                         field.set(obj, val);

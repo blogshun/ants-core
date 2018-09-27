@@ -1,7 +1,6 @@
 package cn.jants.core.proxy;
 
 import cn.jants.common.annotation.service.Autowired;
-import cn.jants.plugin.sqlmap.annotation.Mapper;
 import cn.jants.common.annotation.service.Source;
 import cn.jants.common.annotation.service.Value;
 import cn.jants.common.bean.Log;
@@ -14,6 +13,7 @@ import cn.jants.core.module.ServiceManager;
 import cn.jants.core.utils.GenerateUtil;
 import cn.jants.core.utils.ParamTypeUtil;
 import cn.jants.plugin.db.Db;
+import cn.jants.plugin.sqlmap.annotation.Mapper;
 import cn.jants.restful.bind.utils.ReflectionUtils;
 
 import javax.sql.DataSource;
@@ -53,6 +53,8 @@ public class FiledBinding {
                             if (service == null) {
                                 throw new RuntimeException(cls + " 中含有@Service注解类中, 不能注入接口!");
                             }
+                        } else if (typeClass == Db.class) {
+                            throw new RuntimeException("Db 对象不能使用@Autowired注解!");
                         } else {
                             String cName = targetClass == Autowired.class ? typeClass.getName() : targetClass.getName();
                             key = GenerateUtil.createServiceKey(cName);

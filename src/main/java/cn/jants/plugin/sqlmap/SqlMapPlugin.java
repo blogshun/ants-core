@@ -15,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author MrShun
@@ -73,6 +74,22 @@ public class SqlMapPlugin implements Plugin {
             }
         }
         return true;
+    }
+
+    /**
+     * jar中读取流转document
+     * @param in
+     */
+    public static void parse(InputStream in) {
+        try {
+            Document document = documentBuilder.parse(in);
+            SqlParser.parse(document);
+            in.close();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

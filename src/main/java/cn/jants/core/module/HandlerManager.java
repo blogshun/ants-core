@@ -80,7 +80,14 @@ final public class HandlerManager {
         Class<? extends Throwable> cls = e.getClass();
         //处理消息提示异常
         if (cls == TipException.class) {
-            Json.writeJson(Json.exception(ResponseCode.ARGUMENTS_ERROR, e.getMessage()), response);
+            TipException tipException = (TipException) e;
+            Integer code = tipException.getCode();
+            if(code == null){
+                Json.writeJson(Json.exception(ResponseCode.ARGUMENTS_ERROR, tipException.getMsg()), response);
+            }else{
+                Json.writeJson(Json.exception(code, tipException.getMsg()), response);
+            }
+
         }
         //处理数据库异常
         else if (cls == SQLParamsException.class) {
@@ -88,7 +95,7 @@ final public class HandlerManager {
             Class sqlClass = sqlException.getClass();
             //数据外键约束异常
             if (sqlClass == MySQLIntegrityConstraintViolationException.class) {
-                Json.writeJson(Json.exception(ResponseCode.RESTRIC_ERROR, sqlException.getMessage()), response);
+                Json.writeJson(Json.exception(ResponseCode.RECORD_REF_ERROR, sqlException.getMessage()), response);
             }//数据字段过长异常
             else if (sqlClass == MysqlDataTruncation.class) {
                 Json.writeJson(Json.exception(ResponseCode.COLUMN_LONG_ERROR, sqlException.getMessage()), response);

@@ -1,5 +1,7 @@
 package cn.jants.plugin.pay.wx;
 
+import cn.jants.common.exception.TipException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,18 +15,15 @@ public class WxPayApiResult extends HashMap {
 
     private boolean ok;
 
-    private Object msg;
+    private String msg;
 
     private Map data;
 
     public WxPayApiResult(Map map) {
-        Object errcode = map.get("return_code");
-        if ("FAIL".equals(errcode)) {
-            ok = false;
-            Object errmsg = map.get("err_code_des");
-            put("message", errmsg);
-            put("code", errcode);
-            this.msg = errmsg;
+        Object errCode = map.get("return_code");
+        if ("FAIL".equals(errCode)) {
+            Object msg = map.get("return_msg");
+            throw new TipException(8001, String.format("%s", msg));
         } else {
             data = map;
             put("data", map);
@@ -38,7 +37,7 @@ public class WxPayApiResult extends HashMap {
         return ok;
     }
 
-    public Object getMsg() {
+    public String getMsg() {
         return msg;
     }
 
@@ -52,33 +51,37 @@ public class WxPayApiResult extends HashMap {
 
     /**
      * 获取返回的签名
+     *
      * @return
      */
-    public String getSign(){
+    public String getSign() {
         return getStr("sign");
     }
 
     /**
      * 交易类型，取值为：JSAPI，NATIVE，APP等
+     *
      * @return
      */
-    public String getTradeType(){
+    public String getTradeType() {
         return getStr("trade_type");
     }
 
     /**
      * 微信生成的预支付会话标识，用于后续接口调用中使用，该值有效期为2小时
+     *
      * @return
      */
-    public String getPrepayId(){
+    public String getPrepayId() {
         return getStr("prepay_id");
     }
 
     /**
      * trade_type为NATIVE时有返回，用于生成二维码，展示给用户进行扫码支付
+     *
      * @return
      */
-    public String getCodeUrl(){
+    public String getCodeUrl() {
         return getStr("code_url");
     }
 }

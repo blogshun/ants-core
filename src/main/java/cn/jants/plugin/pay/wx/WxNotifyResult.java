@@ -1,5 +1,7 @@
 package cn.jants.plugin.pay.wx;
 
+import cn.jants.common.exception.TipException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,18 +13,15 @@ public class WxNotifyResult extends HashMap {
 
     private boolean ok;
 
-    private Object msg;
+    private String msg;
 
     private Map data;
 
     public WxNotifyResult(Map map) {
-        Object errcode = map.get("return_code");
-        if ("FAIL".equals(errcode)) {
-            ok = false;
-            Object errmsg = map.get("err_code_des");
-            put("message", errmsg);
-            put("code", errcode);
-            this.msg = errmsg;
+        Object errCode = map.get("return_code");
+        if ("FAIL".equals(errCode)) {
+            Object errMsg = map.get("err_code_des");
+            throw new TipException(8002, String.format("%s", errMsg));
         } else {
             data = map;
             put("data", map);
@@ -36,7 +35,7 @@ public class WxNotifyResult extends HashMap {
         return ok;
     }
 
-    public Object getMsg() {
+    public String getMsg() {
         return msg;
     }
 

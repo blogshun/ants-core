@@ -19,7 +19,7 @@ public class PageConditions<T> {
     /**
      * 每页大小
      */
-    private Integer pageSize = 10;
+    private Integer pageSize;
 
     /**
      * 排序字段

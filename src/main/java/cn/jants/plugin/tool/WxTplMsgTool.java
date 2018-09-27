@@ -39,4 +39,13 @@ public class WxTplMsgTool {
         String result = HttpUtil.sendPost(String.format(WxApiConstant.SEND_TEMPLATE_API, accessToken), JSON.toJSONString(tplMsgParams));
         return new ApiResult(result);
     }
+
+
+    public static void main(String[] args) {
+        TplMsgParams tplMsgParams = new TplMsgParams();
+        tplMsgParams.setToUser("o1zX7syRdNhWfqDmWauhcUeBL8Tk");
+        tplMsgParams.setTemplateId("D-Pl3NVq4X32Mr6t76tylt1O7CsAv5uEo5fATg0830o");
+        ApiResult result = sendTplMsg("wx89091f47367d3552", "3cfa4efa1f26a28486960d8ca63783e0", tplMsgParams);
+        System.out.println(result);
+    }
 }

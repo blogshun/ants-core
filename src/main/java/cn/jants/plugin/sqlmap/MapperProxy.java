@@ -74,7 +74,9 @@ public class MapperProxy implements InvocationHandler {
                 for (int i = 0; i < args.length; i++) {
                     P p = parameters[i].getDeclaredAnnotation(P.class);
                     if (p != null) {
-                        params.put(p.value(), args[i]);
+                        if(args[i] != null) {
+                            params.put(p.value(), args[i]);
+                        }
                     } else {
                         throw new RuntimeException("接口参数超过1个必须采用@P注解绑定!");
                     }
@@ -96,16 +98,25 @@ public class MapperProxy implements InvocationHandler {
                 if (StrUtil.isBlank(resultType)) {
                     throw new RuntimeException("List返回值必须配置resultType类型!");
                 }
-                if ("map".equals(resultType) || "hasmap".equals(resultType) || "jsonmap".equals(resultType)) {
+                if ("map".equals(resultType) || "hashmap".equals(resultType) || "jsonmap".equals(resultType)) {
                     PageConditions pageConditions = Paging.getPageConditions();
                     if (pageConditions == null) {
                         result = db.list(sqlParams.getSql(), sqlParams.getParams());
                     } else {
+                        pageConditions.setParams(sqlParams.getParams());
                         result = db.page(sqlParams.getSql(), pageConditions);
                     }
                 } else if ("long".equals(resultType) || "integer".equals(resultType)
                         || "string".equals(resultType)) {
                     result = db.listOne(sqlParams.getSql(), sqlParams.getParams());
+                    String strObject = String.valueOf(result);
+                    if ("long".equals(resultType)) {
+                        result = Long.valueOf(strObject);
+                    } else if ("integer".equals(resultType)) {
+                        result = Integer.valueOf(strObject);
+                    } else {
+                        result = strObject;
+                    }
                 } else {
                     String idKey = mapperName.concat(".").concat(resultType);
                     String type = SqlParser.getResultType(idKey);
@@ -114,12 +125,12 @@ public class MapperProxy implements InvocationHandler {
                     if (pageConditions == null) {
                         result = db.list(sqlParams.getSql(), cls, sqlParams.getParams());
                     } else {
-                        //移除当前线程分页对象
-                        Paging.remove();
                         pageConditions.setParams(sqlParams.getParams());
                         result = db.page(sqlParams.getSql(), cls, pageConditions);
                     }
                 }
+                //移除当前线程分页对象
+                Paging.remove();
             }
             //当是JsonMap时
             else if (methodReturnType == JsonMap.class || methodReturnType == HashMap.class || methodReturnType == Map.class) {
@@ -130,6 +141,14 @@ public class MapperProxy implements InvocationHandler {
                     || methodReturnType == Integer.class || methodReturnType == int.class
                     || methodReturnType == String.class) {
                 result = db.queryOne(sqlParams.getSql(), sqlParams.getParams());
+                String strObject = String.valueOf(result);
+                if (methodReturnType == Long.class || methodReturnType == long.class) {
+                    result = Long.valueOf(strObject);
+                } else if (methodReturnType == Integer.class || methodReturnType == int.class) {
+                    result = Integer.valueOf(strObject);
+                } else {
+                    result = strObject;
+                }
             }
             //当是实体类时
             else if (methodReturnType.getClassLoader() != null) {

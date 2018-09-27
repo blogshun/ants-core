@@ -145,6 +145,13 @@ public class Json {
         return JSON.toJSON(map);
     }
 
+    public static Object exception(Integer code, String exception) {
+        Map map = new HashMap(10);
+        map.put(STATE, code);
+        map.put(MSG, exception);
+        return JSON.toJSON(map);
+    }
+
     /**
      * 操作错误
      *

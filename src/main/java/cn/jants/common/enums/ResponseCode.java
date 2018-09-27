@@ -9,39 +9,45 @@ public enum ResponseCode {
     SUCCESS(0, "ok"),
 
     //token is expired
-    TOKEN_EXPIRED_INFO(100, "Token令牌已经过期!"),
+    TOKEN_EXPIRED_INFO(1000, "Token令牌已经过期!"),
 
     //token is invalid
-    TOKEN_INVALID_INFO(101, "无效的Token令牌!"),
+    TOKEN_INVALID_INFO(1001, "无效的Token令牌!"),
 
     //no operation authority
-    AUTH_INFO(102, "您没有操作权限!"),
+    AUTH_INFO(1002, "您没有操作权限!"),
 
-    LOGIN_INFO(103, "请再次登录!"),
+    SING_ERROR(1003, "signature 签名错误!"),
 
-    MYSQL_PK_ERROR(104, "该记录被引用，操作失败!"),
+    REQUEST_INVALID_ERROR(1007, "该请求已失效!"),
 
-    FILE_MAX_INFO(105, "上传文件超出指定大小!"),
+    MYSQL_PK_ERROR(1004, "该记录被引用，操作失败!"),
 
-    REFRESH_INFO(106, "你的刷新速度太快了!"),
+    FILE_MAX_INFO(1005, "上传文件超出指定大小!"),
 
-    REQUEST_ERROR(107, "500 program internal error"),
+    REFRESH_INFO(1006, "你的刷新速度太快了!"),
 
-    DATA_NULL_ERROR(109, "response data is null"),
+    REQUEST_ERROR(2001, "500 program internal error"),
 
-    REQUEST_TYPE_ERROR(405, "405 request type error"),
+    DATA_NULL_ERROR(2002, "response data is null"),
 
-    NULL_POINT_ERROR(1000, "object null pointer error"),
+    REQUEST_TYPE_ERROR(2003, "405 request type error"),
 
-    ARGUMENTS_ERROR(1011, "request argument is error"),
+    NULL_POINT_ERROR(2004, "object null pointer error"),
 
-    UNKNOWN_ERROR(1012, "unknown error"),
+    ARGUMENTS_ERROR(2005, "request argument is error"),
 
-    RESTRIC_ERROR(2001, "该记录已被其他数据引用, 操作失败!"),
+    UNKNOWN_ERROR(2006, "unknown error"),
 
-    COLUMN_LONG_ERROR(2002, "提交的数据长度超出!"),
+    RECORD_REF_ERROR(3001, "该记录已被其他数据引用, 操作失败!"),
 
-    SQL_PARAM_ERROR(2003, "sql params exception");
+    COLUMN_LONG_ERROR(3002, "提交的数据长度超出!"),
+
+    SQL_PARAM_ERROR(3003, "sql params exception"),
+
+    CONTENT_GARBAGE_INFO(4001, "提交文本内容包含非法信息!"),
+
+    IMAGE_GARBAGE_INFO(4002, "提交图片内容包含非法信息!");
 
     private int code;
     private String msg;

@@ -10,7 +10,6 @@ import org.w3c.dom.NodeList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -132,10 +131,11 @@ public class SqlParser {
         //基本数据类型
         if (ParamTypeUtil.isBaseDataType(params.getClass())) {
             int startNum = sql.indexOf(STATIC_START_SYMBOL);
-            if (startNum == -1) {
+            int endNum = sql.indexOf(STATIC_END_SYMBOL);
+            if (startNum == -1 || endNum == -1) {
                 return new SqlParams(sql, null);
             }
-            sql = sql.substring(0, startNum).concat("?");
+            sql = sql.substring(0, startNum).concat("?").concat(sql.substring(endNum + 1, sql.length()));
             return new SqlParams(sql, new Object[]{params});
         }
         //Map数据类型
@@ -143,8 +143,8 @@ public class SqlParser {
             List<String> fieldList = getFieldList(sql);
             Map<String, Object> mapParams = (Map<String, Object>) params;
             List<Object> values = new ArrayList<>(mapParams.size());
-            for(String filed: fieldList){
-                if(mapParams.containsKey(filed)){
+            for (String filed : fieldList) {
+                if (mapParams.containsKey(filed)) {
                     Object val = mapParams.get(filed);
                     sql = sql.replace(STATIC_START_SYMBOL.concat(filed).concat(STATIC_END_SYMBOL), "? ");
                     values.add(val);

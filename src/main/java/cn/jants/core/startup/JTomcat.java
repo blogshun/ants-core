@@ -31,7 +31,6 @@ public class JTomcat extends CommonProperty {
         super(loadClass, port, contextPath);
     }
 
-
     @Override
     public JTomcat start() {
         //创建内嵌tomcat容器
@@ -48,9 +47,13 @@ public class JTomcat extends CommonProperty {
         protocol.setMaxThreads(maxThreads);
         //设置超时时间
         protocol.setConnectionTimeout(connectionTimeout);
+        //不限制上传大小
+        connector.setMaxPostSize(-1);
         //设置编码
         connector.setURIEncoding(charset);
         connector.setUseBodyEncodingForURI(true);
+        //设置表单传参支持PUT
+        connector.setParseBodyMethods("POST,PUT");
         //建立server参照tomcat文件结构
         StandardServer server = (StandardServer) tomcat.getServer();
         AprLifecycleListener listener = new AprLifecycleListener();
@@ -58,10 +61,8 @@ public class JTomcat extends CommonProperty {
 
         // 将appBase设为本项目所在目录
         tomcat.getHost().setAppBase(".");
-
         try {
             Context ctx = tomcat.addWebapp(contextPath, webApp == null ? "." : webApp);
-
             //添加默认首页
             tomcat.addServlet(contextPath, "indexServlet", new IndexServlet());
             ctx.addServletMapping("", "indexServlet");

@@ -7,7 +7,7 @@
 
     <groupId>cn.jants</groupId>
     <artifactId>ants-core</artifactId>
-    <version>1.1.5</version>
+    <version>1.1.11</version>
     <packaging>jar</packaging>
     <name>ants-core</name>
     <url>https://github.com/blogshun/ants-core</url>
@@ -38,6 +38,14 @@
         </developer>
     </developers>
 
+    <!-- 配置成阿里云仓库镜像 -->
+    <repositories>
+        <repository>
+            <id>aliyunmaven</id>
+            <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.12</junit.version>
@@ -61,6 +69,8 @@
         <javapoet.version>1.7.0</javapoet.version>
         <oss.version>2.2.1</oss.version>
         <activemq.version>5.7.0</activemq.version>
+        <mongodb.version>2.13.2</mongodb.version>
+        <bcprov.version>1.46</bcprov.version>
     </properties>
 
     <dependencies>
@@ -179,11 +189,25 @@
             <version>1.0.0</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- ===== 小程序向量解密 ==== -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk16</artifactId>
+            <version>${bcprov.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- ===== QRCode二维码生成 ==== -->
         <dependency>
             <groupId>com.google.zxing</groupId>
             <artifactId>core</artifactId>
             <version>3.3.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongo-java-driver</artifactId>
+            <version>${mongodb.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- ===== 代码生成工具 ==== -->

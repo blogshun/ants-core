@@ -2,19 +2,19 @@ package cn.jants.core.handler;
 
 import cn.jants.common.bean.Log;
 import cn.jants.common.enums.RequestMethod;
+import cn.jants.common.enums.ResponseCode;
+import cn.jants.core.context.AppConstant;
+import cn.jants.core.ext.Handler;
 import cn.jants.core.holder.ClientRequest;
 import cn.jants.core.holder.ContextRequestManager;
 import cn.jants.core.module.Constant;
 import cn.jants.core.module.RequestMappingManager;
+import cn.jants.restful.render.Json;
 import cn.jants.restful.render.ModelAndView;
 import cn.jants.restful.render.Resource;
 import cn.jants.restful.render.View;
-import cn.jants.restful.request.MappingMatch;
-import cn.jants.common.enums.ResponseCode;
-import cn.jants.core.context.AppConstant;
-import cn.jants.core.ext.Handler;
-import cn.jants.restful.render.Json;
 import cn.jants.restful.request.BindingParams;
+import cn.jants.restful.request.MappingMatch;
 import cn.jants.restful.request.RequestMappingBean;
 import org.springframework.util.ReflectionUtils;
 
@@ -44,12 +44,12 @@ public class RenderHandler implements Handler {
 
     @Override
     public boolean preHandler(String target, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String type = request.getMethod();
         RequestMappingBean bean = MappingMatch.match(requestMappingManager, target);
         //匹配不到请求直接放回到过滤器
         if (bean == null) {
             return true;
         } else {
-            String type = request.getMethod();
             RequestMethod requestType = bean.getRequestType();
             //判断请求类型 为null时都能访问
             if (requestType == null || type.equals(String.valueOf(requestType))) {

@@ -1,8 +1,8 @@
 package cn.jants.plugin.cache;
 
+import cn.jants.core.utils.ParamTypeUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import cn.jants.core.utils.ParamTypeUtil;
 import redis.clients.jedis.Jedis;
 
 /**
@@ -82,7 +82,8 @@ public class RedisTpl {
      * @return
      */
     public boolean exists(final String key) {
-        return jedis.exists(key);
+        boolean exists = jedis.exists(key);
+        return exists;
     }
 
     /**
@@ -92,7 +93,8 @@ public class RedisTpl {
      * @return
      */
     public String getStr(final String key) {
-        return jedis.get(key);
+        String result = jedis.get(key);
+        return result;
     }
 
     /**

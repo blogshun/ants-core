@@ -56,7 +56,7 @@ public class DruidPlugin extends CommonProperty implements Plugin {
     /**
      * 是否打开连接泄露自动检测
      */
-    private boolean removeAbandoned = false;
+    private boolean removeAbandoned = true;
 
     private String removeAbandonedTimeout = "1800";
 
@@ -271,8 +271,9 @@ public class DruidPlugin extends CommonProperty implements Plugin {
     public DataSource getDataSource(Properties properties) {
         try {
             Properties config = JSON.parseObject(JSON.toJSONString(this), Properties.class);
-            properties.putAll(config);
-            return DruidDataSourceFactory.createDataSource(properties);
+            config.putAll(properties);
+            DataSource dataSource = DruidDataSourceFactory.createDataSource(config);
+            return dataSource;
         } catch (Exception e) {
             e.printStackTrace();
         }

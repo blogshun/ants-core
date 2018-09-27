@@ -41,6 +41,8 @@ public class SchedulerPlugin implements Plugin{
                         object = ServiceManager.getService(key);
                     }
                     Runnable target = (Runnable) object;
+
+
                     exec.scheduleWithFixedDelay(target, fixedDelay.initialDelay(), fixedDelay.delay(), fixedDelay.timeUnit());
                 }
             } catch (InstantiationException e) {

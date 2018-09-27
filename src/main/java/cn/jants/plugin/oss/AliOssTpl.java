@@ -2,8 +2,6 @@ package cn.jants.plugin.oss;
 
 import cn.jants.common.bean.Log;
 import com.aliyun.oss.OSSClient;
-import com.aliyun.oss.model.Bucket;
-import com.aliyun.oss.model.OSSObject;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
 
@@ -11,6 +9,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -38,36 +38,26 @@ public class AliOssTpl {
     }
 
     /**
-     * 新建Bucket  --Bucket权限:私有
+     * 上传本地文件到OSS
      *
-     * @param bucketName bucket名称
-     * @return true 新建Bucket成功
-     */
-    public boolean createBucket(String bucketName) {
-        Bucket bucket = client.createBucket(bucketName);
-        return bucketName.equals(bucket.getName());
-    }
-
-    /**
-     * 删除Bucket
-     *
-     * @param bucketName bucket名称
-     */
-    public void deleteBucket(String bucketName) {
-        client.deleteBucket(bucketName);
-        Log.info("删除" + bucketName + "Bucket成功");
-    }
-
-    /**
-     * 本地文件上传到OSS
-     *
-     * @param file       本地文件
-     * @param rename     重命名文件
-     * @param bucketName
-     * @param diskName   oss文件夹目录
+     * @param file     文件对象
+     * @param diskName oss文件夹目录
      * @return
      */
-    public OssResult uploadFile2OSS(File file, String rename, String bucketName, String diskName) {
+    public OssResult uploadFile2OSS(File file, String diskName) {
+        return uploadFile2OSS(file, null, diskName);
+    }
+
+
+    /**
+     * 本地文件重命名上传到OSS
+     *
+     * @param file     本地文件
+     * @param rename   重命名文件
+     * @param diskName oss文件夹目录
+     * @return
+     */
+    public OssResult uploadFile2OSS(File file, String rename, String diskName) {
         try {
             Long fileSize = file.length();
             String fileName = file.getName();
@@ -82,7 +72,7 @@ public class AliOssTpl {
             metadata.setContentDisposition("filename/filesize=" + fileName + "/" + fileSize + "Byte.");
             //上传文件
             String urlStr = url.concat("/").concat(diskName).concat(rename);
-            PutObjectResult putResult = client.putObject(this.bucketName == null ? bucketName : this.bucketName, diskName + (rename == null ? fileName : rename), is, metadata);
+            PutObjectResult putResult = client.putObject(bucketName, diskName + (rename == null ? fileName : rename), is, metadata);
             //解析结果
             return new OssResult(true, "上传成功 > ".concat(file.getName().concat(" !")), urlStr, putResult.getETag());
         } catch (Exception e) {
@@ -91,24 +81,62 @@ public class AliOssTpl {
         return new OssResult(false, "上传失败 > ".concat(file.getName().concat(" !")), null, null);
     }
 
-    public OssResult uploadFile2OSS(File file, String bucketName, String diskName) {
-        return uploadFile2OSS(file, null, bucketName, diskName);
-    }
-
-    public OssResult uploadFile2OSS(File file, String diskName) {
-        return uploadFile2OSS(file, null, bucketName, diskName);
+    /**
+     * 网络URL上传传到oss
+     *
+     * @param url      图片地址
+     * @param fileName 文件名称
+     * @param diskName oss上面的目录
+     * @return
+     */
+    public OssResult uploadUrl2OSS(String url, String fileName, String diskName) {
+        try {
+            URL reqUrl = new URL(url);
+            HttpURLConnection httpURLConnection = (HttpURLConnection) reqUrl.openConnection();
+            // 设置网络连接超时时间
+            httpURLConnection.setConnectTimeout(3000);
+            // 设置应用程序要从网络连接读取数据
+            httpURLConnection.setDoInput(true);
+            httpURLConnection.setRequestMethod("GET");
+            int responseCode = httpURLConnection.getResponseCode();
+            if (responseCode == 200) {
+                // 从服务器返回一个输入流
+                InputStream inputStream = httpURLConnection.getInputStream();
+                try {
+                    int fileSize = httpURLConnection.getContentLength();
+                    //创建上传Object的Metadata
+                    ObjectMetadata metadata = new ObjectMetadata();
+                    metadata.setContentLength(fileSize);
+                    metadata.setCacheControl("no-cache");
+                    metadata.setHeader("Pragma", "no-cache");
+                    metadata.setContentEncoding("utf-8");
+                    metadata.setContentType(getContentType(fileName));
+                    metadata.setContentDisposition("filename/filesize=" + fileName + "/" + fileSize + "Byte.");
+                    //上传文件
+                    PutObjectResult putResult = client.putObject(bucketName, diskName + fileName, inputStream, metadata);
+                    //解析结果
+                    String urlStr = url.concat("/").concat(diskName).concat(fileName);
+                    return new OssResult(true, "上传成功 > ".concat(fileName.concat(" !")), urlStr, putResult.getETag());
+                } catch (Exception e) {
+                    Log.error("上传阿里云OSS服务器异常." + e.getMessage(), e);
+                }
+                return new OssResult(false, "上传失败 > ".concat(fileName.concat(" !")), null, null);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
      * 流上传到OSS
      *
-     * @param is         文件流
-     * @param fileName   文件名称
-     * @param bucketName
-     * @param diskName   文件目录
+     * @param is       文件流
+     * @param fileName 文件名称
+     * @param diskName 文件目录
      * @return
      */
-    public OssResult uploadStream2OSS(InputStream is, String fileName, String bucketName, String diskName) {
+    public OssResult uploadStream2OSS(InputStream is, String fileName, String diskName) {
         try {
             Integer fileSize = is.available();
             //创建上传Object的Metadata
@@ -120,7 +148,7 @@ public class AliOssTpl {
             metadata.setContentType(getContentType(fileName));
             metadata.setContentDisposition("filename/filesize=" + fileName + "/" + fileSize + "Byte.");
             //上传文件
-            PutObjectResult putResult = client.putObject(this.bucketName == null ? bucketName : this.bucketName, diskName + fileName, is, metadata);
+            PutObjectResult putResult = client.putObject(bucketName, diskName + fileName, is, metadata);
             //解析结果
             String urlStr = url.concat("/").concat(diskName).concat(fileName);
             return new OssResult(true, "上传成功 > ".concat(fileName.concat(" !")), urlStr, putResult.getETag());
@@ -130,45 +158,21 @@ public class AliOssTpl {
         return new OssResult(false, "上传失败 > ".concat(fileName.concat(" !")), null, null);
     }
 
-    public OssResult uploadStream2OSS(InputStream is, String fileName, String diskName) {
-        return uploadStream2OSS(is, fileName, null, diskName);
-    }
-
-    /**
-     * 根据key获取OSS服务器上的文件输入流
-     *
-     * @param bucketName bucket名称
-     * @param diskName   文件路径
-     * @param key        Bucket下的文件的路径名+文件名
-     */
-    public InputStream getOSS2InputStream(String bucketName, String diskName, String key) {
-        OSSObject ossObj = client.getObject(this.bucketName == null ? bucketName : this.bucketName, diskName + key);
-        return ossObj.getObjectContent();
-    }
-
-    public InputStream getOSS2InputStream(String diskName, String key) {
-        return getOSS2InputStream(null, diskName, key);
-    }
 
     /**
      * 删除文件
      *
-     * @param bucketName
      * @param objectName 文件对象
      * @return
      */
-    public OssResult delete(String bucketName, String objectName) {
-        boolean exist = client.doesObjectExist(this.bucketName == null ? bucketName : this.bucketName, objectName);
+    public OssResult delete(String objectName) {
+        boolean exist = client.doesObjectExist(bucketName, objectName);
         if (exist) {
             client.deleteObject(this.bucketName == null ? bucketName : this.bucketName, objectName);
             return new OssResult(true, "文件删除成功 > ".concat(objectName));
         } else {
             return new OssResult(false, "文件不存在, 删除失败!");
         }
-    }
-
-    public OssResult delete(String objectName) {
-        return delete(null, objectName);
     }
 
     /**
