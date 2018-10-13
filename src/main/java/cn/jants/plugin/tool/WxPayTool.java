@@ -2,12 +2,14 @@ package cn.jants.plugin.tool;
 
 import cn.jants.common.bean.Log;
 import cn.jants.common.bean.Prop;
+import cn.jants.common.exception.TipException;
 import cn.jants.common.utils.HttpUtil;
 import cn.jants.common.utils.IOUtil;
 import cn.jants.common.utils.MapXmlUtil;
 import cn.jants.common.utils.StrUtil;
 import cn.jants.core.holder.ClientHolder;
 import cn.jants.plugin.pay.wx.*;
+import com.alibaba.fastjson.JSON;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
@@ -24,18 +26,19 @@ public class WxPayTool {
     /**
      * 应用 appId, 应用 appSecret, 商户ID, 支付密钥, 通知地址
      */
-    private String appId, mchId, payKey, notifyUrl;
+    private String appId, mchId, payKey, notifyUrl, certPath;
 
     /**
      * 为了防止反复初始化
      */
     private final static ConcurrentMap<String, WxPayTool> PAY_MAP = new ConcurrentHashMap<>();
 
-    private WxPayTool(String appId, String mchId, String payKey, String notifyUrl) {
+    private WxPayTool(String appId, String mchId, String payKey, String notifyUrl, String certPath) {
         this.appId = appId;
         this.mchId = mchId;
         this.payKey = payKey;
         this.notifyUrl = notifyUrl;
+        this.certPath = certPath;
     }
 
     /**
@@ -45,9 +48,10 @@ public class WxPayTool {
      * @param mchId     商户ID
      * @param payKey    支付秘钥
      * @param notifyUrl 通知地址
+     * @param certPath  证书
      * @return
      */
-    public static WxPayTool init(String appId, String mchId, String payKey, String notifyUrl) {
+    public static WxPayTool init(String appId, String mchId, String payKey, String notifyUrl, String certPath) {
         appId = Prop.getKeyStrValue(appId);
         mchId = Prop.getKeyStrValue(mchId);
         payKey = Prop.getKeyStrValue(payKey);
@@ -55,9 +59,13 @@ public class WxPayTool {
         if (PAY_MAP.containsKey(appId)) {
             return PAY_MAP.get(appId);
         }
-        WxPayTool wxPayTool = new WxPayTool(appId, mchId, payKey, notifyUrl);
+        WxPayTool wxPayTool = new WxPayTool(appId, mchId, payKey, notifyUrl, certPath);
         PAY_MAP.put(appId, wxPayTool);
         return wxPayTool;
+    }
+
+    public static WxPayTool init(String appId, String mchId, String payKey, String notifyUrl) {
+        return init(appId, mchId, payKey, notifyUrl);
     }
 
     /**
@@ -136,6 +144,26 @@ public class WxPayTool {
     }
 
     /**
+     * 微信退款
+     *
+     * @param params
+     */
+    public String refund(WxPayParams params) {
+        params.setAppId(appId).setMchId(mchId);
+        params.setSign(Sign.md5Sign(params, payKey));
+        String xml = MapXmlUtil.map2Xml(params, "xml");
+        String responseXml = SslHttpRequest.p12Send(WxPayApiConstant.REFUND_API, xml, certPath, mchId);
+        Map map = MapXmlUtil.xml2Map(responseXml, "xml");
+        Log.debug("退款 Result - > {}", JSON.toJSONString(map, true));
+        //成功
+        if ("SUCCESS".equals(map.get("result_code"))) {
+            return String.valueOf(map.get("out_refund_no"));
+        } else {
+            throw new TipException(10034, String.valueOf(map.get("err_code_des")));
+        }
+    }
+
+    /**
      * 查询订单, 关闭订单, 查询退款订单
      *
      * @param id   商户订单号
@@ -153,7 +181,7 @@ public class WxPayTool {
         String url = WxPayApiConstant.UNIFIED_ORDER_QUERY_API;
         if (type == 1) {
             url = WxPayApiConstant.CLOSE_ORDER_API;
-        }else if (type == 2) {
+        } else if (type == 2) {
             url = WxPayApiConstant.REFUND_QUERY_API;
         }
         String responseXml = HttpUtil.sendPost(url, xml);

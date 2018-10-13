@@ -128,6 +128,15 @@ public class WxPayParams extends TreeMap {
     }
 
     /**
+     * @param refundFee 退款金额
+     * @return
+     */
+    public WxPayParams setRefundFee(BigInteger refundFee) {
+        put("refund_fee", refundFee);
+        return this;
+    }
+
+    /**
      * @param spbillCreateIp 终端IP
      * @return
      */

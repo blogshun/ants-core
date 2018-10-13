@@ -109,7 +109,11 @@ public class RenderHandler implements Handler {
                         Resource res = (Resource) data;
                         res.render(request, response);
                     } else if (returnType == Object.class) {
-                        Json.writeJson(data, response, true);
+                        if(data instanceof String || data instanceof Long || data instanceof Integer){
+                            response.getWriter().print(data);
+                        }else {
+                            Json.writeJson(data, response, true);
+                        }
                     } else {
                         //返回Response响应数据, 不带序列化
                         Json.writeJson(data, response, false);
