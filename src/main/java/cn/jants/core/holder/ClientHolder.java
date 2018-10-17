@@ -167,13 +167,10 @@ public class ClientHolder {
         }
     }
 
-    public static String getWebUrl(boolean isHttps) {
+    public static String getWebUrl() {
         HttpServletRequest request = getRequest();
         int port = request.getServerPort();
-        String httpStr = "http://";
-        if (isHttps) {
-            httpStr = "https://";
-        }
+        String httpStr = request.getScheme();
         return httpStr + request.getServerName()
                 //端口号
                 + (port == 80 ? "" : ":" + port)
@@ -183,9 +180,5 @@ public class ClientHolder {
                 + request.getServletPath()
                 //参数
                 + "?" + (request.getQueryString());
-    }
-
-    public static String getWebUrl(){
-        return getWebUrl(false);
     }
 }

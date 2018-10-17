@@ -133,8 +133,8 @@ public class Json {
     public static Object exception(ResponseCode responseCode, String exception) {
         Map map = new HashMap(10);
         map.put(STATE, responseCode.getCode());
-        map.put(MSG, responseCode.getMsg());
-        map.put(ERROR, exception);
+        map.put(MSG, exception);
+        map.put(ERROR, responseCode.getMsg());
         return JSON.toJSON(map);
     }
 

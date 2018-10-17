@@ -26,18 +26,17 @@ public class WxPayTool {
     /**
      * 应用 appId, 应用 appSecret, 商户ID, 支付密钥, 通知地址
      */
-    private String appId, mchId, payKey, notifyUrl, certPath;
+    private String appId, mchId, payKey, certPath;
 
     /**
      * 为了防止反复初始化
      */
     private final static ConcurrentMap<String, WxPayTool> PAY_MAP = new ConcurrentHashMap<>();
 
-    private WxPayTool(String appId, String mchId, String payKey, String notifyUrl, String certPath) {
+    private WxPayTool(String appId, String mchId, String payKey, String certPath) {
         this.appId = appId;
         this.mchId = mchId;
         this.payKey = payKey;
-        this.notifyUrl = notifyUrl;
         this.certPath = certPath;
     }
 
@@ -47,25 +46,23 @@ public class WxPayTool {
      * @param appId     应用ID
      * @param mchId     商户ID
      * @param payKey    支付秘钥
-     * @param notifyUrl 通知地址
      * @param certPath  证书
      * @return
      */
-    public static WxPayTool init(String appId, String mchId, String payKey, String notifyUrl, String certPath) {
+    public static WxPayTool init(String appId, String mchId, String payKey, String certPath) {
         appId = Prop.getKeyStrValue(appId);
         mchId = Prop.getKeyStrValue(mchId);
         payKey = Prop.getKeyStrValue(payKey);
-        notifyUrl = Prop.getKeyStrValue(notifyUrl);
         if (PAY_MAP.containsKey(appId)) {
             return PAY_MAP.get(appId);
         }
-        WxPayTool wxPayTool = new WxPayTool(appId, mchId, payKey, notifyUrl, certPath);
+        WxPayTool wxPayTool = new WxPayTool(appId, mchId, payKey, certPath);
         PAY_MAP.put(appId, wxPayTool);
         return wxPayTool;
     }
 
-    public static WxPayTool init(String appId, String mchId, String payKey, String notifyUrl) {
-        return init(appId, mchId, payKey, notifyUrl);
+    public static WxPayTool init(String appId, String mchId, String payKey) {
+        return init(appId, mchId, payKey, null);
     }
 
     /**
@@ -149,17 +146,25 @@ public class WxPayTool {
      * @param params
      */
     public String refund(WxPayParams params) {
-        params.setAppId(appId).setMchId(mchId);
+        params.setAppId(appId)
+                .setMchId(mchId)
+                .setNonceStr(StrUtil.randomUUID());
         params.setSign(Sign.md5Sign(params, payKey));
         String xml = MapXmlUtil.map2Xml(params, "xml");
+        System.out.println(xml);
         String responseXml = SslHttpRequest.p12Send(WxPayApiConstant.REFUND_API, xml, certPath, mchId);
         Map map = MapXmlUtil.xml2Map(responseXml, "xml");
         Log.debug("退款 Result - > {}", JSON.toJSONString(map, true));
         //成功
         if ("SUCCESS".equals(map.get("result_code"))) {
-            return String.valueOf(map.get("out_refund_no"));
+            return String.valueOf(map.get("refund_id"));
         } else {
-            throw new TipException(10034, String.valueOf(map.get("err_code_des")));
+            Object errCodeDes = map.get("err_code_des");
+            if (errCodeDes == null) {
+                throw new TipException(JSON.toJSONString(map));
+            } else {
+                throw new TipException(String.valueOf(errCodeDes));
+            }
         }
     }
 
@@ -210,8 +215,7 @@ public class WxPayTool {
     private WxPayApiResult unifiedOrderParams(WxPayParams params) {
         params.setAppId(appId)
                 .setMchId(mchId)
-                .setNonceStr(StrUtil.randomUUID())
-                .setNotifyUrl(notifyUrl);
+                .setNonceStr(StrUtil.randomUUID());
 
         String orderXml = unifiedOrderXml(params);
         Log.debug("统一订单XML > {}", orderXml);

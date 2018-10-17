@@ -45,8 +45,8 @@ public class ActionInitialization {
                 //得到该类下面的所有方法
                 Method[] methods = ctl.getDeclaredMethods();
                 for (Method method : methods) {
-                    //排除静态方法和私有方法
-                    if (!Modifier.isStatic(method.getModifiers()) && !method.getClass().isPrimitive()) {
+                    //只扫扫描公共方法
+                    if (method.getModifiers() == 1) {
                         RequestMethod requestType = null;
                         //得到该类下面的RequestMapping注解
                         POST post;
