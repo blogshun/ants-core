@@ -41,6 +41,7 @@ public class ConsumerListener implements MessageListener {
                         }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                        target.error(e);
                     }
                 } catch (JMSException e) {
                     e.printStackTrace();

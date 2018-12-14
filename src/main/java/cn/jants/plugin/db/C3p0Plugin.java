@@ -1,6 +1,7 @@
 package cn.jants.plugin.db;
 
 import cn.jants.core.ext.Plugin;
+import cn.jants.core.module.DbManager;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 import javax.sql.DataSource;
@@ -34,7 +35,8 @@ public class C3p0Plugin extends CommonProperty implements Plugin {
             dataSource.setJdbcUrl(this.getUrl());
             dataSource.setUser(this.getUsername());
             dataSource.setPassword(this.getPassword());
-            test("test c3p0 dataSource!", dataSource);
+            Db db = test("test c3p0 dataSource!", dataSource);
+            DbManager.add(getName(), db);
         } catch (PropertyVetoException e) {
             e.printStackTrace();
             return false;

@@ -1,6 +1,7 @@
 package cn.jants.plugin.db;
 
 import cn.jants.core.ext.Plugin;
+import cn.jants.core.module.DbManager;
 import com.alibaba.fastjson.JSON;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -41,7 +42,8 @@ public class HikariCpPlugin extends CommonProperty implements Plugin {
         hikariConfig.setValidationTimeout(3000);
         hikariConfig.setMaxLifetime(60000);
         dataSource = new HikariDataSource(hikariConfig);
-        test("HikariCp DataSource", dataSource);
+        Db db = test("HikariCp DataSource", dataSource);
+        DbManager.add(getName(), db);
         return true;
     }
 

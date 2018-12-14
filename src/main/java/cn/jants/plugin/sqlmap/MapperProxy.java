@@ -8,6 +8,7 @@ import cn.jants.plugin.db.Db;
 import cn.jants.plugin.sqlmap.annotation.Mapper;
 import cn.jants.plugin.sqlmap.annotation.P;
 import cn.jants.plugin.sqlmap.annotation.Sql;
+import cn.jants.plugin.sqlmap.annotation.SwitchDb;
 
 import java.lang.reflect.*;
 import java.util.HashMap;
@@ -23,6 +24,8 @@ public class MapperProxy implements InvocationHandler {
     private String mapperName;
 
     private Class<?> targetCls;
+
+    private final String[] options = {"select", "insert", "update", "delete"};
 
     public MapperProxy(String mapperName, Class targetCls) {
         this.mapperName = mapperName;
@@ -40,7 +43,12 @@ public class MapperProxy implements InvocationHandler {
         String optionType, resultType;
         String sqlKey = mapperName.concat(".").concat(method.getName());
         Mapper mapper = targetCls.getDeclaredAnnotation(Mapper.class);
-        Db db = DbManager.get(mapper.value());
+        String dbName = mapper.value();
+        SwitchDb switchDb = method.getDeclaredAnnotation(SwitchDb.class);
+        if (switchDb != null && StrUtil.notBlank(switchDb.value())) {
+            dbName = switchDb.value();
+        }
+        Db db = DbManager.get(dbName);
         Class<?> methodReturnType = method.getReturnType();
 
         SqlParams sqlParams;
@@ -74,7 +82,7 @@ public class MapperProxy implements InvocationHandler {
                 for (int i = 0; i < args.length; i++) {
                     P p = parameters[i].getDeclaredAnnotation(P.class);
                     if (p != null) {
-                        if(args[i] != null) {
+                        if (args[i] != null) {
                             params.put(p.value(), args[i]);
                         }
                     } else {
@@ -92,7 +100,7 @@ public class MapperProxy implements InvocationHandler {
 
 
         //查询操作
-        if ("select".equals(optionType)) {
+        if (options[0].equalsIgnoreCase(optionType)) {
             //当是List集合时
             if (methodReturnType == List.class) {
                 if (StrUtil.isBlank(resultType)) {
@@ -157,7 +165,7 @@ public class MapperProxy implements InvocationHandler {
 
         }
         //保存操作
-        else if ("insert".equals(optionType)) {
+        else if (options[1].equalsIgnoreCase(optionType)) {
             if (methodReturnType == void.class) {
                 db.insert(sqlParams.getSql(), sqlParams.getParams());
             } else {
@@ -165,7 +173,7 @@ public class MapperProxy implements InvocationHandler {
             }
         }
         //更新操作
-        else if ("update".equals(optionType) || "delete".equals(optionType)) {
+        else if (options[2].equalsIgnoreCase(optionType) || options[3].equalsIgnoreCase(optionType)) {
             if (methodReturnType == void.class) {
                 db.update(sqlParams.getSql(), sqlParams.getParams());
             } else {

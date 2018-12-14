@@ -1,5 +1,6 @@
 package cn.jants.core.proxy;
 
+import cn.jants.plugin.db.Db;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.InvocationHandler;
 
@@ -47,6 +48,7 @@ public class CglibProxy implements InvocationHandler {
         if (cacheManager.isOpened() && cacheManager.existCache()) {
             return cacheManager.getResult();
         }
+        //事物处理
         TransactionManager tx = new TransactionManager(target, method);
         Object result;
         try {

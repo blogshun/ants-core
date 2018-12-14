@@ -5,6 +5,7 @@ import cn.jants.common.enums.ResponseCode;
 import cn.jants.common.exception.TipException;
 import cn.jants.plugin.cache.RedisTpl;
 import cn.jants.plugin.tool.RedisTool;
+import com.alibaba.fastjson.JSON;
 
 import java.util.Base64;
 
@@ -51,7 +52,7 @@ public class TokenUtil {
         //获取Redis对象
         RedisTpl redis = RedisTool.getRedis();
         //根据Token存储用户信息
-        redis.set(USER_TOKEN_REDIS_PREFIX.concat(userTokenStr), userInfoExt);
+        redis.set(USER_TOKEN_REDIS_PREFIX.concat(userTokenStr), JSON.toJSONString(userInfoExt));
         //根据用户唯一ID存储用户Token
         redis.set(TOKEN_ID_REDIS_PREFIX.concat(onlyId), userTokenStr);
         return userTokenStr;

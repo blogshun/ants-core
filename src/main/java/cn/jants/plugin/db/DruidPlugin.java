@@ -1,6 +1,7 @@
 package cn.jants.plugin.db;
 
 import cn.jants.core.ext.Plugin;
+import cn.jants.core.module.DbManager;
 import com.alibaba.druid.filter.Filter;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
@@ -244,7 +245,8 @@ public class DruidPlugin extends CommonProperty implements Plugin {
         try {
             Properties config = JSON.parseObject(JSON.toJSONString(this), Properties.class);
             this.dataSource = DruidDataSourceFactory.createDataSource(config);
-            test("test druid dataSource!", dataSource);
+            Db db = test("test druid dataSource!", dataSource);
+            DbManager.add(getName(), db);
         } catch (Exception e) {
             e.printStackTrace();
             return false;

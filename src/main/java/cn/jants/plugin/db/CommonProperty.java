@@ -2,6 +2,7 @@ package cn.jants.plugin.db;
 
 
 import cn.jants.common.bean.JsonMap;
+import cn.jants.common.bean.Log;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
  * @version 1.0
  */
 public class CommonProperty {
+
 
     /**
      * 数据源连接URL, 数据库账号, 数据库密码, 驱动名称
@@ -77,9 +79,10 @@ public class CommonProperty {
         this.name = name;
     }
 
-    public void test(String sourceName, DataSource dataSource) throws SQLException {
+    public Db test(String sourceName, DataSource dataSource) throws SQLException {
         Db db = new Db(dataSource);
         JsonMap obj = db.query("select 1");
-        System.err.println(sourceName + " > " + obj.getStr("1", "null"));
+        Log.debug(sourceName + " > " + obj.getStr("1", "null"));
+        return db;
     }
 }

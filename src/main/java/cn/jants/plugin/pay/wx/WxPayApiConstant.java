@@ -35,4 +35,10 @@ public interface WxPayApiConstant {
      * POST 发送xml数据
      */
     String REFUND_API = "https://api.mch.weixin.qq.com/secapi/pay/refund";
+
+    /**
+     * 企业付款到零钱，需要双向证书
+     * POST 发送xml数据
+     */
+    String WITHDRAWALS_API = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
 }

@@ -24,12 +24,7 @@ final public class DbManager {
     }
 
     public static Db get(String name) {
-        Db db = DBS.get(StrUtil.isBlank(name) ? DEFAULT_NAME : name);
-        if (db == null) {
-            db = new Db();
-            DBS.put(DEFAULT_NAME, db);
-        }
-        return db;
+        return DBS.get(StrUtil.isBlank(name) ? DEFAULT_NAME : name);
     }
 
     public static boolean containsKey(String name) {

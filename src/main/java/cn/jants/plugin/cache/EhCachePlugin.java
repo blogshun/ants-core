@@ -30,8 +30,11 @@ public class EhCachePlugin implements Plugin {
     }
 
     @Override
-    public boolean start() {
+    public boolean start() throws Exception {
         InputStream resourceAsStream = this.getClass().getResourceAsStream(fileName);
+        if (resourceAsStream == null) {
+            throw new Exception(String.format("使用EhCachePlugin 必须配置 %s 文件!", fileName));
+        }
         //创建缓存管理器
         cacheManager = CacheManager.create(resourceAsStream);
         Cache cache = new Cache(EhCacheTpl.DEFAULT_CACHE, 5000, true, false, 36000, 36000);

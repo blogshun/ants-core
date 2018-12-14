@@ -8,9 +8,9 @@ import cn.jants.common.utils.StrEncryptUtil;
 import cn.jants.common.utils.StrUtil;
 import cn.jants.core.ext.Handler;
 import cn.jants.core.module.RequestMappingManager;
+import cn.jants.core.utils.AnnotationUtils;
 import cn.jants.restful.request.MappingMatch;
 import cn.jants.restful.request.RequestMappingBean;
-import org.springframework.core.annotation.AnnotationUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -85,7 +85,7 @@ public class SignatureHandler implements Handler {
 
         //签名错误
         if (StrUtil.isBlank(reqSignStr)) {
-            throw new TipException(ResponseCode.SING_ERROR);
+            throw new TipException(1003, "缺少签名参数!");
         }
 
         Enumeration<String> parameterNames = request.getParameterNames();

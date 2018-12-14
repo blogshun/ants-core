@@ -7,10 +7,10 @@ import cn.jants.common.utils.HttpUtil;
 import cn.jants.common.utils.IOUtil;
 import cn.jants.plugin.weixin.TokenCache;
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.net.util.Base64;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -140,7 +140,7 @@ public class BaiDuContentTool {
         Map params = new HashMap<>(2);
         ByteArrayOutputStream data = IOUtil.parse(in);
 
-        params.put("image", new String(Base64.encodeBase64(data.toByteArray())));
+        params.put("image", new String(Base64.getEncoder().encode(data.toByteArray())));
         params.put("access_token", getAccessToken(ak, sk));
         params.put("scenes", new String[]{"webimage"});
         String resp = HttpUtil.sendPost(IMAGE_VERIFY_URL, params);

@@ -1,6 +1,7 @@
 package cn.jants.plugin.pay.wx;
 
 import cn.jants.common.exception.TipException;
+import com.alibaba.fastjson.JSON;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,32 +14,18 @@ import java.util.Map;
  */
 public class WxPayApiResult extends HashMap {
 
-    private boolean ok;
-
-    private String msg;
-
-    private Map data;
+    private Map data = null;
 
     public WxPayApiResult(Map map) {
         Object errCode = map.get("return_code");
         if ("FAIL".equals(errCode)) {
-            Object msg = map.get("return_msg");
-            throw new TipException(8001, String.format("%s", msg));
+            throw new TipException(8001, String.format("%s", map.get("return_msg")));
         } else {
-            data = map;
+            this.data = map;
             put("data", map);
             put("message", "ok");
             put("code", 0);
-            ok = true;
         }
-    }
-
-    public boolean isOk() {
-        return ok;
-    }
-
-    public String getMsg() {
-        return msg;
     }
 
     public String getStr(String key) {
@@ -46,7 +33,7 @@ public class WxPayApiResult extends HashMap {
     }
 
     public void set(String key, Object value) {
-        data.put(key, value);
+        ((Map) get("data")).put(key, value);
     }
 
     /**

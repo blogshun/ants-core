@@ -16,10 +16,11 @@ import java.util.HashMap;
  */
 public class JsonMap extends HashMap {
 
-    public JsonMap(){}
+    public JsonMap() {
+    }
 
-    public JsonMap(Object javaObject){
-        if(javaObject != null) {
+    public JsonMap(Object javaObject) {
+        if (javaObject != null) {
             JSONObject jsonObject = (JSONObject) JSON.toJSON(javaObject);
             putAll(jsonObject);
         }
@@ -30,12 +31,12 @@ public class JsonMap extends HashMap {
         return new JsonMap();
     }
 
-    public <T> T toJavaObject(Class<T> cls){
+    public <T> T toJavaObject(Class<T> cls) {
         JSON jsonMap = (JSON) JSON.toJSON(this);
         return JSON.toJavaObject(jsonMap, cls);
     }
 
-    public String toJsonString(){
+    public String toJsonString() {
         return JSON.toJSONString(this);
     }
 
@@ -45,39 +46,67 @@ public class JsonMap extends HashMap {
     }
 
     public String getStr(String key) {
-        String val = String.valueOf(get(key));
-        if (val == null || "".equals(val)) {
-            return val;
+        Object o = super.get(key);
+        if (o == null) {
+            return null;
         }
-        return val.trim();
+        return String.valueOf(o);
     }
 
     public String getStr(String key, String defaultValue) {
-        return get(key) == null ? defaultValue : String.valueOf(get(key));
+        Object o = super.get(key);
+        if (o == null) {
+            return defaultValue;
+        }
+        return String.valueOf(o);
     }
 
     public Integer getInt(String key) {
-        return Integer.parseInt(String.valueOf(get(key)));
+        Object o = super.get(key);
+        if (o == null || "".equals(o)) {
+            return null;
+        }
+        return Integer.parseInt(getStr(key));
     }
 
     public Integer getInt(String key, Integer defaultValue) {
-        return get(key) == null ? defaultValue : Integer.parseInt(String.valueOf(get(key)));
+        Object o = super.get(key);
+        if (o == null || "".equals(o)) {
+            return defaultValue;
+        }
+        return Integer.parseInt(getStr(key));
     }
 
     public Long getLong(String key) {
-        return Long.parseLong(String.valueOf(get(key)));
+        Object o = super.get(key);
+        if (o == null || "".equals(o)) {
+            return null;
+        }
+        return Long.parseLong(getStr(key));
     }
 
     public Long getLong(String key, Long defaultValue) {
-        return get(key) == null ? defaultValue : Long.parseLong(String.valueOf(get(key)));
+        Object o = super.get(key);
+        if (o == null || "".equals(o)) {
+            return defaultValue;
+        }
+        return Long.parseLong(getStr(key));
     }
 
     public Boolean getBoolean(String key) {
-        return Boolean.parseBoolean(String.valueOf(get(key)));
+        Object o = super.get(key);
+        if (o == null || "".equals(o)) {
+            return null;
+        }
+        return Boolean.parseBoolean(getStr(key));
     }
 
     public Boolean getBoolean(String key, Boolean defaultValue) {
-        return get(key) == null ? defaultValue : Boolean.parseBoolean(String.valueOf(get(key)));
+        Object o = super.get(key);
+        if (o == null || "".equals(o)) {
+            return defaultValue;
+        }
+        return Boolean.parseBoolean(getStr(key));
     }
 
     public Date getDate(String key, String formatStr) {

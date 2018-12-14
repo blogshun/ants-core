@@ -38,7 +38,7 @@ public class ApiResult extends HashMap {
             put("code", 0);
         } else {
             Object msg = map.get("errmsg");
-            throw new TipException(8003, String.format("%s", errCode, msg));
+            throw new TipException(8003, String.format("code:%s -> msg:%s", errCode, msg));
         }
 
     }

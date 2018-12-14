@@ -7,7 +7,7 @@
 
     <groupId>cn.jants</groupId>
     <artifactId>ants-core</artifactId>
-    <version>1.1.14</version>
+    <version>1.1.16</version>
     <packaging>jar</packaging>
     <name>ants-core</name>
     <url>https://github.com/blogshun/ants-core</url>
@@ -68,7 +68,7 @@
         <redis.version>2.9.0</redis.version>
         <javapoet.version>1.7.0</javapoet.version>
         <oss.version>2.2.1</oss.version>
-        <activemq.version>5.7.0</activemq.version>
+        <activemq.version>5.15.0</activemq.version>
         <mongodb.version>2.13.2</mongodb.version>
         <bcprov.version>1.46</bcprov.version>
     </properties>
@@ -80,7 +80,7 @@
             <version>${junit.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!-- ==== 门面日志 ==== -->
+        <!-- ==== 日志 ==== -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
@@ -110,7 +110,7 @@
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>${druid.version}</version>
-            <!--<scope>provided</scope>-->
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>c3p0</groupId>
@@ -178,7 +178,7 @@
         <!-- ===== ActiveMq消息队列 ==== -->
         <dependency>
             <groupId>org.apache.activemq</groupId>
-            <artifactId>activemq-core</artifactId>
+            <artifactId>activemq-client</artifactId>
             <version>${activemq.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -241,11 +241,13 @@
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
             <version>${tomcat.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
             <version>${tomcat.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

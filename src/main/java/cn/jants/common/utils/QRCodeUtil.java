@@ -15,6 +15,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Hashtable;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -56,6 +57,11 @@ public class QRCodeUtil {
     private static AtomicInteger BG_COLOR = new AtomicInteger(0xFFFFFFFF);
 
     /**
+     * 是否是黑白色
+     */
+    private static AtomicBoolean IS_PURE_COLOR = new AtomicBoolean(true);
+
+    /**
      * 设置属性基于线程安全
      */
     public static void setBitMatrix(Integer codeSize, Integer codeColor, Integer bgColor) {
@@ -64,6 +70,10 @@ public class QRCodeUtil {
         if (bgColor != null) {
             BG_COLOR.set(bgColor);
         }
+    }
+
+    public static void setIsPureColor(boolean isPureColor) {
+        IS_PURE_COLOR.set(isPureColor);
     }
 
     public static void setBitMatrix(Integer codeSize, Integer codeColor) {
@@ -86,7 +96,11 @@ public class QRCodeUtil {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 int rgb = new Color(x * 10 / 12, y * 10 / 12, 1).getRGB();
-                image.setRGB(x, y, bitMatrix.get(x, y) ? rgb : BG_COLOR.get());
+                if (IS_PURE_COLOR.get()) {
+                    image.setRGB(x, y, bitMatrix.get(x, y) ? CODE_COLOR.get() : BG_COLOR.get());
+                } else {
+                    image.setRGB(x, y, bitMatrix.get(x, y) ? rgb : BG_COLOR.get());
+                }
             }
         }
         if (imgPath == null || "".equals(imgPath)) {

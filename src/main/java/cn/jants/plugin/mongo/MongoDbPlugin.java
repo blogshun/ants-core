@@ -17,6 +17,8 @@ public class MongoDbPlugin implements Plugin {
 
     private MongoClient mongoClient;
 
+    private MongoDbTpl mongoDbTpl;
+
     public MongoDbPlugin(String uri) {
         this.uri = uri;
     }
@@ -33,13 +35,21 @@ public class MongoDbPlugin implements Plugin {
             Log.debug("MongoDb 连接成功... ");
 
             //初始化MongoDbTpl
-            MongoDbTpl mongoDbTpl = new MongoDbTpl(db);
+            mongoDbTpl = new MongoDbTpl(db);
             ServiceManager.setService("plugin_mongo_MongoDbTpl", mongoDbTpl);
             return true;
         } catch (Exception e) {
             Log.error("MongoDb连接失败, 请认真检查配置 ... ", e.getMessage());
             throw new Exception(e);
         }
+    }
+
+    public MongoClient getMongoClient() {
+        return mongoClient;
+    }
+
+    public MongoDbTpl getMongoDbTpl() {
+        return mongoDbTpl;
     }
 
     @Override

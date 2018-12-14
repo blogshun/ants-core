@@ -107,16 +107,12 @@ public class FiledBinding {
                     } else {
                         Db db = DbManager.get(source.value());
                         if (db == null) {
-                            if (source.type() == DataSourceType.NONE) {
-                                db = DataSourceType.getNativeDb(source.value());
+                            DataSource dataSource = DataSourceType.getDataSource(source);
+                            if (dataSource == null) {
+                                Log.warn("@Source 指定了 {} 数据源, 却没有进行配置!", source.type());
+                                db = new Db();
                             } else {
-                                DataSource dataSource = DataSourceType.getDataSource(source);
-                                if (dataSource == null) {
-                                    Log.warn("@Source 指定了 {} 数据源, 却没有进行配置!", source.type());
-                                    db = new Db();
-                                } else {
-                                    db = new Db(dataSource);
-                                }
+                                db = new Db(dataSource);
                             }
                             DbManager.add(source.value(), db);
                         }

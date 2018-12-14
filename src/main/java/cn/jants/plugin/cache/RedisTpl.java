@@ -28,14 +28,10 @@ public class RedisTpl {
      * @param value
      * @return
      */
-    public boolean set(final String key, Object value) {
+    public boolean set(final String key, String value) {
         boolean result = false;
         try {
-            if (ParamTypeUtil.isBaseDataType(value.getClass())) {
-                jedis.set(key, String.valueOf(value));
-            } else {
-                jedis.set(key, JSON.toJSONString(value));
-            }
+            jedis.set(key, value);
             result = true;
         } catch (Exception e) {
             e.printStackTrace();
@@ -50,7 +46,7 @@ public class RedisTpl {
      * @param value
      * @return
      */
-    public boolean set(final String key, Object value, int seconds) {
+    public boolean set(final String key, String value, int seconds) {
         boolean result = false;
         try {
             set(key, value);

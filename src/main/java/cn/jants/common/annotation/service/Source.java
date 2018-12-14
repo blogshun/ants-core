@@ -14,7 +14,17 @@ import java.lang.annotation.*;
 @Documented
 public @interface Source {
 
+    /**
+     * 数据库链接对象
+     *
+     * @return
+     */
     String value() default "";
 
+    /**
+     * 数据源类型
+     *
+     * @return
+     */
     DataSourceType type() default DataSourceType.NONE;
 }
