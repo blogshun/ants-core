@@ -123,11 +123,19 @@ public class JsonMap extends HashMap {
         return new BigDecimal(getStr(key));
     }
 
+    public JsonMap getJsonMap(String key) {
+        return JSON.parseObject(getStr(key), JsonMap.class);
+    }
+
     @Override
     public Object put(Object key, Object value) {
         if (value == null) {
             return super.put(key, "");
         }
         return super.put(key, value);
+    }
+
+    public String toJsonString(boolean isFormat) {
+        return JSON.toJSONString(this, isFormat);
     }
 }
