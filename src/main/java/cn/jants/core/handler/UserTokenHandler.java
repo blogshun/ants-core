@@ -6,7 +6,7 @@ import cn.jants.common.utils.StrUtil;
 import cn.jants.common.utils.TokenUtil;
 import cn.jants.core.ext.Handler;
 import cn.jants.core.module.RequestMappingManager;
-import cn.jants.core.utils.AnnotationUtils;
+import cn.jants.restful.bind.utils.AnnotationUtils;
 import cn.jants.restful.request.MappingMatch;
 import cn.jants.restful.request.RequestMappingBean;
 

@@ -9,6 +9,7 @@ import cn.jants.core.holder.ClientRequest;
 import cn.jants.core.holder.ContextRequestManager;
 import cn.jants.core.module.Constant;
 import cn.jants.core.module.RequestMappingManager;
+import cn.jants.restful.bind.utils.ReflectionUtils;
 import cn.jants.restful.render.Json;
 import cn.jants.restful.render.ModelAndView;
 import cn.jants.restful.render.Resource;
@@ -16,7 +17,6 @@ import cn.jants.restful.render.View;
 import cn.jants.restful.request.BindingParams;
 import cn.jants.restful.request.MappingMatch;
 import cn.jants.restful.request.RequestMappingBean;
-import org.springframework.util.ReflectionUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

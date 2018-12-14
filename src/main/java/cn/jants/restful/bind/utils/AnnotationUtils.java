@@ -1,4 +1,4 @@
-package cn.jants.core.utils;
+package cn.jants.restful.bind.utils;
 
 import cn.jants.restful.bind.BridgeMethodResolver;
 
