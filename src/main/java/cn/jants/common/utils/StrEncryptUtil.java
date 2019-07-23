@@ -56,6 +56,10 @@ public class StrEncryptUtil {
      */
     public static String encrypt(String password, EncType type, String str) {
         try {
+            if(type == EncType.AES && password.length() != 16){
+                LOG.error("AES 加密密钥必须是16位！");
+                return null;
+            }
             String encType = String.valueOf(type);
             int len = keyLen(type);
             KeyGenerator keyGenerator = KeyGenerator.getInstance(encType);

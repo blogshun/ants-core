@@ -761,21 +761,24 @@ public class Db<T> {
         for (int j = 1; j <= rsm.getColumnCount(); j++) {
             String columnName = rsm.getColumnLabel(j);
             Object val = rs.getObject(columnName);
-            for (Field field : fields) {
-                if (StrCaseUtil.toUnderlineName(columnName).equals(StrCaseUtil.toUnderlineName(field.getName()))) {
-                    field.setAccessible(true);
-                    try {
-                        Class<?> type = field.getType();
-                        if (type == Long.class) {
-                            val = rs.getLong(columnName);
+            if(val != null) {
+                for (Field field : fields) {
+                    if (StrCaseUtil.toUnderlineName(columnName).equals(StrCaseUtil.toUnderlineName(field.getName()))) {
+                        field.setAccessible(true);
+                        try {
+                            Class<?> type = field.getType();
+                            if (type == Long.class) {
+                                val = rs.getLong(columnName);
+                            }
+                            field.set(obj, val);
+                        } catch (IllegalAccessException e) {
+                            e.printStackTrace();
                         }
-                        field.set(obj, val);
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        break;
                     }
-                    break;
                 }
             }
+
         }
     }
 

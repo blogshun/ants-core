@@ -1,6 +1,7 @@
 package cn.jants.common.utils;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -140,4 +141,13 @@ public class DateUtil {
         return df.format(date);
     }
 
+    public static Date toDate(String date, String formatStr) {
+        DateFormat df = new SimpleDateFormat(formatStr);
+        try {
+            return df.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

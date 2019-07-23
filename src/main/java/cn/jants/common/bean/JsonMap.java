@@ -1,5 +1,6 @@
 package cn.jants.common.bean;
 
+import cn.jants.common.utils.StrUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
@@ -21,8 +22,8 @@ public class JsonMap extends HashMap {
 
     public JsonMap(Object javaObject) {
         if (javaObject != null) {
-            JSONObject jsonObject = (JSONObject) JSON.toJSON(javaObject);
-            putAll(jsonObject);
+            JsonMap jsonMap = JSON.parseObject(JSON.toJSONString(javaObject), getClass());
+            putAll(jsonMap);
         }
     }
 
@@ -120,19 +121,15 @@ public class JsonMap extends HashMap {
     }
 
     public BigDecimal getBigDecimal(String key) {
-        return new BigDecimal(getStr(key));
+        String val = getStr(key);
+        if(StrUtil.isBlank(val)){
+            return new BigDecimal(0);
+        }
+        return new BigDecimal(val);
     }
 
     public JsonMap getJsonMap(String key) {
         return JSON.parseObject(getStr(key), JsonMap.class);
-    }
-
-    @Override
-    public Object put(Object key, Object value) {
-        if (value == null) {
-            return super.put(key, "");
-        }
-        return super.put(key, value);
     }
 
     public String toJsonString(boolean isFormat) {

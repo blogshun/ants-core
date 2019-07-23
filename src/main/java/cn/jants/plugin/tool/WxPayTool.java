@@ -174,7 +174,7 @@ public class WxPayTool {
         if ("SUCCESS".equals(map.get("return_code")) && "SUCCESS".equals(map.get("result_code"))) {
             return String.valueOf(map.get("payment_no"));
         } else {
-            throw new TipException(JSON.toJSONString(map, true));
+            throw new TipException(20001, String.valueOf(map.get("err_code_des")));
         }
     }
 

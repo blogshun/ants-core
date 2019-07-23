@@ -1,6 +1,8 @@
 package cn.jants.plugin.jms;
 
 import cn.jants.common.bean.JsonMap;
+import cn.jants.common.bean.Log;
+import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 import java.util.Map;
@@ -11,13 +13,31 @@ import java.util.Map;
  */
 public class ActiveMqTpl {
 
-    private Session session;
+    private ActiveMQConnectionFactory connectionFactory;
 
+    private Connection connection;
+
+    private Session session;
 
     private ThreadLocal<Map<String, MessageProducer>> threadLocal = new ThreadLocal<>();
 
-    public ActiveMqTpl(Session session) {
+    public ActiveMqTpl(ActiveMQConnectionFactory connectionFactory) throws JMSException {
+        this.connectionFactory = connectionFactory;
+        //从工厂中创建一个链接
+        this.connection = connectionFactory.createConnection();
+        //开启链接
+        this.connection.start();
+        //创建一个事务（这里通过参数可以设置事务的级别）
+        Session session = connection.createSession(Boolean.TRUE, Session.SESSION_TRANSACTED);
         this.session = session;
+    }
+
+    public ActiveMQConnectionFactory getConnectionFactory() {
+        return connectionFactory;
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 
     public Session getSession() {

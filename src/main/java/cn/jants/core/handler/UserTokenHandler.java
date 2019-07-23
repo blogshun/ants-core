@@ -23,11 +23,36 @@ import java.util.List;
  */
 public class UserTokenHandler implements Handler {
 
-    private String userTokenName = "Api-User-Token";
-
     private final List<RequestMappingBean> requestMappingManager = RequestMappingManager.getRequestMappingManager();
 
-    public UserTokenHandler() {
+    /**
+     * 全局请求Token名称
+     */
+    private String tokenRequestName;
+
+    /**
+     * redis token文件夹名称
+     */
+    private String tokenPrefixName;
+
+    /**
+     * 设置token有效期秒, 默认30分钟
+     */
+    private int seconds = 60 * 30;
+
+    private UserTokenHandler() {
+    }
+
+    public UserTokenHandler(String tokenRequestName, String tokenPrefixName) {
+        this.tokenRequestName = tokenRequestName;
+        this.tokenPrefixName = tokenPrefixName;
+    }
+
+
+    public UserTokenHandler(String tokenRequestName, String tokenPrefixName, int seconds) {
+        this.tokenRequestName = tokenRequestName;
+        this.tokenPrefixName = tokenPrefixName;
+        this.seconds = seconds;
     }
 
 
@@ -52,10 +77,10 @@ public class UserTokenHandler implements Handler {
      * @param request
      */
     private void checkUserToken(HttpServletRequest request) {
-        String userTokenStr = request.getHeader(userTokenName);
+        String userTokenStr = request.getHeader(tokenRequestName);
         if (StrUtil.isBlank(userTokenStr)) {
-            throw new TipException(String.format("缺少 %s 参数!", userTokenName));
+            throw new TipException(1002, String.format("缺少 %s 参数!", tokenRequestName));
         }
-        TokenUtil.checkValidity(userTokenStr);
+        TokenUtil.checkValidity(userTokenStr, tokenPrefixName, seconds);
     }
 }

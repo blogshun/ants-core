@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author MrShun
@@ -57,13 +59,9 @@ public class SqlMapPlugin implements Plugin {
         } else {
             File dirFile = new File(PathUtil.getClassPath().concat(dirPath));
             if (dirFile.isDirectory()) {
-                File[] files = dirFile.listFiles(new FileFilter() {
-                    //过滤文件取xml文件
-                    @Override
-                    public boolean accept(File pathname) {
-                        return pathname.getName().endsWith(".xml");
-                    }
-                });
+                List<File> files = new ArrayList<>();
+                //文件迭代器
+                fileIterator(files, dirFile);
                 for (File file : files) {
                     //迭代解析sql xml
                     Document document = documentBuilder.parse(file);
@@ -76,8 +74,26 @@ public class SqlMapPlugin implements Plugin {
         return true;
     }
 
+    private void fileIterator(List<File> files, File dirFile) {
+        dirFile.listFiles(new FileFilter() {
+            //过滤文件取xml文件
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    fileIterator(files, f);
+                    return true;
+                } else if (f.getName().endsWith(".xml")) {
+                    files.add(f);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
     /**
      * jar中读取流转document
+     *
      * @param in
      */
     public static void parse(InputStream in) {

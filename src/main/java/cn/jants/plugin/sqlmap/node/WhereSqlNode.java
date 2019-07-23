@@ -39,7 +39,7 @@ public class WhereSqlNode implements SqlNode {
             String result = ifSqlNode.getResult(obj);
             if (!result.isEmpty()) {
                 if(i==0) {
-                    sb.append(result.replace("and ", ""));
+                    sb.append(result.replace("and ", "")).append(" ");
                 } else {
                     sb.append(result);
                 }
@@ -51,7 +51,7 @@ public class WhereSqlNode implements SqlNode {
         } else if(i == 0 && textString != null) {
             sb.append(textString);
         } else if(i > 0 && textString != null) {
-            sb.append("and " + textString);
+            sb.append(" and " + textString);
         }
         return sb.toString();
     }

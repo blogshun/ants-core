@@ -10,6 +10,7 @@ import cn.jants.common.bean.Log;
 import cn.jants.common.bean.Prop;
 import cn.jants.common.enums.DataSourceType;
 import cn.jants.common.enums.ViewType;
+import cn.jants.common.exception.TipException;
 import cn.jants.common.utils.StrUtil;
 import cn.jants.core.ext.Plugin;
 import cn.jants.core.handler.RenderHandler;
@@ -107,7 +108,7 @@ public class AntsContext {
             }
 
             //设置运行域
-            AppConstant.DOMAIN = PropertyUtil.getStr("ants.domain", propertyConfiguration.domain());
+            AppConstant.DOMAIN = PropertyUtil.getStr("ants.web.domain", propertyConfiguration.domain());
         }
 
         //通过注解获取模板配置
@@ -404,7 +405,7 @@ public class AntsContext {
             } catch (Exception e) {
                 String message = "Plugin start error: " + plugin.getClass().getName() + ". \n" + e.getMessage();
                 Log.error(message);
-                throw new RuntimeException(message, e);
+                System.exit(0);
             }
         }
         if (AppConstant.DEBUG) {

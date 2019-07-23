@@ -1,5 +1,6 @@
 package cn.jants.core.handler;
 
+import cn.jants.common.bean.JsonFormat;
 import cn.jants.common.bean.Log;
 import cn.jants.common.enums.RequestMethod;
 import cn.jants.common.enums.ResponseCode;
@@ -17,10 +18,12 @@ import cn.jants.restful.render.View;
 import cn.jants.restful.request.BindingParams;
 import cn.jants.restful.request.MappingMatch;
 import cn.jants.restful.request.RequestMappingBean;
+import com.alibaba.fastjson.JSON;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -108,10 +111,17 @@ public class RenderHandler implements Handler {
                     } else if (returnType == Resource.class) {
                         Resource res = (Resource) data;
                         res.render(request, response);
+                    } else if (returnType == JsonFormat.class) {
+                        JsonFormat jf = (JsonFormat) data;
+                        PrintWriter w = response.getWriter();
+                        w.print(JSON.toJSONString(jf.getData(), jf.getFeatures()));
+                        w.close();
                     } else if (returnType == Object.class) {
-                        if(data instanceof String || data instanceof Long || data instanceof Integer){
-                            response.getWriter().print(data);
-                        }else {
+                        if (data instanceof String || data instanceof Long || data instanceof Integer) {
+                            PrintWriter w = response.getWriter();
+                            w.print(data);
+                            w.close();
+                        } else {
                             Json.writeJson(data, response, true);
                         }
                     } else {

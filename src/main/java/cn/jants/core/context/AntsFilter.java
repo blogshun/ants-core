@@ -1,11 +1,13 @@
 package cn.jants.core.context;
 
 import cn.jants.common.bean.Log;
+import cn.jants.common.exception.TipException;
 import cn.jants.common.utils.StrUtil;
 import cn.jants.core.module.Constant;
 import cn.jants.core.module.HandlerManager;
 import cn.jants.core.module.RequestMappingManager;
 import cn.jants.restful.request.MappingMatch;
+import jdk.net.SocketFlow;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -82,6 +84,7 @@ public class AntsFilter implements Filter {
         // 获取 request、response，设置编码
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
+
         request.setCharacterEncoding(constant.getEncoding());
         response.setCharacterEncoding(constant.getEncoding());
         String target = request.getRequestURI();
@@ -108,6 +111,7 @@ public class AntsFilter implements Filter {
             //设置允许域
             if (StrUtil.notBlank(AppConstant.DOMAIN)) {
                 response.setHeader("Access-Control-Allow-Origin", AppConstant.DOMAIN);
+                response.setHeader("Access-Control-Allow-Credentials", "true");
                 response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
             }
             //交给handler处理

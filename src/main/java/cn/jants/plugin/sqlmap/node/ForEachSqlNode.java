@@ -36,10 +36,8 @@ public class ForEachSqlNode implements SqlNode {
             String temp = "";
             if (o instanceof String) {
                 temp = context.replace("#{" + item + "}", "'" + o + "'");
-            } else if (o instanceof Integer) {
-                temp = context.replace("#{" + item + "}", String.valueOf(o));
             } else {
-                throw new RuntimeException("list can only store strings or integers!");
+                temp = context.replace("#{" + item + "}", String.valueOf(o));
             }
             sbx = sbx + temp + separator;
         }
@@ -74,12 +72,16 @@ public class ForEachSqlNode implements SqlNode {
             sbx = array((Object[]) obj);
         } else if (obj instanceof Map) {
             Object result = ((Map) obj).get(collection);
-            if (result instanceof Collection) {
-                sbx = list((Collection) result);
-            } else if (result instanceof Object[]) {
-                sbx = array((Object[]) result);
-            } else {
-                throw new IllegalArgumentException(collection + " can only store collections or arrays!");
+            if(result == null){
+                return "";
+            }else{
+                if (result instanceof Collection) {
+                    sbx = list((Collection) result);
+                } else if (result instanceof Object[]) {
+                    sbx = array((Object[]) result);
+                } else {
+                    throw new IllegalArgumentException(collection + " can only store collections or arrays!");
+                }
             }
         }
         if (!sbx.isEmpty()) {

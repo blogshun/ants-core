@@ -36,14 +36,8 @@ public class ActiveMqTool extends ConcurrentToolMap {
         try {
             //创建一个链接工厂
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(username, password, brokenUrl);
-            //从工厂中创建一个链接
-            Connection connection = connectionFactory.createConnection();
-            //开启链接
-            connection.start();
-            //创建一个事务（这里通过参数可以设置事务的级别）
-            Session session = connection.createSession(Boolean.TRUE, Session.SESSION_TRANSACTED);
+            ActiveMqTpl activeMqTpl = new ActiveMqTpl(connectionFactory);
             Log.debug("ActiveMq Jms 连接成功... ");
-            ActiveMqTpl activeMqTpl = new ActiveMqTpl(session);
             PLUGINS.put(key, activeMqTpl);
             return activeMqTpl;
         } catch (JMSException e) {

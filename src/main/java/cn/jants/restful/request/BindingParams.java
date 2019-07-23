@@ -74,9 +74,9 @@ public class BindingParams {
                     Collection<Part> parts = request.getParts();
                     Iterator<Part> iterator = parts.iterator();
                     List<Part> list = new ArrayList<>();
-                    while (iterator.hasNext()){
+                    while (iterator.hasNext()) {
                         Part part = iterator.next();
-                        if(part.getContentType() != null){
+                        if (part.getContentType() != null) {
                             list.add(part);
                         }
                     }

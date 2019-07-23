@@ -23,12 +23,12 @@ public class IfSqlNode implements SqlNode {
     public String getResult(Object obj) {
         if(obj == null) {
             return "";
+        } else if(!"1".equals(this.test) && !"true".equals(this.test)) {
+            Boolean check = (Boolean)OgnlCache.getValue(this.test, obj);
+            return check.booleanValue()?this.context:"";
+        } else {
+            return this.context;
         }
-        Boolean check = (Boolean) OgnlCache.getValue(test, obj);
-        if (check) {
-            return context;
-        }
-        return "";
     }
 
 }

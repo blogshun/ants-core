@@ -33,16 +33,10 @@ public class ActiveMqPlugin implements Plugin {
         try {
             //创建一个链接工厂
             ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(username, password, brokenUrl);
-            //从工厂中创建一个链接
-            connection = connectionFactory.createConnection();
-            //开启链接
-            connection.start();
-            //创建一个事务（这里通过参数可以设置事务的级别）
-            Session session = connection.createSession(Boolean.TRUE, Session.SESSION_TRANSACTED);
-            Log.debug("ActiveMq Jms 连接成功... ");
-
             //初始化RedisTpl
-            ActiveMqTpl activeMqTpl = new ActiveMqTpl(session);
+            ActiveMqTpl activeMqTpl = new ActiveMqTpl(connectionFactory);
+            connection = activeMqTpl.getConnection();
+            Log.debug("ActiveMq Jms 连接成功... ");
             ServiceManager.setService("plugin_jms_ActiveMqTpl", activeMqTpl);
             //检查是否有消费者, 存在则实例化消费者
             return true;

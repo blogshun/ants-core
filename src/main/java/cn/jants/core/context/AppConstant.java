@@ -61,7 +61,7 @@ public class AppConstant {
     /**
      * 跨域配置
      */
-    public static String DOMAIN;
+    public static String DOMAIN, HEADERS;
 
 
     /**

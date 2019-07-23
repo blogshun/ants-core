@@ -57,24 +57,26 @@ public class MapperProxy implements InvocationHandler {
             TagElement tagElement = SqlParser.getOptionType(sqlKey);
             optionType = tagElement.getOptionType();
             resultType = tagElement.getResultType();
-            if (args == null || args[0] == null) {
+            if (args == null || args.length == 0) {
                 sqlParams = SqlParser.getPreparedStatement(sqlKey);
             } else if (args.length == 1) {
                 Object param = args[0];
-                Class<?> cls = param.getClass();
-                if (cls.getClassLoader() != null && !(param instanceof Map)) {
-                    JsonMap map = JsonMap.newJsonMap();
-                    Field[] fields = cls.getDeclaredFields();
-                    for (Field field : fields) {
-                        field.setAccessible(true);
-                        Object value = field.get(param);
-                        if (StrUtil.notNull(value)) {
+                if (param == null) {
+                    sqlParams = SqlParser.getPreparedStatement(sqlKey);
+                } else {
+                    Class<?> cls = param.getClass();
+                    if (cls.getClassLoader() != null && !(param instanceof Map)) {
+                        JsonMap map = JsonMap.newJsonMap();
+                        Field[] fields = cls.getDeclaredFields();
+                        for (Field field : fields) {
+                            field.setAccessible(true);
+                            Object value = field.get(param);
                             map.put(field.getName(), value);
                         }
+                        sqlParams = SqlParser.getPreparedStatement(sqlKey, map);
+                    } else {
+                        sqlParams = SqlParser.getPreparedStatement(sqlKey, param);
                     }
-                    sqlParams = SqlParser.getPreparedStatement(sqlKey, map);
-                } else {
-                    sqlParams = SqlParser.getPreparedStatement(sqlKey, param);
                 }
             } else {
                 JsonMap params = JsonMap.newJsonMap();
@@ -82,9 +84,7 @@ public class MapperProxy implements InvocationHandler {
                 for (int i = 0; i < args.length; i++) {
                     P p = parameters[i].getDeclaredAnnotation(P.class);
                     if (p != null) {
-                        if (args[i] != null) {
-                            params.put(p.value(), args[i]);
-                        }
+                        params.put(p.value(), args[i]);
                     } else {
                         throw new RuntimeException("接口参数超过1个必须采用@P注解绑定!");
                     }
@@ -117,13 +117,8 @@ public class MapperProxy implements InvocationHandler {
                 } else if ("long".equals(resultType) || "integer".equals(resultType)
                         || "string".equals(resultType)) {
                     result = db.listOne(sqlParams.getSql(), sqlParams.getParams());
-                    String strObject = String.valueOf(result);
-                    if ("long".equals(resultType)) {
-                        result = Long.valueOf(strObject);
-                    } else if ("integer".equals(resultType)) {
-                        result = Integer.valueOf(strObject);
-                    } else {
-                        result = strObject;
+                    if (result == null) {
+                        return result;
                     }
                 } else {
                     String idKey = mapperName.concat(".").concat(resultType);
@@ -149,11 +144,14 @@ public class MapperProxy implements InvocationHandler {
                     || methodReturnType == Integer.class || methodReturnType == int.class
                     || methodReturnType == String.class) {
                 result = db.queryOne(sqlParams.getSql(), sqlParams.getParams());
+                if (result == null) {
+                    return result;
+                }
                 String strObject = String.valueOf(result);
                 if (methodReturnType == Long.class || methodReturnType == long.class) {
-                    result = Long.valueOf(strObject);
+                    result = Long.parseLong(strObject);
                 } else if (methodReturnType == Integer.class || methodReturnType == int.class) {
-                    result = Integer.valueOf(strObject);
+                    result = Integer.parseInt(strObject);
                 } else {
                     result = strObject;
                 }

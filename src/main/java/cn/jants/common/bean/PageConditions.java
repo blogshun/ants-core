@@ -84,7 +84,7 @@ public class PageConditions<T> {
     }
 
     public JsonMap getConditions() {
-        return conditions;
+        return conditions == null ? JsonMap.newJsonMap(): conditions;
     }
 
     public void setConditions(JsonMap conditions) {

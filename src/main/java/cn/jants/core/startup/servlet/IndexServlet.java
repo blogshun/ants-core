@@ -18,7 +18,7 @@ public class IndexServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html; charset=UTF-8");
-        String html = "<title>Amts Java极速开发框架</title>" +
+        String html = "<title>Ants Java极速开发框架</title>" +
                 "<body>" +
                 "<div>" +
                 "<img src=\"" + req.getContextPath() + "/ants-logo\" style=\"position:fixed;top:35%;left:0;bottom:65%;right:0;margin:auto;\"/>" +

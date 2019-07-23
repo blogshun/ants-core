@@ -1,9 +1,9 @@
 package cn.jants.plugin.cache;
 
 import cn.jants.common.bean.Log;
+import cn.jants.common.utils.StrUtil;
 import cn.jants.core.ext.Plugin;
 import cn.jants.core.module.ServiceManager;
-import cn.jants.common.utils.StrUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -23,7 +23,7 @@ public class RedisPlugin implements Plugin {
      */
     private int port, database;
 
-    private Integer maxTotal = 500, maxIdle = 1000 * 60, maxWaitMillis = 1000 * 10;
+    private RedisTpl redisTpl;
 
     public RedisPlugin(String host, int port, Integer database, String password) {
         this.host = host;
@@ -34,33 +34,40 @@ public class RedisPlugin implements Plugin {
 
     @Override
     public boolean start() throws Exception {
+
+        JedisPoolConfig config = new JedisPoolConfig();
+        //最大活动的对象个数
+        config.setMaxTotal(500);
+        //对象最大空闲时间
+        config.setMaxIdle(1000 * 60);
+        //获取对象时最大等待时间
+        config.setMaxWaitMillis(1000 * 10);
+        config.setTestOnBorrow(true);
+        config.setTestOnReturn(true);
+
+        JedisPool jedisPool = null;
+        if (StrUtil.notBlank(password)) {
+            jedisPool = new JedisPool(config, host, port, 100000, password, database);
+        } else {
+            jedisPool = new JedisPool(config, host, port, 100000);
+        }
         try {
-            // 1.初始化
-            // 连接本地的 Redis 服务
-            Jedis jedis = new Jedis(host, port);
-            JedisPoolConfig config = new JedisPoolConfig();
-            //最大活动的对象个数
-            config.setMaxTotal(maxTotal);
-            //对象最大空闲时间
-            config.setMaxIdle(maxIdle);
-            //获取对象时最大等待时间
-            config.setMaxWaitMillis(maxWaitMillis);
-            config.setTestOnBorrow(true);
-            jedis.setDataSource(new JedisPool(config, host, port));
-            if(StrUtil.notBlank(password)) {
-                jedis.auth(password);
-            }
+            Jedis jedis = jedisPool.getResource();
             jedis.select(database);
             Log.debug("db > db{} , Redis连接成功... ", database);
-
-            //初始化RedisTpl
-            RedisTpl redisTpl = new RedisTpl(jedis);
+            jedis.close();
+            redisTpl = new RedisTpl(jedisPool);
             ServiceManager.setService("plugin_cache_RedisTpl", redisTpl);
             return true;
         } catch (Exception e) {
             Log.error("Redis连接失败, 请认真检查配置 ... ", e.getMessage());
             throw new Exception(e);
         }
+
+    }
+
+    public RedisTpl getRedisTpl() {
+        return redisTpl;
     }
 
     @Override

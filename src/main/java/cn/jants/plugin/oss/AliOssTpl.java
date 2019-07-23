@@ -128,20 +128,24 @@ public class AliOssTpl {
         return null;
     }
 
+
     /**
-     * 流上传到OSS
+     * 网络上面图片流上传到OSS
      *
      * @param is       文件流
-     * @param fileName 文件名称
+     * @param fileSize 文件大小
+     * @param fileName 文件名名称
      * @param diskName 文件目录
      * @return
      */
-    public OssResult uploadStream2OSS(InputStream is, String fileName, String diskName) {
+    public OssResult uploadStream2OSS(InputStream is, Long fileSize, String fileName, String diskName) {
         try {
-            Integer fileSize = is.available();
             //创建上传Object的Metadata
+            if (fileSize == null) {
+                fileSize = Long.valueOf(is.available() + "");
+            }
             ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(is.available());
+            metadata.setContentLength(fileSize);
             metadata.setCacheControl("no-cache");
             metadata.setHeader("Pragma", "no-cache");
             metadata.setContentEncoding("utf-8");
@@ -158,6 +162,17 @@ public class AliOssTpl {
         return new OssResult(false, "上传失败 > ".concat(fileName.concat(" !")), null, null);
     }
 
+    /**
+     * 本地文件流上传到oss
+     *
+     * @param is
+     * @param fileName
+     * @param diskName
+     * @return
+     */
+    public OssResult uploadStream2OSS(InputStream is, String fileName, String diskName) {
+        return uploadStream2OSS(is, null, fileName, diskName);
+    }
 
     /**
      * 删除文件

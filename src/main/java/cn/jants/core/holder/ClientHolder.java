@@ -181,4 +181,15 @@ public class ClientHolder {
                 //参数
                 + "?" + (request.getQueryString());
     }
+
+    public static String getHostPath(){
+        HttpServletRequest request = getRequest();
+        int port = request.getServerPort();
+        String httpStr = request.getScheme();
+        return httpStr + request.getServerName()
+                //端口号
+                + (port == 80 ? "" : ":" + port)
+                //项目名称
+                + request.getContextPath();
+    }
 }
