@@ -11,8 +11,8 @@
     <packaging>jar</packaging>
 	
     <name>ants-core</name>
-    <!--<url>https://github.com/blogshun/ants-core</url>-->
-    <!--<description>Java rapid development framework.</description>-->
+    <url>https://github.com/blogshun/ants-core</url>
+    <description>Java rapid development framework.</description>
 
     <parent>
         <groupId>org.sonatype.oss</groupId>
