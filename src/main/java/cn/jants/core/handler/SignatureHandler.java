@@ -93,6 +93,7 @@ public class SignatureHandler implements Handler {
         while (parameterNames.hasMoreElements()) {
             String key = parameterNames.nextElement();
             if (!key.equals(signName)) {
+                Log.debug("服务串 - > {} ->{}", key, request.getParameter(key));
                 treeMap.put(key, request.getParameter(key));
             }
         }
@@ -104,6 +105,7 @@ public class SignatureHandler implements Handler {
             sb.append(key.concat("=").concat(value).concat("&"));
         }
         sb.append(secretKey);
+        Log.debug("服务串 - > {}", sb.toString());
         String serSignStr = StrEncryptUtil.md5(sb.toString());
         Log.debug("服务签名 server sign - > {}", serSignStr);
         if (!serSignStr.equalsIgnoreCase(reqSignStr)) {
