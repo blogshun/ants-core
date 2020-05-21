@@ -65,7 +65,7 @@
         <ehcache-core.version>2.6.6</ehcache-core.version>
         <ognl.version>2.6.9</ognl.version>
         <jetty.version>8.1.7.v20120910</jetty.version>
-        <tomcat.version>8.5.20</tomcat.version>
+        <tomcat.version>9.0.35</tomcat.version>
         <redis.version>2.9.0</redis.version>
         <javapoet.version>1.7.0</javapoet.version>
         <oss.version>2.2.1</oss.version>
