@@ -52,7 +52,7 @@
         <junit.version>4.12</junit.version>
         <slf4j-log4j12.vsersion>1.7.10</slf4j-log4j12.vsersion>
         <!-- 阿里下面的json格式转换 -->
-        <fastjson.version>1.2.7</fastjson.version>
+        <fastjson.version>1.2.83</fastjson.version>
         <cglib-nodep.version>2.2</cglib-nodep.version>
         <druid.version>1.0.28</druid.version>
         <c3p0.version>0.9.1.2</c3p0.version>
